@@ -1,0 +1,2395 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulasi Buffer - Halaman 3</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, sans-serif;
+        }
+
+        body {
+            background: #dbeeff;
+        }
+
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+            z-index: 0;
+        }
+
+        .container>*:not(.bg) {
+            z-index: 1;
+        }
+
+
+        /* SOUND */
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 16px 26px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 120;
+        }
+
+        .music-btn:active {
+            transform: scale(.96);
+        }
+
+        .music-btn.off {
+            opacity: .55;
+        }
+
+        .music-btn svg {
+            width: 30px;
+            height: 30px;
+            fill: #fff;
+        }
+
+        /* BOX kiri */
+        .box-percobaan {
+            position: absolute;
+            top: 34px;
+            left: 104px;
+            width: 300px;
+            padding: 16px 14px;
+            background: rgba(255, 255, 255, 0.93);
+            border: 2px solid rgba(0, 0, 0, 0.28);
+            text-align: center;
+            font-size: 20px;
+            line-height: 1.2;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+        }
+
+        .box-percobaan strong {
+            display: block;
+            margin-top: 8px;
+            font-weight: 900;
+            letter-spacing: .3px;
+        }
+
+        /* BOX tengah */
+        .box-reaksi {
+            position: absolute;
+            top: 40px;
+            left: 55%;
+            transform: translateX(-50%);
+            width: 280px;
+            height: 90px;
+            padding: 16px 22px;
+            background: rgba(255, 255, 255, 0.93);
+            border: 2px solid #6fb35d;
+            border-radius: 26px;
+            box-shadow: 0 12px 22px rgba(0, 0, 0, 0.10);
+        }
+
+        .box-reaksi .title {
+            font-size: 16px;
+            margin: 0 0 6px 0;
+            font-weight: 800;
+        }
+
+        .rx-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            font-size: 15px;
+            margin-top: 2px;
+            font-weight: 800;
+        }
+
+        .rx-row .plus {
+            font-weight: 900;
+        }
+
+        .mol-row {
+            display: none;
+        }
+
+        .mol-card {
+            position: absolute;
+            top: -105px;
+            left: 90%;
+            transform: translateX(-50%);
+            width: 105px;
+            height: 82px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 72;
+            pointer-events: none;
+        }
+
+        .mol-card img {
+            width: 105px;
+            height: 82px;
+            object-fit: contain;
+            filter: drop-shadow(0 6px 10px rgba(0, 0, 0, 0.12));
+        }
+
+        /* TOMBOL NAVIGASI / PERINTAH */
+        .instruction-box {
+            position: absolute;
+            left: 610px;
+            top: 190px;
+            width: 380px;
+            min-height: 58px;
+            padding: 14px 18px;
+            background: rgba(255, 255, 255, 0.78);
+            border: 2px solid rgba(0, 70, 90, 0.85);
+            border-radius: 18px;
+            color: #111;
+            font-size: 18px;
+            font-weight: 600;
+            line-height: 1.25;
+            z-index: 85;
+            box-shadow: 0 12px 22px rgba(0, 0, 0, 0.12);
+        }
+
+        .instruction-box span {
+            display: block;
+        }
+
+        /* PH scale kanan */
+        .ph-wrap {
+            position: absolute;
+            top: 20px;
+            right: 55px;
+            width: 70px;
+            height: 520px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            z-index: 60;
+        }
+
+        .ph-scale {
+            height: 520px;
+            width: 34px;
+            border: 2px solid rgba(0, 0, 0, 0.30);
+            overflow: hidden;
+            /* warna trayek pH disamakan dengan referensi, posisi tetap vertikal */
+            background: linear-gradient(to bottom,
+                    #f01818 0%,
+                    #ff4b00 7%,
+                    #ff9800 14%,
+                    #fff000 21%,
+                    #c7f43b 28%,
+                    #75c943 36%,
+                    #39b54a 43%,
+                    #34b65a 50%,
+                    #22bfa2 57%,
+                    #20b8d0 64%,
+                    #2697d4 71%,
+                    #2b62b8 78%,
+                    #3949ab 85%,
+                    #4b2ca3 92%,
+                    #5b2ca0 100%);
+            box-shadow: 0 12px 18px rgba(0, 0, 0, 0.10);
+            border-radius: 4px;
+        }
+
+        .ph-numbers {
+            position: absolute;
+            left: -24px;
+            top: 0px;
+            height: 520px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 12px;
+            color: #333;
+            opacity: .85;
+        }
+
+        .ph-arrow {
+            position: absolute;
+            top: 0px;
+            right: 40px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 18px solid #d60000;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+            transition: top .6s ease;
+        }
+
+        .ph-value {
+            position: absolute;
+            right: 40px;
+            bottom: 90px;
+            width: 150px;
+            padding: 10px 12px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.92);
+            border: 2px solid rgba(255, 102, 0, 0.55);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            font-weight: 900;
+            font-size: 18px;
+            z-index: 60;
+        }
+
+        /* BOTOL kiri bawah */
+        .botol-area {
+            position: absolute;
+            left: 50px;
+            bottom: 10px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+            z-index: 50;
+        }
+
+        .botol-item {
+            width: 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .botol {
+            width: 180px;
+            display: block;
+            margin: auto;
+            cursor: pointer;
+            transition: .2s;
+            transform-origin: 75% 85%;
+            filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.10));
+            pointer-events: auto;
+            position: relative;
+            z-index: 60;
+        }
+
+        .kons-badge {
+            position: absolute;
+            top: -20px;
+            left: 90%;
+            transform: translateX(-50%);
+            padding: 4px 18px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 2px solid rgba(0, 0, 0, 0.18);
+            border-radius: 14px;
+            font-weight: 900;
+            color: #444;
+            font-size: 16px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+            z-index: 70;
+            pointer-events: none;
+        }
+
+        /* BEAKER BESAR */
+        .big-wrap {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 120px;
+            width: 800px;
+            height: 350px;
+            z-index: 20;
+        }
+
+        .big-beaker-pos {
+            position: absolute;
+            left: 30%;
+            bottom: 0;
+            transform: translateX(-50%);
+            width: 650px;
+            z-index: 20;
+            pointer-events: auto;
+        }
+
+        .big-beaker-group {
+            position: relative;
+            width: 650px;
+            height: 320px;
+            transform-origin: 92% 72%;
+        }
+
+        .big-beaker {
+            width: 650px;
+            display: block;
+            z-index: 20;
+            pointer-events: auto;
+            position: relative;
+            cursor: pointer;
+        }
+
+        .big-fill {
+            position: absolute;
+            left: 39%;
+            bottom: -30px;
+            width: 150px;
+            height: 210px;
+            border-radius: 0 0 80px 80px;
+            overflow: hidden;
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        .big-water {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 120px;
+            background: rgba(140, 200, 255, 0.40);
+            border-radius: 0 0 80px 80px;
+            transition: height 0.9s ease, transform 0.9s ease;
+            transform-origin: center bottom;
+        }
+
+        .big-water::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        @keyframes pourBeakerGroup {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            35% {
+                transform: translate(160px, -10px) rotate(32deg);
+            }
+
+            70% {
+                transform: translate(160px, -10px) rotate(32deg);
+            }
+
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+        }
+
+        @keyframes waterTilt {
+            0% {
+                transform: rotate(0deg) skewX(0deg);
+                height: 120px;
+            }
+
+            35% {
+                transform: rotate(-22deg) skewX(-8deg);
+                height: 95px;
+            }
+
+            70% {
+                transform: rotate(-22deg) skewX(-8deg);
+                height: 95px;
+            }
+
+            100% {
+                transform: rotate(0deg) skewX(0deg);
+                height: 120px;
+            }
+        }
+
+        .big-beaker-group.pouring {
+            animation: pourBeakerGroup 1.6s ease forwards;
+        }
+
+        .big-beaker-group.pouring .big-water {
+            animation: waterTilt 1.6s ease forwards;
+        }
+
+        /* BEAKER KECIL */
+        .small-area {
+            position: absolute;
+            left: 550px;
+            bottom: 60px;
+            width: 520px;
+            height: 240px;
+            z-index: 40;
+        }
+
+        .small {
+            position: absolute;
+            width: 200px;
+            height: 200px;
+            bottom: 0;
+            text-align: center;
+        }
+
+        .small.s1 {
+            left: 0px;
+        }
+
+        .small.s2 {
+            left: 150px;
+        }
+
+        .small.s3 {
+            left: 300px;
+        }
+
+        .small .ph-top {
+            font-weight: 800;
+            font-size: 13px;
+            margin-bottom: 8px;
+            opacity: 0;
+            transition: opacity .3s ease;
+        }
+
+        .small .ph-top.show {
+            opacity: 1;
+        }
+
+        .small .label {
+            margin-top: 2px;
+            font-size: 16px;
+            font-weight: 500;
+            line-height: 1.1;
+        }
+
+        .small .label strong {
+            display: block;
+            font-weight: 700;
+        }
+
+        .small-beaker {
+            width: 240px;
+            display: block;
+            margin: auto;
+            position: relative;
+            z-index: 30;
+            pointer-events: none;
+            filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.10));
+        }
+
+        .small-fill {
+            position: absolute;
+            left: 60%;
+            transform: translateX(-50%);
+            bottom: 40px;
+            width: 70px;
+            height: 78px;
+            border-radius: 0 0 22px 22px;
+            overflow: hidden;
+            z-index: 40;
+            pointer-events: none;
+        }
+
+        .small-water {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 0px;
+            background: rgba(140, 200, 255, 0.35);
+            border-radius: 0 0 22px 22px;
+            transition: height 1s ease;
+        }
+
+        .small-water::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 6px;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* TOOLS */
+        .tools {
+            position: absolute;
+            left: 630px;
+            top: 350px;
+            width: 330px;
+            height: 120px;
+            z-index: 60;
+            pointer-events: none;
+        }
+
+        .pipet {
+            position: absolute;
+            width: 120px;
+            pointer-events: auto;
+            cursor: pointer;
+            filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.10));
+            opacity: .9;
+            transition: transform .18s ease, opacity .2s;
+            transform: rotate(-20deg);
+            transform-origin: 12% 70%;
+        }
+
+        .pipet:hover {
+            transform: rotate(-20deg) scale(1.03);
+        }
+
+        .pipet.p1 {
+            left: 0px;
+            top: 0px;
+        }
+
+        .pipet.p2 {
+            left: 140px;
+            top: 5px;
+        }
+
+        .sprayer {
+            position: absolute;
+            width: 100px;
+            right: -50px;
+            top: -20px;
+            pointer-events: auto;
+            cursor: pointer;
+            filter: drop-shadow(0 10px 14px rgba(0, 0, 0, 0.10));
+            opacity: .9;
+            transition: transform .18s ease, opacity .2s;
+        }
+
+        .sprayer:hover {
+            transform: scale(1.03);
+        }
+
+        .drop {
+            position: absolute;
+            width: 14px;
+            height: 18px;
+            background: rgba(60, 140, 255, 0.9);
+            border-radius: 50% 50% 50% 50%;
+            transform: rotate(20deg);
+            opacity: 0;
+            z-index: 80;
+            pointer-events: none;
+        }
+
+        .sprayLine {
+            position: absolute;
+            right: -40px;
+            top: 55px;
+            width: 6px;
+            height: 0px;
+            background: rgba(60, 140, 255, 0.55);
+            border-radius: 10px;
+            opacity: 0;
+            z-index: 70;
+            pointer-events: none;
+        }
+
+        @keyframes sprayOn {
+            0% {
+                height: 0px;
+                opacity: 0;
+            }
+
+            20% {
+                height: 120px;
+                opacity: 1;
+            }
+
+            80% {
+                height: 120px;
+                opacity: 1;
+            }
+
+            100% {
+                height: 0px;
+                opacity: 0;
+            }
+        }
+
+        .btn-back {
+            position: absolute;
+            left: 26px;
+            bottom: 24px;
+            width: 80px;
+            cursor: pointer;
+            transition: .2s;
+            z-index: 90;
+            transform: scaleX(-1);
+            filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.12));
+        }
+
+        .btn-back:hover {
+            transform: scaleX(-1) scale(1.06);
+        }
+
+        .finish {
+            position: absolute;
+            left: 990px;
+            bottom: 10px;
+            background: rgba(120, 170, 150, 0.85);
+            color: #fff;
+            padding: 14px 22px;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            box-shadow: 0 10px 18px rgba(0, 0, 0, 0.15);
+            display: none;
+            z-index: 95;
+            cursor: pointer;
+            text-align: center;
+            line-height: 1.2;
+        }
+
+        .finish:hover {
+            transform: scale(1.02);
+        }
+
+        /* HP LANDSCAPE - DISAMAKAN DENGAN TAMPILAN DESKTOP */
+        @media (orientation: landscape) and (max-height: 500px) {
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+                background: #dbeeff;
+            }
+
+            .container.fit-stage {
+                position: absolute;
+                width: 1280px;
+                height: 720px;
+                left: 0;
+                top: 0;
+                overflow: hidden;
+                transform-origin: top left;
+            }
+        }
+
+        /* MOBILE PORTRAIT */
+        @media (orientation: portrait) and (max-width: 700px) {
+
+            html,
+            body {
+                overflow: hidden;
+            }
+
+            .container.fit-stage {
+                position: absolute;
+                width: 1280px;
+                height: 720px;
+                left: 0;
+                top: 0;
+                overflow: hidden;
+                transform-origin: top left;
+            }
+
+            .music-btn {
+                width: 48px;
+                height: 48px;
+                left: 10px;
+                top: 10px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 23px;
+                height: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="container" id="stage">
+        <img src="assets/bg pink.png" class="bg" alt="bg" />
+
+        <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+            </svg>
+        </button>
+
+        <div class="box-percobaan">
+            Percobaan Reaksi:
+            <strong id="namaPercobaan">-</strong>
+        </div>
+
+        <div class="box-reaksi">
+            <div class="title">Persamaan Reaksi:</div>
+            <div class="rx-row">
+                <div id="rxA">-</div>
+                <div class="plus">+</div>
+                <div id="rxB">-</div>
+            </div>
+        </div>
+
+        <div class="instruction-box" id="instructionBox">
+            <span>Klik gelas beaker besar untuk menuangkan larutan ke tiga gelas beaker kecil masing-masing sebanyak 20
+                mL.</span>
+        </div>
+
+        <div class="botol-area">
+            <div class="botol-item">
+                <div class="mol-card"><img id="molA" src="" alt="senyawa A"></div>
+                <img id="botol1" class="botol" src="" alt="botol1">
+                <div class="kons-badge" id="kons1">-</div>
+            </div>
+            <div class="botol-item">
+                <div class="mol-card"><img id="molB" src="" alt="senyawa B"></div>
+                <img id="botol2" class="botol" src="" alt="botol2">
+                <div class="kons-badge" id="kons2">-</div>
+            </div>
+        </div>
+
+        <div class="big-wrap">
+            <div class="big-beaker-pos">
+                <div class="big-beaker-group" id="bigBeakerGroup">
+                    <div class="big-fill">
+                        <div class="big-water" id="bigWater"></div>
+                    </div>
+
+                    <img src="assets/beaker final.png" class="big-beaker" id="bigBeaker" alt="beaker besar"
+                        title="Klik untuk menuangkan ke gelas kecil">
+                </div>
+            </div>
+        </div>
+
+        <div class="small-area">
+            <div class="small s1">
+                <div class="ph-top" id="phTop1">pH = -</div>
+                <div class="small-fill">
+                    <div class="small-water" id="sw1"></div>
+                </div>
+                <img src="assets/beaker final.png" class="small-beaker" alt="gelas kecil">
+                <div class="label">Sedikit <strong>H<sup>+</sup></strong></div>
+            </div>
+
+            <div class="small s2">
+                <div class="ph-top" id="phTop2">pH = -</div>
+                <div class="small-fill">
+                    <div class="small-water" id="sw2"></div>
+                </div>
+                <img src="assets/beaker final.png" class="small-beaker" alt="gelas kecil">
+                <div class="label">Sedikit <strong>OH<sup>-</sup></strong></div>
+            </div>
+
+            <div class="small s3">
+                <div class="ph-top" id="phTop3">pH = -</div>
+                <div class="small-fill">
+                    <div class="small-water" id="sw3"></div>
+                </div>
+                <img src="assets/beaker final.png" class="small-beaker" alt="gelas kecil">
+                <div class="label">Ditambah <strong>H<sub>2</sub>O</strong></div>
+            </div>
+        </div>
+
+        <div class="tools">
+            <img src="assets/pipet tetes.png" class="pipet p1" id="pipetH" alt="pipet H+"
+                title="Klik untuk menetes H+ sebanyak 5 kali">
+            <img src="assets/pipet tetes.png" class="pipet p2" id="pipetOH" alt="pipet OH-"
+                title="Klik untuk menetes OH- sebanyak 5 kali">
+            <img src="assets/akuades.png" class="sprayer" id="sprayer" alt="sprayer H2O"
+                title="Klik untuk melakukan pengenceran">
+            <div class="sprayLine" id="sprayLine"></div>
+        </div>
+
+        <div class="ph-wrap">
+            <div class="ph-numbers">
+                <div>0</div>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+                <div>9</div>
+                <div>10</div>
+                <div>11</div>
+                <div>12</div>
+                <div>13</div>
+                <div>14</div>
+            </div>
+            <div class="ph-scale" id="phScale"></div>
+            <div class="ph-arrow" id="phArrow"></div>
+        </div>
+
+        <div class="ph-value" id="phValue">pH = 0,00</div>
+
+        <img src="assets/tombol_panah_kanan-removebg-preview.png" class="btn-back" alt="back" onclick="kembali()" />
+
+        <div class="finish" id="finishBtn" onclick="keLatihan()">
+            Praktikum selesai, lanjut ke latihan soal
+        </div>
+    </div>
+
+    <script>
+        const stage = document.getElementById("stage");
+        const musicBtn = document.getElementById("musicBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+
+            setTimeout(() => {
+                sound.pause();
+                sound.currentTime = 0;
+            }, 150);
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        const DESIGN_WIDTH = 1280;
+        const DESIGN_HEIGHT = 720;
+
+        function fitStageToScreen() {
+            const shouldFit = window.innerHeight <= 500 || (window.innerWidth <= 700 && window.innerHeight > window.innerWidth);
+
+            if (!shouldFit) {
+                stage.classList.remove("fit-stage");
+                stage.style.width = "100vw";
+                stage.style.height = "100vh";
+                stage.style.transform = "";
+                return;
+            }
+
+            const scale = Math.min(window.innerWidth / DESIGN_WIDTH, window.innerHeight / DESIGN_HEIGHT);
+            const x = (window.innerWidth - DESIGN_WIDTH * scale) / 2;
+            const y = (window.innerHeight - DESIGN_HEIGHT * scale) / 2;
+
+            stage.classList.add("fit-stage");
+            stage.style.width = DESIGN_WIDTH + "px";
+            stage.style.height = DESIGN_HEIGHT + "px";
+            stage.style.transform = `translate(${x}px, ${y}px) scale(${scale})`;
+        }
+
+        window.addEventListener("resize", fitStageToScreen);
+        window.addEventListener("orientationchange", () => setTimeout(fitStageToScreen, 250));
+        fitStageToScreen();
+
+        function pindahHalaman(url) {
+            playClickSound();
+            stage.style.transition = "opacity 0.18s ease";
+            stage.style.opacity = "0";
+            setTimeout(() => {
+                window.location.href = url;
+            }, 180);
+        }
+
+        function kembali() {
+            pindahHalaman("halaman2.html");
+        }
+
+        function keLatihan() {
+            pindahHalaman("menu.html");
+        }
+
+        const bufferMap = {
+            HCOOH: "HCOONa",
+            CH3COOH: "CH3COONa",
+            HF: "NaF",
+            H2CO3: "NaHCO3",
+            NH4OH: "NH4Cl",
+            H3PO4: "NaH2PO4",
+            HNO2: "NaNO2"
+        };
+
+        const pKaMap = {
+            HCOOH: 3.75,
+            CH3COOH: 4.76,
+            HF: 3.17,
+            H2CO3: 6.35,
+            HNO2: 3.35,
+            H3PO4: 2.15,
+            NH4OH: 9.25
+        };
+
+        // Tabel pH sesuai file "tabel pH SEMUA LARUTAN".
+        // Key: "konsentrasi larutan asam|konsentrasi larutan garam".
+        const phTableSemuaLarutan = {
+            "HCOOH": {
+                "0.1|0.1": {
+                    "campuran": 3.74,
+                    "h": 3.52,
+                    "oh": 3.97,
+                    "h2o": 3.74
+                },
+                "0.1|0.25": {
+                    "campuran": 4.14,
+                    "h": 4.0,
+                    "oh": 4.31,
+                    "h2o": 4.14
+                },
+                "0.1|0.5": {
+                    "campuran": 4.44,
+                    "h": 4.32,
+                    "oh": 4.59,
+                    "h2o": 4.44
+                },
+                "0.1|0.75": {
+                    "campuran": 4.62,
+                    "h": 4.51,
+                    "oh": 4.76,
+                    "h2o": 4.62
+                },
+                "0.1|1": {
+                    "campuran": 4.74,
+                    "h": 4.64,
+                    "oh": 4.88,
+                    "h2o": 4.74
+                },
+                "0.25|0.1": {
+                    "campuran": 3.35,
+                    "h": 3.18,
+                    "oh": 3.49,
+                    "h2o": 3.35
+                },
+                "0.25|0.25": {
+                    "campuran": 3.74,
+                    "h": 3.66,
+                    "oh": 3.83,
+                    "h2o": 3.74
+                },
+                "0.25|0.5": {
+                    "campuran": 4.05,
+                    "h": 3.98,
+                    "oh": 4.11,
+                    "h2o": 4.05
+                },
+                "0.25|0.75": {
+                    "campuran": 4.22,
+                    "h": 4.17,
+                    "oh": 4.28,
+                    "h2o": 4.22
+                },
+                "0.25|1": {
+                    "campuran": 4.35,
+                    "h": 4.29,
+                    "oh": 4.4,
+                    "h2o": 4.35
+                },
+                "0.5|0.1": {
+                    "campuran": 3.05,
+                    "h": 2.9,
+                    "oh": 3.16,
+                    "h2o": 3.05
+                },
+                "0.5|0.25": {
+                    "campuran": 3.44,
+                    "h": 3.38,
+                    "oh": 3.51,
+                    "h2o": 3.44
+                },
+                "0.5|0.5": {
+                    "campuran": 3.74,
+                    "h": 3.7,
+                    "oh": 3.79,
+                    "h2o": 3.74
+                },
+                "0.5|0.75": {
+                    "campuran": 3.92,
+                    "h": 3.89,
+                    "oh": 3.96,
+                    "h2o": 3.92
+                },
+                "0.5|1": {
+                    "campuran": 4.05,
+                    "h": 4.01,
+                    "oh": 4.08,
+                    "h2o": 4.05
+                },
+                "0.75|0.1": {
+                    "campuran": 2.87,
+                    "h": 2.73,
+                    "oh": 2.98,
+                    "h2o": 2.87
+                },
+                "0.75|0.25": {
+                    "campuran": 3.27,
+                    "h": 3.21,
+                    "oh": 3.32,
+                    "h2o": 3.27
+                },
+                "0.75|0.5": {
+                    "campuran": 3.57,
+                    "h": 3.53,
+                    "oh": 3.6,
+                    "h2o": 3.57
+                },
+                "0.75|0.75": {
+                    "campuran": 3.74,
+                    "h": 3.72,
+                    "oh": 3.77,
+                    "h2o": 3.74
+                },
+                "0.75|1": {
+                    "campuran": 3.87,
+                    "h": 3.84,
+                    "oh": 3.9,
+                    "h2o": 3.87
+                },
+                "1|0.1": {
+                    "campuran": 2.74,
+                    "h": 2.61,
+                    "oh": 2.85,
+                    "h2o": 2.74
+                },
+                "1|0.25": {
+                    "campuran": 3.14,
+                    "h": 3.09,
+                    "oh": 3.2,
+                    "h2o": 3.14
+                },
+                "1|0.5": {
+                    "campuran": 3.44,
+                    "h": 3.41,
+                    "oh": 3.48,
+                    "h2o": 3.44
+                },
+                "1|0.75": {
+                    "campuran": 3.62,
+                    "h": 3.6,
+                    "oh": 3.65,
+                    "h2o": 3.62
+                },
+                "1|1": {
+                    "campuran": 3.74,
+                    "h": 3.72,
+                    "oh": 3.77,
+                    "h2o": 3.74
+                }
+            },
+            "CH3COOH": {
+                "0.1|0.1": {
+                    "campuran": 4.74,
+                    "h": 4.52,
+                    "oh": 4.97,
+                    "h2o": 4.74
+                },
+                "0.1|0.25": {
+                    "campuran": 5.14,
+                    "h": 5.0,
+                    "oh": 5.31,
+                    "h2o": 5.14
+                },
+                "0.1|0.5": {
+                    "campuran": 5.44,
+                    "h": 5.32,
+                    "oh": 5.59,
+                    "h2o": 5.44
+                },
+                "0.1|0.75": {
+                    "campuran": 5.62,
+                    "h": 5.51,
+                    "oh": 5.76,
+                    "h2o": 5.62
+                },
+                "0.1|1": {
+                    "campuran": 5.74,
+                    "h": 5.64,
+                    "oh": 5.88,
+                    "h2o": 5.74
+                },
+                "0.25|0.1": {
+                    "campuran": 4.35,
+                    "h": 4.18,
+                    "oh": 4.49,
+                    "h2o": 4.35
+                },
+                "0.25|0.25": {
+                    "campuran": 4.74,
+                    "h": 4.66,
+                    "oh": 4.83,
+                    "h2o": 4.74
+                },
+                "0.25|0.5": {
+                    "campuran": 5.05,
+                    "h": 4.98,
+                    "oh": 5.11,
+                    "h2o": 5.05
+                },
+                "0.25|0.75": {
+                    "campuran": 5.22,
+                    "h": 5.17,
+                    "oh": 5.28,
+                    "h2o": 5.22
+                },
+                "0.25|1": {
+                    "campuran": 5.35,
+                    "h": 5.29,
+                    "oh": 5.4,
+                    "h2o": 5.35
+                },
+                "0.5|0.1": {
+                    "campuran": 4.05,
+                    "h": 3.9,
+                    "oh": 4.16,
+                    "h2o": 4.05
+                },
+                "0.5|0.25": {
+                    "campuran": 4.44,
+                    "h": 4.38,
+                    "oh": 4.51,
+                    "h2o": 4.44
+                },
+                "0.5|0.5": {
+                    "campuran": 4.74,
+                    "h": 4.7,
+                    "oh": 4.79,
+                    "h2o": 4.74
+                },
+                "0.5|0.75": {
+                    "campuran": 4.92,
+                    "h": 4.88,
+                    "oh": 4.96,
+                    "h2o": 4.92
+                },
+                "0.5|1": {
+                    "campuran": 5.05,
+                    "h": 5.01,
+                    "oh": 5.08,
+                    "h2o": 5.05
+                },
+                "0.75|0.1": {
+                    "campuran": 3.87,
+                    "h": 3.73,
+                    "oh": 3.98,
+                    "h2o": 3.87
+                },
+                "0.75|0.25": {
+                    "campuran": 4.27,
+                    "h": 4.21,
+                    "oh": 4.32,
+                    "h2o": 4.27
+                },
+                "0.75|0.5": {
+                    "campuran": 4.57,
+                    "h": 4.53,
+                    "oh": 4.6,
+                    "h2o": 4.57
+                },
+                "0.75|0.75": {
+                    "campuran": 4.74,
+                    "h": 4.72,
+                    "oh": 4.77,
+                    "h2o": 4.74
+                },
+                "0.75|1": {
+                    "campuran": 4.87,
+                    "h": 4.84,
+                    "oh": 4.9,
+                    "h2o": 4.87
+                },
+                "1|0.1": {
+                    "campuran": 3.74,
+                    "h": 3.61,
+                    "oh": 3.85,
+                    "h2o": 3.74
+                },
+                "1|0.25": {
+                    "campuran": 4.14,
+                    "h": 4.09,
+                    "oh": 4.2,
+                    "h2o": 4.14
+                },
+                "1|0.5": {
+                    "campuran": 4.44,
+                    "h": 4.41,
+                    "oh": 4.48,
+                    "h2o": 4.44
+                },
+                "1|0.75": {
+                    "campuran": 4.62,
+                    "h": 4.59,
+                    "oh": 4.65,
+                    "h2o": 4.62
+                },
+                "1|1": {
+                    "campuran": 4.74,
+                    "h": 4.72,
+                    "oh": 4.77,
+                    "h2o": 4.74
+                }
+            },
+            "H2CO3": {
+                "0.1|0.1": {
+                    "campuran": 6.37,
+                    "h": 6.14,
+                    "oh": 6.59,
+                    "h2o": 6.37
+                },
+                "0.1|0.25": {
+                    "campuran": 6.76,
+                    "h": 6.62,
+                    "oh": 6.93,
+                    "h2o": 6.76
+                },
+                "0.1|0.5": {
+                    "campuran": 7.07,
+                    "h": 6.95,
+                    "oh": 7.21,
+                    "h2o": 7.07
+                },
+                "0.1|0.75": {
+                    "campuran": 7.24,
+                    "h": 7.13,
+                    "oh": 7.36,
+                    "h2o": 7.24
+                },
+                "0.1|1": {
+                    "campuran": 7.37,
+                    "h": 7.27,
+                    "oh": 7.47,
+                    "h2o": 7.37
+                },
+                "0.25|0.1": {
+                    "campuran": 5.97,
+                    "h": 5.8,
+                    "oh": 6.11,
+                    "h2o": 5.97
+                },
+                "0.25|0.25": {
+                    "campuran": 6.37,
+                    "h": 6.28,
+                    "oh": 6.45,
+                    "h2o": 6.37
+                },
+                "0.25|0.5": {
+                    "campuran": 6.67,
+                    "h": 6.6,
+                    "oh": 6.73,
+                    "h2o": 6.67
+                },
+                "0.25|0.75": {
+                    "campuran": 6.84,
+                    "h": 6.78,
+                    "oh": 6.9,
+                    "h2o": 6.84
+                },
+                "0.25|1": {
+                    "campuran": 6.97,
+                    "h": 6.91,
+                    "oh": 7.02,
+                    "h2o": 6.97
+                },
+                "0.5|0.1": {
+                    "campuran": 5.67,
+                    "h": 5.52,
+                    "oh": 5.78,
+                    "h2o": 5.67
+                },
+                "0.5|0.25": {
+                    "campuran": 6.07,
+                    "h": 6.0,
+                    "oh": 6.13,
+                    "h2o": 6.07
+                },
+                "0.5|0.5": {
+                    "campuran": 6.37,
+                    "h": 6.32,
+                    "oh": 6.41,
+                    "h2o": 6.37
+                },
+                "0.5|0.75": {
+                    "campuran": 6.54,
+                    "h": 6.51,
+                    "oh": 6.58,
+                    "h2o": 6.54
+                },
+                "0.5|1": {
+                    "campuran": 6.67,
+                    "h": 6.64,
+                    "oh": 6.7,
+                    "h2o": 6.67
+                },
+                "0.75|0.1": {
+                    "campuran": 5.49,
+                    "h": 5.35,
+                    "oh": 5.6,
+                    "h2o": 5.49
+                },
+                "0.75|0.25": {
+                    "campuran": 5.89,
+                    "h": 5.82,
+                    "oh": 5.94,
+                    "h2o": 5.89
+                },
+                "0.75|0.5": {
+                    "campuran": 6.19,
+                    "h": 6.16,
+                    "oh": 6.23,
+                    "h2o": 6.19
+                },
+                "0.75|0.75": {
+                    "campuran": 6.37,
+                    "h": 6.34,
+                    "oh": 6.4,
+                    "h2o": 6.37
+                },
+                "0.75|1": {
+                    "campuran": 6.49,
+                    "h": 6.47,
+                    "oh": 6.52,
+                    "h2o": 6.49
+                },
+                "1|0.1": {
+                    "campuran": 5.37,
+                    "h": 5.23,
+                    "oh": 5.47,
+                    "h2o": 5.37
+                },
+                "1|0.25": {
+                    "campuran": 5.76,
+                    "h": 5.71,
+                    "oh": 5.82,
+                    "h2o": 5.76
+                },
+                "1|0.5": {
+                    "campuran": 6.07,
+                    "h": 6.03,
+                    "oh": 6.1,
+                    "h2o": 6.07
+                },
+                "1|0.75": {
+                    "campuran": 6.24,
+                    "h": 6.22,
+                    "oh": 6.27,
+                    "h2o": 6.24
+                },
+                "1|1": {
+                    "campuran": 6.37,
+                    "h": 6.34,
+                    "oh": 6.39,
+                    "h2o": 6.37
+                }
+            },
+            "NH4OH": {
+                "0.1|0.1": {
+                    "campuran": 9.26,
+                    "h": 9.03,
+                    "oh": 9.48,
+                    "h2o": 9.26
+                },
+                "0.1|0.25": {
+                    "campuran": 8.86,
+                    "h": 8.69,
+                    "oh": 9.0,
+                    "h2o": 8.86
+                },
+                "0.1|0.5": {
+                    "campuran": 8.56,
+                    "h": 8.41,
+                    "oh": 8.68,
+                    "h2o": 8.56
+                },
+                "0.1|0.75": {
+                    "campuran": 8.38,
+                    "h": 8.24,
+                    "oh": 8.49,
+                    "h2o": 8.38
+                },
+                "0.1|1": {
+                    "campuran": 8.26,
+                    "h": 8.12,
+                    "oh": 8.36,
+                    "h2o": 8.26
+                },
+                "0.25|0.1": {
+                    "campuran": 9.65,
+                    "h": 9.51,
+                    "oh": 9.82,
+                    "h2o": 9.65
+                },
+                "0.25|0.25": {
+                    "campuran": 9.26,
+                    "h": 9.17,
+                    "oh": 9.34,
+                    "h2o": 9.26
+                },
+                "0.25|0.5": {
+                    "campuran": 8.95,
+                    "h": 8.89,
+                    "oh": 9.02,
+                    "h2o": 8.95
+                },
+                "0.25|0.75": {
+                    "campuran": 8.78,
+                    "h": 8.72,
+                    "oh": 8.83,
+                    "h2o": 8.78
+                },
+                "0.25|1": {
+                    "campuran": 8.65,
+                    "h": 8.6,
+                    "oh": 8.71,
+                    "h2o": 8.65
+                },
+                "0.5|0.1": {
+                    "campuran": 9.95,
+                    "h": 9.84,
+                    "oh": 10.1,
+                    "h2o": 9.95
+                },
+                "0.5|0.25": {
+                    "campuran": 9.56,
+                    "h": 9.49,
+                    "oh": 9.62,
+                    "h2o": 9.56
+                },
+                "0.5|0.5": {
+                    "campuran": 9.26,
+                    "h": 9.21,
+                    "oh": 9.3,
+                    "h2o": 9.26
+                },
+                "0.5|0.75": {
+                    "campuran": 9.08,
+                    "h": 9.04,
+                    "oh": 9.12,
+                    "h2o": 9.08
+                },
+                "0.5|1": {
+                    "campuran": 8.95,
+                    "h": 8.92,
+                    "oh": 8.99,
+                    "h2o": 8.95
+                },
+                "0.75|0.1": {
+                    "campuran": 10.13,
+                    "h": 10.02,
+                    "oh": 10.27,
+                    "h2o": 10.13
+                },
+                "0.75|0.25": {
+                    "campuran": 9.73,
+                    "h": 9.68,
+                    "oh": 9.79,
+                    "h2o": 9.73
+                },
+                "0.75|0.5": {
+                    "campuran": 9.43,
+                    "h": 9.4,
+                    "oh": 9.47,
+                    "h2o": 9.43
+                },
+                "0.75|0.75": {
+                    "campuran": 9.26,
+                    "h": 9.23,
+                    "oh": 9.28,
+                    "h2o": 9.26
+                },
+                "0.75|1": {
+                    "campuran": 9.13,
+                    "h": 9.1,
+                    "oh": 9.16,
+                    "h2o": 9.13
+                },
+                "1|0.1": {
+                    "campuran": 10.26,
+                    "h": 10.15,
+                    "oh": 10.39,
+                    "h2o": 10.26
+                },
+                "1|0.25": {
+                    "campuran": 9.86,
+                    "h": 9.8,
+                    "oh": 9.91,
+                    "h2o": 9.86
+                },
+                "1|0.5": {
+                    "campuran": 9.56,
+                    "h": 9.52,
+                    "oh": 9.59,
+                    "h2o": 9.56
+                },
+                "1|0.75": {
+                    "campuran": 9.38,
+                    "h": 9.35,
+                    "oh": 9.41,
+                    "h2o": 9.38
+                },
+                "1|1": {
+                    "campuran": 9.26,
+                    "h": 9.23,
+                    "oh": 9.28,
+                    "h2o": 9.26
+                }
+            },
+            "H3PO4": {
+                "0.1|0.1": {
+                    "campuran": 2.15,
+                    "h": 1.93,
+                    "oh": 2.37,
+                    "h2o": 2.15
+                },
+                "0.1|0.25": {
+                    "campuran": 2.55,
+                    "h": 2.4,
+                    "oh": 2.71,
+                    "h2o": 2.55
+                },
+                "0.1|0.5": {
+                    "campuran": 2.85,
+                    "h": 2.73,
+                    "oh": 2.99,
+                    "h2o": 2.85
+                },
+                "0.1|0.75": {
+                    "campuran": 3.02,
+                    "h": 2.91,
+                    "oh": 3.16,
+                    "h2o": 3.02
+                },
+                "0.1|1": {
+                    "campuran": 3.15,
+                    "h": 3.04,
+                    "oh": 3.28,
+                    "h2o": 3.15
+                },
+                "0.25|0.1": {
+                    "campuran": 1.75,
+                    "h": 1.58,
+                    "oh": 1.89,
+                    "h2o": 1.75
+                },
+                "0.25|0.25": {
+                    "campuran": 2.15,
+                    "h": 2.06,
+                    "oh": 2.24,
+                    "h2o": 2.15
+                },
+                "0.25|0.5": {
+                    "campuran": 2.45,
+                    "h": 2.39,
+                    "oh": 2.52,
+                    "h2o": 2.45
+                },
+                "0.25|0.75": {
+                    "campuran": 2.63,
+                    "h": 2.57,
+                    "oh": 2.69,
+                    "h2o": 2.63
+                },
+                "0.25|1": {
+                    "campuran": 2.75,
+                    "h": 2.7,
+                    "oh": 2.81,
+                    "h2o": 2.75
+                },
+                "0.5|0.1": {
+                    "campuran": 1.45,
+                    "h": 1.3,
+                    "oh": 1.57,
+                    "h2o": 1.45
+                },
+                "0.5|0.25": {
+                    "campuran": 1.85,
+                    "h": 1.78,
+                    "oh": 1.91,
+                    "h2o": 1.85
+                },
+                "0.5|0.5": {
+                    "campuran": 2.15,
+                    "h": 2.11,
+                    "oh": 2.19,
+                    "h2o": 2.15
+                },
+                "0.5|0.75": {
+                    "campuran": 2.32,
+                    "h": 2.29,
+                    "oh": 2.36,
+                    "h2o": 2.32
+                },
+                "0.5|1": {
+                    "campuran": 2.45,
+                    "h": 2.42,
+                    "oh": 2.48,
+                    "h2o": 2.45
+                },
+                "0.75|0.1": {
+                    "campuran": 1.27,
+                    "h": 1.13,
+                    "oh": 1.39,
+                    "h2o": 1.27
+                },
+                "0.75|0.25": {
+                    "campuran": 1.67,
+                    "h": 1.61,
+                    "oh": 1.73,
+                    "h2o": 1.67
+                },
+                "0.75|0.5": {
+                    "campuran": 1.97,
+                    "h": 1.94,
+                    "oh": 2.01,
+                    "h2o": 1.97
+                },
+                "0.75|0.75": {
+                    "campuran": 2.15,
+                    "h": 2.12,
+                    "oh": 2.18,
+                    "h2o": 2.15
+                },
+                "0.75|1": {
+                    "campuran": 2.27,
+                    "h": 2.25,
+                    "oh": 2.3,
+                    "h2o": 2.27
+                },
+                "1|0.1": {
+                    "campuran": 1.15,
+                    "h": 1.01,
+                    "oh": 1.26,
+                    "h2o": 1.15
+                },
+                "1|0.25": {
+                    "campuran": 1.55,
+                    "h": 1.49,
+                    "oh": 1.6,
+                    "h2o": 1.55
+                },
+                "1|0.5": {
+                    "campuran": 1.85,
+                    "h": 1.81,
+                    "oh": 1.88,
+                    "h2o": 1.85
+                },
+                "1|0.75": {
+                    "campuran": 2.02,
+                    "h": 2.0,
+                    "oh": 2.05,
+                    "h2o": 2.02
+                },
+                "1|1": {
+                    "campuran": 2.15,
+                    "h": 2.13,
+                    "oh": 2.17,
+                    "h2o": 2.15
+                }
+            },
+            "HNO2": {
+                "0.1|0.1": {
+                    "campuran": 3.35,
+                    "h": 3.12,
+                    "oh": 3.57,
+                    "h2o": 3.35
+                },
+                "0.1|0.25": {
+                    "campuran": 3.74,
+                    "h": 3.6,
+                    "oh": 3.91,
+                    "h2o": 3.74
+                },
+                "0.1|0.5": {
+                    "campuran": 4.05,
+                    "h": 3.93,
+                    "oh": 4.19,
+                    "h2o": 4.05
+                },
+                "0.1|0.75": {
+                    "campuran": 4.22,
+                    "h": 4.11,
+                    "oh": 4.36,
+                    "h2o": 4.22
+                },
+                "0.1|1": {
+                    "campuran": 4.35,
+                    "h": 4.24,
+                    "oh": 4.48,
+                    "h2o": 4.35
+                },
+                "0.25|0.1": {
+                    "campuran": 2.95,
+                    "h": 2.78,
+                    "oh": 3.09,
+                    "h2o": 2.95
+                },
+                "0.25|0.25": {
+                    "campuran": 3.35,
+                    "h": 3.26,
+                    "oh": 3.43,
+                    "h2o": 3.35
+                },
+                "0.25|0.5": {
+                    "campuran": 3.65,
+                    "h": 3.58,
+                    "oh": 3.71,
+                    "h2o": 3.65
+                },
+                "0.25|0.75": {
+                    "campuran": 3.82,
+                    "h": 3.77,
+                    "oh": 3.88,
+                    "h2o": 3.82
+                },
+                "0.25|1": {
+                    "campuran": 3.95,
+                    "h": 3.9,
+                    "oh": 4.01,
+                    "h2o": 3.95
+                },
+                "0.5|0.1": {
+                    "campuran": 2.65,
+                    "h": 2.5,
+                    "oh": 2.77,
+                    "h2o": 2.65
+                },
+                "0.5|0.25": {
+                    "campuran": 3.05,
+                    "h": 2.98,
+                    "oh": 3.11,
+                    "h2o": 3.05
+                },
+                "0.5|0.5": {
+                    "campuran": 3.35,
+                    "h": 3.3,
+                    "oh": 3.39,
+                    "h2o": 3.35
+                },
+                "0.5|0.75": {
+                    "campuran": 3.52,
+                    "h": 3.49,
+                    "oh": 3.56,
+                    "h2o": 3.52
+                },
+                "0.5|1": {
+                    "campuran": 3.65,
+                    "h": 3.62,
+                    "oh": 3.68,
+                    "h2o": 3.65
+                },
+                "0.75|0.1": {
+                    "campuran": 2.47,
+                    "h": 2.33,
+                    "oh": 2.58,
+                    "h2o": 2.47
+                },
+                "0.75|0.25": {
+                    "campuran": 2.87,
+                    "h": 2.8,
+                    "oh": 2.92,
+                    "h2o": 2.87
+                },
+                "0.75|0.5": {
+                    "campuran": 3.17,
+                    "h": 3.14,
+                    "oh": 3.21,
+                    "h2o": 3.17
+                },
+                "0.75|0.75": {
+                    "campuran": 3.35,
+                    "h": 3.32,
+                    "oh": 3.38,
+                    "h2o": 3.35
+                },
+                "0.75|1": {
+                    "campuran": 3.47,
+                    "h": 3.45,
+                    "oh": 3.5,
+                    "h2o": 3.47
+                },
+                "1|0.1": {
+                    "campuran": 2.35,
+                    "h": 2.21,
+                    "oh": 2.46,
+                    "h2o": 2.35
+                },
+                "1|0.25": {
+                    "campuran": 2.74,
+                    "h": 2.69,
+                    "oh": 2.8,
+                    "h2o": 2.74
+                },
+                "1|0.5": {
+                    "campuran": 3.05,
+                    "h": 3.01,
+                    "oh": 3.08,
+                    "h2o": 3.05
+                },
+                "1|0.75": {
+                    "campuran": 3.22,
+                    "h": 3.2,
+                    "oh": 3.25,
+                    "h2o": 3.22
+                },
+                "1|1": {
+                    "campuran": 3.35,
+                    "h": 3.32,
+                    "oh": 3.37,
+                    "h2o": 3.35
+                }
+            },
+            "HF": {
+                "0.1|0.1": {
+                    "campuran": 3.17,
+                    "h": 2.95,
+                    "oh": 3.39,
+                    "h2o": 3.17
+                },
+                "0.1|0.25": {
+                    "campuran": 3.57,
+                    "h": 3.42,
+                    "oh": 3.73,
+                    "h2o": 3.57
+                },
+                "0.1|0.5": {
+                    "campuran": 3.87,
+                    "h": 3.75,
+                    "oh": 4.01,
+                    "h2o": 3.87
+                },
+                "0.1|0.75": {
+                    "campuran": 4.04,
+                    "h": 3.93,
+                    "oh": 4.18,
+                    "h2o": 4.04
+                },
+                "0.1|1": {
+                    "campuran": 4.17,
+                    "h": 4.06,
+                    "oh": 4.3,
+                    "h2o": 4.17
+                },
+                "0.25|0.1": {
+                    "campuran": 2.77,
+                    "h": 2.6,
+                    "oh": 2.91,
+                    "h2o": 2.77
+                },
+                "0.25|0.25": {
+                    "campuran": 3.17,
+                    "h": 3.08,
+                    "oh": 3.25,
+                    "h2o": 3.17
+                },
+                "0.25|0.5": {
+                    "campuran": 3.47,
+                    "h": 3.4,
+                    "oh": 3.54,
+                    "h2o": 3.47
+                },
+                "0.25|0.75": {
+                    "campuran": 3.64,
+                    "h": 3.59,
+                    "oh": 3.7,
+                    "h2o": 3.64
+                },
+                "0.25|1": {
+                    "campuran": 3.77,
+                    "h": 3.72,
+                    "oh": 3.83,
+                    "h2o": 3.77
+                },
+                "0.5|0.1": {
+                    "campuran": 2.47,
+                    "h": 2.32,
+                    "oh": 2.59,
+                    "h2o": 2.47
+                },
+                "0.5|0.25": {
+                    "campuran": 2.87,
+                    "h": 2.8,
+                    "oh": 2.93,
+                    "h2o": 2.87
+                },
+                "0.5|0.5": {
+                    "campuran": 3.17,
+                    "h": 3.12,
+                    "oh": 3.21,
+                    "h2o": 3.17
+                },
+                "0.5|0.75": {
+                    "campuran": 3.34,
+                    "h": 3.31,
+                    "oh": 3.38,
+                    "h2o": 3.34
+                },
+                "0.5|1": {
+                    "campuran": 3.47,
+                    "h": 3.44,
+                    "oh": 3.5,
+                    "h2o": 3.47
+                },
+                "0.75|0.1": {
+                    "campuran": 2.3,
+                    "h": 2.15,
+                    "oh": 2.41,
+                    "h2o": 2.3
+                },
+                "0.75|0.25": {
+                    "campuran": 2.69,
+                    "h": 2.62,
+                    "oh": 2.74,
+                    "h2o": 2.69
+                },
+                "0.75|0.5": {
+                    "campuran": 3.0,
+                    "h": 2.96,
+                    "oh": 3.03,
+                    "h2o": 3.0
+                },
+                "0.75|0.75": {
+                    "campuran": 3.17,
+                    "h": 3.14,
+                    "oh": 3.2,
+                    "h2o": 3.17
+                },
+                "0.75|1": {
+                    "campuran": 3.29,
+                    "h": 3.27,
+                    "oh": 3.32,
+                    "h2o": 3.29
+                },
+                "1|0.1": {
+                    "campuran": 2.17,
+                    "h": 2.03,
+                    "oh": 2.28,
+                    "h2o": 2.17
+                },
+                "1|0.25": {
+                    "campuran": 2.57,
+                    "h": 2.51,
+                    "oh": 2.62,
+                    "h2o": 2.57
+                },
+                "1|0.5": {
+                    "campuran": 2.87,
+                    "h": 2.84,
+                    "oh": 2.9,
+                    "h2o": 2.87
+                },
+                "1|0.75": {
+                    "campuran": 3.04,
+                    "h": 3.02,
+                    "oh": 3.07,
+                    "h2o": 3.04
+                },
+                "1|1": {
+                    "campuran": 3.17,
+                    "h": 3.15,
+                    "oh": 3.19,
+                    "h2o": 3.17
+                }
+            }
+        };
+
+        let currentPHData = {
+            campuran: 0,
+            h: 0,
+            oh: 0,
+            h2o: 0
+        };
+
+        let data = null;
+        let basePH = 0;
+
+        let pouredAll = false;
+        let dropsH = 0;
+        let dropsOH = 0;
+        let sprayCount = 0;
+        let sprayed = false;
+
+        const SMALL_START_HEIGHT = 28;
+        const SMALL_AFTER_ADD_HEIGHT = 42;
+
+        function formatKoma(x) {
+            return String(x).replace(".", ",");
+        }
+
+        function setInstruction(text) {
+            document.getElementById("instructionBox").innerHTML = `<span>${text}</span>`;
+        }
+
+        function updateInstruction() {
+            if (!pouredAll) {
+                setInstruction("Klik gelas beaker besar untuk menuangkan larutan ke tiga gelas beaker kecil masing-masing sebanyak 20 mL.");
+            } else if (dropsH < 5) {
+                setInstruction("Klik pipet tetes bertanda H<sup>+</sup> satu kali saja, otomatis keluar 5 tetes ke gelas beaker pertama.");
+            } else if (dropsOH < 5) {
+                setInstruction("Klik pipet tetes bertanda OH<sup>-</sup> satu kali saja, otomatis keluar 5 tetes ke gelas beaker kedua.");
+            } else if (sprayCount < 1) {
+                setInstruction("Klik akuades (10 mL) bertanda H<sub>2</sub>O pada gelas beaker ketiga untuk melakukan pengenceran.");
+            } else {
+                setInstruction("Amati perubahan pH dari ketiga gelas beaker tersebut dan catat hasil pHnya.");
+            }
+        }
+
+        function setPHSidebar(ph) {
+            ph = Math.max(0, Math.min(14, ph));
+            document.getElementById("phValue").innerText = `pH = ${ph.toFixed(2).replace(".", ",")}`;
+
+            const scale = document.getElementById("phScale");
+            const arrow = document.getElementById("phArrow");
+            const scaleHeight = scale ? scale.clientHeight : 520;
+            const arrowHalf = arrow.offsetHeight ? arrow.offsetHeight / 2 : 10;
+            const y = (ph / 14) * (scaleHeight - arrowHalf * 2);
+            arrow.style.top = `${y}px`;
+        }
+
+        function normalizeKonsentrasi(kons) {
+            const angka = Number(String(kons).replace(",", "."));
+            if (Number.isNaN(angka)) return "";
+            return String(angka);
+        }
+
+        function getPHDataFromTable() {
+            const s1 = data.s1;
+            const s2 = data.s2;
+
+            let acid = null;
+            let acidKons = null;
+            let saltKons = null;
+
+            if (bufferMap[s1.chem] === s2.chem) {
+                acid = s1.chem;
+                acidKons = s1.kons;
+                saltKons = s2.kons;
+            } else if (bufferMap[s2.chem] === s1.chem) {
+                acid = s2.chem;
+                acidKons = s2.kons;
+                saltKons = s1.kons;
+            }
+
+            const key = `${normalizeKonsentrasi(acidKons)}|${normalizeKonsentrasi(saltKons)}`;
+            const hasilTabel = phTableSemuaLarutan[acid]?.[key];
+
+            if (hasilTabel) return hasilTabel;
+
+            // Cadangan jika data tidak ditemukan di tabel.
+            if (!acid || !pKaMap[acid]) {
+                return { campuran: 0, h: 0, oh: 0, h2o: 0 };
+            }
+
+            const fallbackPH = pKaMap[acid] + Math.log10(Number(saltKons) / Number(acidKons));
+            return {
+                campuran: fallbackPH,
+                h: fallbackPH,
+                oh: fallbackPH,
+                h2o: fallbackPH
+            };
+        }
+
+        function computeBasePH() {
+            currentPHData = getPHDataFromTable();
+            return currentPHData.campuran;
+        }
+
+        function loadFromStorage() {
+            const raw = localStorage.getItem("buffer_simulasi");
+
+            if (!raw) {
+                alert("Data tidak ditemukan. Kembali ke halaman 2.");
+                kembali();
+                return;
+            }
+
+            data = JSON.parse(raw);
+
+            const s1 = data.s1;
+            const s2 = data.s2;
+
+            document.getElementById("namaPercobaan").innerText = `${s1.chem} + ${s2.chem}`;
+            document.getElementById("rxA").innerText = s1.chem;
+            document.getElementById("rxB").innerText = s2.chem;
+
+            document.getElementById("botol1").src = `tabung/${s1.chem}.png`;
+            document.getElementById("botol2").src = `tabung/${s2.chem}.png`;
+
+            document.getElementById("kons1").innerText = formatKoma(s1.kons) + " M";
+            document.getElementById("kons2").innerText = formatKoma(s2.kons) + " M";
+
+            document.getElementById("molA").src = `senyawa/${s1.chem}.png`;
+            document.getElementById("molB").src = `senyawa/${s2.chem}.png`;
+
+            basePH = computeBasePH();
+
+            setPHSidebar(0);
+            document.getElementById("bigWater").style.height = "120px";
+            updateInstruction();
+        }
+
+        function toContainerXY(clientX, clientY) {
+            /*
+                Perbaikan posisi tetesan air:
+                Saat mode HP landscape aktif, .container di-scale dengan transform.
+                getBoundingClientRect() menghasilkan posisi yang sudah ter-scale,
+                sedangkan elemen .drop dimasukkan ke koordinat asli 1280x720.
+                Karena itu koordinat harus dibagi nilai scale agar tetesan jatuh
+                tepat ke gelas kecil, bukan melenceng ke kiri/atas.
+            */
+            const c = stage.getBoundingClientRect();
+            const scaleX = c.width / stage.offsetWidth || 1;
+            const scaleY = c.height / stage.offsetHeight || 1;
+
+            return {
+                x: (clientX - c.left) / scaleX,
+                y: (clientY - c.top) / scaleY
+            };
+        }
+
+        function getFixedPipetTip(toolEl) {
+            const r = toolEl.getBoundingClientRect();
+            return {
+                x: r.left + r.width * 0.55,
+                y: r.top + r.height * 0.48
+            };
+        }
+
+        function getCupDropPoint(targetWaterEl) {
+            const r = targetWaterEl.getBoundingClientRect();
+            return {
+                x: r.left + r.width / 2,
+                y: r.top + 8
+            };
+        }
+
+        function makeDropFromFixedToolToCup(toolId, targetWaterId) {
+            const tool = document.getElementById(toolId);
+            const targetWater = document.getElementById(targetWaterId);
+
+            if (!tool || !targetWater) return;
+
+            const tip = getFixedPipetTip(tool);
+            const tgt = getCupDropPoint(targetWater);
+
+            const start = toContainerXY(tip.x, tip.y);
+            const end = toContainerXY(tgt.x, tgt.y);
+
+            const d = document.createElement("div");
+            d.className = "drop";
+            d.style.left = start.x + "px";
+            d.style.top = start.y + "px";
+
+            document.querySelector(".container").appendChild(d);
+
+            d.style.opacity = "1";
+
+            const dx = end.x - start.x;
+            const dy = end.y - start.y;
+
+            d.animate([
+                {
+                    transform: "translate(0px,0px) scale(0.9) rotate(20deg)",
+                    opacity: 0
+                },
+                {
+                    transform: "translate(0px,0px) scale(0.95) rotate(20deg)",
+                    opacity: 1,
+                    offset: 0.18
+                },
+                {
+                    transform: `translate(${dx}px,${dy}px) scale(1.08) rotate(20deg)`,
+                    opacity: 0
+                }
+            ], {
+                duration: 650,
+                easing: "ease",
+                fill: "forwards"
+            });
+
+            setTimeout(() => d.remove(), 700);
+        }
+
+        function pourAllSmall() {
+            playClickSound();
+            if (pouredAll) return;
+
+            pouredAll = true;
+
+            const bigGroup = document.getElementById("bigBeakerGroup");
+            const bigWater = document.getElementById("bigWater");
+
+            bigGroup.classList.add("pouring");
+
+            setTimeout(() => {
+                document.getElementById("sw1").style.height = SMALL_START_HEIGHT + "px";
+                document.getElementById("sw2").style.height = SMALL_START_HEIGHT + "px";
+                document.getElementById("sw3").style.height = SMALL_START_HEIGHT + "px";
+
+                bigWater.style.height = "58px";
+
+                setPHSidebar(basePH);
+                updateInstruction();
+            }, 650);
+
+            setTimeout(() => {
+                bigGroup.classList.remove("pouring");
+                checkFinish();
+            }, 1700);
+        }
+
+        function showSmallPH() {
+            const t1 = document.getElementById("phTop1");
+            const t2 = document.getElementById("phTop2");
+            const t3 = document.getElementById("phTop3");
+
+            t1.textContent = `pH = ${currentPHData.h.toFixed(2).replace(".", ",")}`;
+            t2.textContent = `pH = ${currentPHData.oh.toFixed(2).replace(".", ",")}`;
+            t3.textContent = `pH = ${currentPHData.h2o.toFixed(2).replace(".", ",")}`;
+
+            t1.classList.add("show");
+            t2.classList.add("show");
+            t3.classList.add("show");
+        }
+
+        function clickPipetH() {
+            playClickSound();
+            if (!pouredAll) return;
+            if (dropsH >= 5) return;
+
+            // Sekali klik langsung menghasilkan 5 tetes H+
+            dropsH = 5;
+
+            document.getElementById("pipetH").style.pointerEvents = "none";
+            document.getElementById("pipetH").style.opacity = "0.5";
+
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    makeDropFromFixedToolToCup("pipetH", "sw1");
+                }, i * 180);
+            }
+
+            setTimeout(() => {
+                document.getElementById("sw1").style.height = SMALL_AFTER_ADD_HEIGHT + "px";
+                setPHSidebar(currentPHData.h);
+                updateInstruction();
+                checkFinish();
+            }, 950);
+        }
+
+        function clickPipetOH() {
+            playClickSound();
+            if (!pouredAll) return;
+            if (dropsOH >= 5) return;
+
+            // Sekali klik langsung menghasilkan 5 tetes OH-
+            dropsOH = 5;
+
+            document.getElementById("pipetOH").style.pointerEvents = "none";
+            document.getElementById("pipetOH").style.opacity = "0.5";
+
+            for (let i = 0; i < 5; i++) {
+                setTimeout(() => {
+                    makeDropFromFixedToolToCup("pipetOH", "sw2");
+                }, i * 180);
+            }
+
+            setTimeout(() => {
+                document.getElementById("sw2").style.height = SMALL_AFTER_ADD_HEIGHT + "px";
+                setPHSidebar(currentPHData.oh);
+                updateInstruction();
+                checkFinish();
+            }, 950);
+        }
+
+        function clickSprayer() {
+            playClickSound();
+            if (!pouredAll) return;
+            if (sprayCount >= 1) return;
+
+            sprayCount++;
+
+            const line = document.getElementById("sprayLine");
+
+            line.style.animation = "none";
+            void line.offsetWidth;
+            line.style.animation = "sprayOn 1.0s ease forwards";
+
+            sprayed = true;
+
+            document.getElementById("sw3").style.height = SMALL_AFTER_ADD_HEIGHT + "px";
+            document.getElementById("sprayer").style.pointerEvents = "none";
+            document.getElementById("sprayer").style.opacity = "0.5";
+
+            setPHSidebar(currentPHData.h2o);
+            updateInstruction();
+            checkFinish();
+        }
+
+        function checkFinish() {
+            if (!pouredAll) return;
+
+            const done = dropsH >= 5 && dropsOH >= 5 && sprayCount >= 1;
+
+            if (done) {
+                sprayed = true;
+                showSmallPH();
+                updateInstruction();
+                document.getElementById("finishBtn").style.display = "block";
+            }
+        }
+
+        window.addEventListener("resize", () => {
+            setPHSidebar(basePH || 0);
+        });
+
+        loadFromStorage();
+
+        document.getElementById("bigBeaker").addEventListener("click", pourAllSmall);
+        document.getElementById("pipetH").addEventListener("click", clickPipetH);
+        document.getElementById("pipetOH").addEventListener("click", clickPipetOH);
+        document.getElementById("sprayer").addEventListener("click", clickSprayer);
+    </script>
+</body>
+
+</html>

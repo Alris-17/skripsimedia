@@ -1,0 +1,1146 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pembahasan HCOOH + HCOONa</title>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html,
+    body {
+      width: 100%;
+      height: 100%;
+    }
+
+    body {
+      width: 100vw;
+      height: 100vh;
+      height: 100dvh;
+      overflow: hidden;
+      font-family: "Segoe UI", Arial, sans-serif;
+      background-image: url("assets/bg pembahasan.png");
+      background-repeat: no-repeat;
+      background-position: center center;
+      background-size: 100% 100%;
+      color: #16345c;
+    }
+
+    .page {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      padding-top: 190px;
+      padding-left: 80px;
+      padding-right: 80px;
+      padding-bottom: 70px;
+    }
+
+    /* SOUND */
+    .music-btn {
+      position: absolute;
+      left: 22px;
+      top: 18px;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      border: 4px solid rgba(255, 255, 255, .95);
+      background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+      box-shadow: 0 16px 26px rgba(0, 0, 0, .35);
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+      z-index: 120;
+    }
+
+    .music-btn:active {
+      transform: scale(.96);
+    }
+
+    .music-btn.off {
+      opacity: .55;
+    }
+
+    .music-btn svg {
+      width: 30px;
+      height: 30px;
+      fill: #fff;
+    }
+
+    .content-box {
+      width: 100%;
+      max-width: 1200px;
+      height: calc(100vh - 260px);
+      height: calc(100dvh - 260px);
+      margin: 0 auto;
+      padding: 26px;
+      overflow-y: auto;
+      overflow-x: hidden;
+      background: rgba(255, 255, 255, 0.84);
+      border: 3px solid rgba(71, 132, 205, 0.45);
+      border-radius: 28px;
+      box-shadow: 0 12px 35px rgba(22, 52, 92, 0.22);
+      backdrop-filter: blur(5px);
+    }
+
+    .content-box::-webkit-scrollbar {
+      width: 10px;
+    }
+
+    .content-box::-webkit-scrollbar-track {
+      background: rgba(190, 220, 255, 0.4);
+      border-radius: 20px;
+    }
+
+    .content-box::-webkit-scrollbar-thumb {
+      background: #4f86d9;
+      border-radius: 20px;
+    }
+
+    .top-panel {
+      display: grid;
+      grid-template-columns: 1.3fr 1fr;
+      gap: 18px;
+      margin-bottom: 20px;
+    }
+
+    .intro-card,
+    .control-card {
+      background: rgba(255, 255, 255, 0.92);
+      border: 2px solid rgba(85, 145, 210, 0.35);
+      border-radius: 20px;
+      padding: 18px 22px;
+      box-shadow: 0 6px 18px rgba(50, 90, 150, 0.12);
+    }
+
+    .intro-card h2,
+    .control-card h2 {
+      font-size: 24px;
+      color: #23599c;
+      margin-bottom: 8px;
+    }
+
+    .intro-card p {
+      font-size: 17px;
+      line-height: 1.6;
+      color: #233b57;
+    }
+
+    .control-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-top: 12px;
+    }
+
+    label {
+      display: block;
+      font-weight: 700;
+      margin-bottom: 6px;
+      color: #183b69;
+    }
+
+    select {
+      width: 100%;
+      padding: 11px 12px;
+      border-radius: 14px;
+      border: 2px solid #9fc8f5;
+      background: white;
+      color: #183b69;
+      font-size: 16px;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 20px;
+    }
+
+    .result-card {
+      background: linear-gradient(180deg, #ffffff, #edf7ff);
+      border: 2px solid rgba(72, 140, 216, 0.35);
+      border-radius: 18px;
+      padding: 16px;
+      text-align: center;
+      box-shadow: 0 6px 15px rgba(50, 90, 150, 0.12);
+    }
+
+    .result-card h3 {
+      font-size: 15px;
+      color: #386fae;
+      margin-bottom: 8px;
+    }
+
+    .result-card .ph {
+      font-size: 30px;
+      font-weight: 900;
+      color: #164b8f;
+    }
+
+    .section-title {
+      margin: 22px 0 12px;
+      padding: 12px 18px;
+      background: linear-gradient(90deg, #4e8edc, #7bbcff);
+      color: white;
+      border-radius: 16px;
+      font-size: 22px;
+      font-weight: 900;
+      box-shadow: 0 5px 12px rgba(50, 90, 150, 0.18);
+    }
+
+    .step-card {
+      background: rgba(255, 255, 255, 0.96);
+      border-left: 8px solid #4e8edc;
+      border-radius: 18px;
+      padding: 18px 22px;
+      margin-bottom: 16px;
+      box-shadow: 0 6px 17px rgba(50, 90, 150, 0.12);
+    }
+
+    .step-card h3 {
+      color: #23599c;
+      font-size: 21px;
+      margin-bottom: 12px;
+    }
+
+    .step-card p,
+    .step-card li {
+      font-size: 17px;
+      line-height: 1.65;
+      color: #263f5d;
+    }
+
+    .step-card ul {
+      margin-left: 22px;
+      margin-bottom: 10px;
+    }
+
+    .formula {
+      background: #eef7ff;
+      border: 2px dashed #77aee8;
+      border-radius: 14px;
+      padding: 12px 16px;
+      margin: 12px 0;
+      font-size: 17px;
+      line-height: 1.7;
+      color: #173b67;
+      font-weight: 600;
+    }
+
+    .table-wrapper {
+      width: 100%;
+      overflow-x: auto;
+      border-radius: 16px;
+      box-shadow: 0 6px 17px rgba(50, 90, 150, 0.12);
+    }
+
+    table {
+      width: 100%;
+      min-width: 720px;
+      border-collapse: collapse;
+      overflow: hidden;
+      border-radius: 16px;
+      background: white;
+    }
+
+    th {
+      background: #4e8edc;
+      color: white;
+      padding: 13px;
+      font-size: 16px;
+    }
+
+    td {
+      padding: 13px;
+      border-bottom: 1px solid #d9e8f8;
+      font-size: 16px;
+      color: #263f5d;
+      text-align: center;
+    }
+
+    td:nth-child(2) {
+      text-align: left;
+      font-weight: 600;
+    }
+
+    tr:last-child td {
+      border-bottom: none;
+    }
+
+    .note {
+      margin-top: 14px;
+      padding: 14px 18px;
+      background: #fff8df;
+      border: 2px solid #ffd56c;
+      border-radius: 16px;
+      color: #5b4a13;
+      font-size: 16px;
+      line-height: 1.6;
+      font-weight: 600;
+    }
+
+    .close-btn {
+      position: absolute;
+      top: 28px;
+      right: 35px;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.95);
+      border: 4px solid #4b8fdc;
+      color: #1f5fa8;
+      font-size: 44px;
+      font-weight: 900;
+      line-height: 52px;
+      text-align: center;
+      text-decoration: none;
+      z-index: 130;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.18);
+      cursor: pointer;
+      transition: .2s ease;
+    }
+
+    .close-btn:hover {
+      transform: scale(1.06);
+      background: #eaf4ff;
+    }
+
+    .back-btn {
+      position: absolute;
+      left: 15px;
+      bottom: 5px;
+      width: 110px;
+      height: 110px;
+      border: none;
+      background: transparent;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0;
+      box-shadow: none;
+      transition: 0.2s;
+      cursor: pointer;
+      z-index: 130;
+    }
+
+    .back-btn img {
+      width: 80%;
+      height: 80%;
+      object-fit: contain;
+      display: block;
+      transform: rotate(180deg);
+      pointer-events: none;
+    }
+
+    .back-btn:hover {
+      transform: scale(1.06);
+    }
+
+    /* TABLET */
+    @media (max-width: 900px) {
+      .page {
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 150px;
+        padding-bottom: 85px;
+      }
+
+      .content-box {
+        height: calc(100vh - 230px);
+        height: calc(100dvh - 230px);
+        padding: 18px;
+      }
+
+      .top-panel,
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .control-row {
+        grid-template-columns: 1fr;
+      }
+
+      .back-btn {
+        width: 70px;
+        height: 70px;
+        left: 16px;
+        bottom: 12px;
+      }
+    }
+
+    /* MOBILE PORTRAIT */
+    @media (orientation: portrait) and (max-width: 700px) {
+      body {
+        background-size: cover;
+        background-position: center center;
+      }
+
+      .page {
+        padding-top: 105px;
+        padding-left: 12px;
+        padding-right: 12px;
+        padding-bottom: 78px;
+      }
+
+      .music-btn {
+        width: 48px;
+        height: 48px;
+        left: 10px;
+        top: 10px;
+        border-width: 3px;
+      }
+
+      .music-btn svg {
+        width: 23px;
+        height: 23px;
+      }
+
+      .close-btn {
+        top: 12px;
+        right: 12px;
+        width: 50px;
+        height: 50px;
+        font-size: 34px;
+        line-height: 40px;
+        border-width: 3px;
+      }
+
+      .content-box {
+        height: calc(100vh - 185px);
+        height: calc(100dvh - 185px);
+        padding: 13px;
+        border-radius: 18px;
+      }
+
+      .intro-card,
+      .control-card,
+      .step-card {
+        padding: 14px;
+        border-radius: 15px;
+      }
+
+      .intro-card h2,
+      .control-card h2 {
+        font-size: 19px;
+      }
+
+      .intro-card p,
+      .step-card p,
+      .step-card li,
+      .formula {
+        font-size: 14px;
+        line-height: 1.55;
+      }
+
+      .section-title {
+        font-size: 17px;
+        padding: 10px 12px;
+        border-radius: 12px;
+      }
+
+      .result-card {
+        padding: 12px;
+      }
+
+      .result-card .ph {
+        font-size: 24px;
+      }
+
+      .back-btn {
+        width: 58px;
+        height: 58px;
+        left: 10px;
+        bottom: 10px;
+      }
+    }
+
+    /* HP LANDSCAPE, CONTOH 604 x 320 DAN 740 x 360 */
+    @media (orientation: landscape) and (max-height: 500px) {
+
+      html,
+      body {
+        overflow: hidden;
+      }
+
+      body {
+        background-size: 100% 100%;
+        background-position: center center;
+      }
+
+      .page {
+        padding-top: 54px;
+        padding-left: 70px;
+        padding-right: 70px;
+        padding-bottom: 28px;
+      }
+
+      .music-btn {
+        width: 42px;
+        height: 42px;
+        left: 10px;
+        top: 9px;
+        border-width: 3px;
+        box-shadow: 0 10px 18px rgba(0, 0, 0, .32);
+      }
+
+      .music-btn svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .close-btn {
+        top: 10px;
+        right: 16px;
+        width: 42px;
+        height: 42px;
+        font-size: 28px;
+        line-height: 32px;
+        border-width: 3px;
+      }
+
+      .content-box {
+        max-width: none;
+        height: calc(100vh - 82px);
+        height: calc(100dvh - 82px);
+        padding: 10px;
+        border-width: 2px;
+        border-radius: 15px;
+      }
+
+      .top-panel {
+        grid-template-columns: 1.35fr 1fr;
+        gap: 8px;
+        margin-bottom: 8px;
+      }
+
+      .intro-card,
+      .control-card {
+        padding: 8px 10px;
+        border-radius: 12px;
+      }
+
+      .intro-card h2,
+      .control-card h2 {
+        font-size: 14px;
+        margin-bottom: 4px;
+      }
+
+      .intro-card p {
+        font-size: 10px;
+        line-height: 1.35;
+      }
+
+      .control-row {
+        grid-template-columns: 1fr 1fr;
+        gap: 7px;
+        margin-top: 5px;
+      }
+
+      label {
+        font-size: 10px;
+        margin-bottom: 3px;
+      }
+
+      select {
+        padding: 5px 6px;
+        border-radius: 9px;
+        font-size: 10px;
+        border-width: 1.5px;
+      }
+
+      .result-grid {
+        grid-template-columns: repeat(4, 1fr);
+        gap: 7px;
+        margin-bottom: 8px;
+      }
+
+      .result-card {
+        padding: 8px 6px;
+        border-radius: 11px;
+      }
+
+      .result-card h3 {
+        font-size: 9.5px;
+        margin-bottom: 3px;
+        line-height: 1.15;
+      }
+
+      .result-card .ph {
+        font-size: 18px;
+      }
+
+      .section-title {
+        margin: 10px 0 6px;
+        padding: 7px 10px;
+        border-radius: 10px;
+        font-size: 13px;
+      }
+
+      .step-card {
+        padding: 9px 11px;
+        margin-bottom: 8px;
+        border-left-width: 5px;
+        border-radius: 11px;
+      }
+
+      .step-card h3 {
+        font-size: 12.5px;
+        margin-bottom: 5px;
+      }
+
+      .step-card p,
+      .step-card li,
+      .formula,
+      .note,
+      td,
+      th {
+        font-size: 10px;
+        line-height: 1.42;
+      }
+
+      .step-card ul {
+        margin-left: 15px;
+        margin-bottom: 5px;
+      }
+
+      .formula {
+        padding: 7px 9px;
+        border-radius: 9px;
+        margin: 7px 0;
+      }
+
+      table {
+        min-width: 560px;
+      }
+
+      th,
+      td {
+        padding: 7px;
+      }
+
+      .note {
+        padding: 8px 10px;
+        border-radius: 10px;
+      }
+
+      .back-btn {
+        width: 46px;
+        height: 46px;
+        left: 10px;
+        bottom: 8px;
+      }
+    }
+
+    /* HP LANDSCAPE SANGAT PENDEK */
+    @media (orientation: landscape) and (max-height: 360px) {
+      .page {
+        padding-top: 65px;
+        padding-left: 60px;
+        padding-right: 58px;
+        padding-bottom: 32px;
+      }
+
+      .content-box {
+        height: calc(100vh - 70px);
+        height: calc(100dvh - 70px);
+        padding: 8px;
+      }
+
+      .top-panel {
+        gap: 6px;
+        margin-bottom: 6px;
+      }
+
+      .intro-card h2,
+      .control-card h2 {
+        font-size: 12px;
+      }
+
+      .intro-card p,
+      .step-card p,
+      .step-card li,
+      .formula,
+      .note,
+      td,
+      th {
+        font-size: 9px;
+      }
+
+      .section-title {
+        font-size: 12px;
+        padding: 6px 9px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <!-- SOUND -->
+  <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+  <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+  <div class="page" id="stage">
+    <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+      </svg>
+    </button>
+
+    <div class="content-box">
+
+      <div class="top-panel">
+        <div class="intro-card">
+          <h2>Pembahasan Larutan Penyangga</h2>
+          <p>
+            Campuran <b>HCOOH</b> dan <b>HCOONa</b> merupakan larutan penyangga asam,
+            karena terdiri dari asam lemah HCOOH dan garamnya yaitu HCOONa.
+            Pada halaman ini ditampilkan perhitungan pH campuran awal, setelah ditambah HCl,
+            setelah ditambah NaOH, dan setelah ditambah akuades.
+          </p>
+        </div>
+
+        <div class="control-card">
+          <h2>Pilih Konsentrasi</h2>
+
+          <div class="control-row">
+            <div>
+              <label for="acidSelect">HCOOH</label>
+              <select id="acidSelect">
+                <option value="0.1">0,1 M</option>
+                <option value="0.25">0,25 M</option>
+                <option value="0.5">0,5 M</option>
+                <option value="0.75">0,75 M</option>
+                <option value="1">1 M</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="saltSelect">HCOONa</label>
+              <select id="saltSelect">
+                <option value="0.1">0,1 M</option>
+                <option value="0.25">0,25 M</option>
+                <option value="0.5">0,5 M</option>
+                <option value="0.75">0,75 M</option>
+                <option value="1">1 M</option>
+              </select>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="result-grid">
+        <div class="result-card">
+          <h3>pH Campuran Awal</h3>
+          <div class="ph" id="phAwal">0,00</div>
+        </div>
+
+        <div class="result-card">
+          <h3>+ HCl 1 M 5 Tetes</h3>
+          <div class="ph" id="phHCl">0,00</div>
+        </div>
+
+        <div class="result-card">
+          <h3>+ NaOH 1 M 5 Tetes</h3>
+          <div class="ph" id="phNaOH">0,00</div>
+        </div>
+
+        <div class="result-card">
+          <h3>+ Akuades 10 mL</h3>
+          <div class="ph" id="phAir">0,00</div>
+        </div>
+      </div>
+
+      <div id="materiPembahasan"></div>
+
+    </div>
+
+    <button class="close-btn" type="button" data-link="menu.html" title="Kembali ke menu">&times;</button>
+
+    <button class="back-btn" type="button" data-link="demo3.html" aria-label="Kembali ke demonstrasi">
+      <img src="assets/tombol_panah_kanan-removebg-preview.png" alt="Tombol Panah">
+    </button>
+  </div>
+
+  <script>
+    const stage = document.getElementById("stage");
+    const musicBtn = document.getElementById("musicBtn");
+    const bgMusic = document.getElementById("bgMusic");
+    const clickSound = document.getElementById("clickSound");
+
+    let musicOn = false;
+    bgMusic.volume = 0.45;
+    clickSound.volume = 1;
+
+    function playClickSound() {
+      const sound = clickSound.cloneNode();
+      sound.volume = 1;
+      sound.currentTime = 0;
+      sound.play().catch(() => { });
+
+      setTimeout(() => {
+        sound.pause();
+        sound.currentTime = 0;
+      }, 150);
+    }
+
+    function playBgMusic() {
+      bgMusic.play().then(() => {
+        musicOn = true;
+        musicBtn.classList.remove("off");
+      }).catch(() => {
+        musicOn = false;
+        musicBtn.classList.add("off");
+      });
+    }
+
+    function pauseBgMusic() {
+      bgMusic.pause();
+      musicOn = false;
+      musicBtn.classList.add("off");
+    }
+
+    musicBtn.addEventListener("click", () => {
+      playClickSound();
+      if (musicOn) {
+        pauseBgMusic();
+      } else {
+        playBgMusic();
+      }
+    });
+
+    function pindahHalaman(url) {
+      playClickSound();
+      stage.style.transition = "opacity 0.18s ease";
+      stage.style.opacity = "0";
+      setTimeout(() => {
+        window.location.href = url;
+      }, 180);
+    }
+
+    document.querySelectorAll("[data-link]").forEach(btn => {
+      btn.addEventListener("click", () => pindahHalaman(btn.dataset.link));
+    });
+
+    const KA = 1.8e-4;
+    const PKA = -Math.log10(KA);
+
+    const VOLUME_ASAM_AWAL = 0.04;
+    const VOLUME_GARAM_AWAL = 0.04;
+    const FRAKSI_20ML_DARI_80ML = 1 / 4;
+
+    const VOLUME_5_TETES = 0.00025;
+    const KONSENTRASI_HCL = 1;
+    const KONSENTRASI_NAOH = 1;
+
+    const MOL_HCL = KONSENTRASI_HCL * VOLUME_5_TETES;
+    const MOL_NAOH = KONSENTRASI_NAOH * VOLUME_5_TETES;
+
+    const acidSelect = document.getElementById("acidSelect");
+    const saltSelect = document.getElementById("saltSelect");
+    const materiPembahasan = document.getElementById("materiPembahasan");
+
+    function angkaKoma(nilai, digit = 2) {
+      return Number(nilai).toFixed(digit).replace(".", ",");
+    }
+
+    function angkaMol(nilai) {
+      let hasil = Number(nilai).toFixed(5);
+      hasil = hasil.replace(/0+$/, "").replace(/\.$/, "");
+      return hasil.replace(".", ",");
+    }
+
+    function formatM(nilai) {
+      return String(nilai).replace(".", ",") + " M";
+    }
+
+    function hitungPH(cAsam, cGaram) {
+      const molAsamTotal = cAsam * VOLUME_ASAM_AWAL;
+      const molGaramTotal = cGaram * VOLUME_GARAM_AWAL;
+
+      const molAsam20 = molAsamTotal * FRAKSI_20ML_DARI_80ML;
+      const molGaram20 = molGaramTotal * FRAKSI_20ML_DARI_80ML;
+
+      const phAwal = PKA + Math.log10(molGaramTotal / molAsamTotal);
+
+      const garamSetelahHCl = molGaram20 - MOL_HCL;
+      const asamSetelahHCl = molAsam20 + MOL_HCL;
+      const phHCl = PKA + Math.log10(garamSetelahHCl / asamSetelahHCl);
+
+      const asamSetelahNaOH = molAsam20 - MOL_NAOH;
+      const garamSetelahNaOH = molGaram20 + MOL_NAOH;
+      const phNaOH = PKA + Math.log10(garamSetelahNaOH / asamSetelahNaOH);
+
+      const phAir = phAwal;
+
+      return {
+        molAsamTotal,
+        molGaramTotal,
+        molAsam20,
+        molGaram20,
+        garamSetelahHCl,
+        asamSetelahHCl,
+        asamSetelahNaOH,
+        garamSetelahNaOH,
+        phAwal,
+        phHCl,
+        phNaOH,
+        phAir
+      };
+    }
+
+    function tampilkanPembahasan() {
+      const cAsam = parseFloat(acidSelect.value);
+      const cGaram = parseFloat(saltSelect.value);
+
+      const h = hitungPH(cAsam, cGaram);
+
+      document.getElementById("phAwal").innerText = angkaKoma(h.phAwal);
+      document.getElementById("phHCl").innerText = angkaKoma(h.phHCl);
+      document.getElementById("phNaOH").innerText = angkaKoma(h.phNaOH);
+      document.getElementById("phAir").innerText = angkaKoma(h.phAir);
+
+      materiPembahasan.innerHTML = `
+        <div class="section-title">Soal Pembahasan</div>
+
+        <div class="step-card">
+          <p>
+            1. Larutan HCOOH ${formatM(cAsam)} 40 mL ditambah dengan HCOONa ${formatM(cGaram)} 40 mL. Berapa pH-nya?
+          </p>
+          <p>
+            2. Setelah itu, ditambahkan HCl 1 M sebanyak 5 tetes pada 20 mL larutan campuran tersebut. Berapa pH-nya?
+          </p>
+          <p>
+            3. Pada wadah yang berbeda, ditambahkan NaOH 1 M sebanyak 5 tetes pada 20 mL larutan campuran tersebut. Berapa pH-nya?
+          </p>
+          <p>
+            4. Pada wadah yang berbeda, ditambahkan akuades sebanyak 10 mL pada 20 mL larutan campuran tersebut. Berapa pH-nya?
+          </p>
+        </div>
+
+        <div class="section-title">1. Menentukan pH Larutan Campuran Awal</div>
+
+        <div class="step-card">
+          <h3>Diketahui</h3>
+          <ul>
+            <li>HCOOH = ${formatM(cAsam)}</li>
+            <li>HCOONa = ${formatM(cGaram)}</li>
+            <li>Volume HCOOH = 40 mL = 0,04 L</li>
+            <li>Volume HCOONa = 40 mL = 0,04 L</li>
+            <li>Ka HCOOH = 1,8 × 10<sup>-4</sup></li>
+            <li>pKa = -log Ka = ${angkaKoma(PKA)}</li>
+          </ul>
+
+          <h3>Jawab</h3>
+          <p>
+            Campuran terdiri dari asam lemah dan garamnya, sehingga termasuk larutan penyangga asam.
+          </p>
+
+          <div class="formula">
+            Mol HCOOH = M × V<br>
+            Mol HCOOH = ${String(cAsam).replace(".", ",")} × 0,04 = ${angkaMol(h.molAsamTotal)} mol
+          </div>
+
+          <div class="formula">
+            Mol HCOONa = M × V<br>
+            Mol HCOONa = ${String(cGaram).replace(".", ",")} × 0,04 = ${angkaMol(h.molGaramTotal)} mol
+          </div>
+
+          <div class="formula">
+            pH = pKa + log (mol garam / mol asam)<br>
+            pH = ${angkaKoma(PKA)} + log (${angkaMol(h.molGaramTotal)} / ${angkaMol(h.molAsamTotal)})<br>
+            pH = <b>${angkaKoma(h.phAwal)}</b>
+          </div>
+        </div>
+
+        <div class="section-title">2. Setelah Ditambahkan HCl 1 M Sebanyak 5 Tetes</div>
+
+        <div class="step-card">
+          <h3>Diketahui</h3>
+          <ul>
+            <li>Larutan yang diambil = 20 mL dari total 80 mL, sehingga mol yang dipakai adalah 1/4 bagian.</li>
+            <li>1 tetes = 0,05 mL</li>
+            <li>5 tetes = 0,25 mL = 0,00025 L</li>
+            <li>Mol HCl = 1 × 0,00025 = 0,00025 mol</li>
+          </ul>
+
+          <h3>Menghitung mol dalam 20 mL campuran</h3>
+
+          <div class="formula">
+            Mol HCOOH = ${angkaMol(h.molAsamTotal)} × 1/4 = ${angkaMol(h.molAsam20)} mol<br>
+            Mol HCOONa = ${angkaMol(h.molGaramTotal)} × 1/4 = ${angkaMol(h.molGaram20)} mol
+          </div>
+
+          <p>
+            HCl adalah asam kuat, sehingga akan bereaksi dengan basa konjugatnya yaitu HCOO<sup>-</sup>.
+          </p>
+
+          <div class="formula">
+            HCOO<sup>-</sup> + H<sup>+</sup> → HCOOH<br><br>
+            Sisa HCOONa = ${angkaMol(h.molGaram20)} - 0,00025 = ${angkaMol(h.garamSetelahHCl)} mol<br>
+            Sisa HCOOH = ${angkaMol(h.molAsam20)} + 0,00025 = ${angkaMol(h.asamSetelahHCl)} mol
+          </div>
+
+          <div class="formula">
+            pH = pKa + log (mol garam / mol asam)<br>
+            pH = ${angkaKoma(PKA)} + log (${angkaMol(h.garamSetelahHCl)} / ${angkaMol(h.asamSetelahHCl)})<br>
+            pH = <b>${angkaKoma(h.phHCl)}</b>
+          </div>
+        </div>
+
+        <div class="section-title">3. Setelah Ditambahkan NaOH 1 M Sebanyak 5 Tetes</div>
+
+        <div class="step-card">
+          <h3>Diketahui</h3>
+          <ul>
+            <li>Larutan yang diambil = 20 mL dari total 80 mL.</li>
+            <li>5 tetes NaOH = 0,25 mL = 0,00025 L</li>
+            <li>Mol NaOH = 1 × 0,00025 = 0,00025 mol</li>
+          </ul>
+
+          <p>
+            NaOH adalah basa kuat, sehingga akan bereaksi dengan asam lemah yaitu HCOOH.
+          </p>
+
+          <div class="formula">
+            HCOOH + OH<sup>-</sup> → HCOO<sup>-</sup> + H<sub>2</sub>O<br><br>
+            Sisa HCOOH = ${angkaMol(h.molAsam20)} - 0,00025 = ${angkaMol(h.asamSetelahNaOH)} mol<br>
+            Sisa HCOONa = ${angkaMol(h.molGaram20)} + 0,00025 = ${angkaMol(h.garamSetelahNaOH)} mol
+          </div>
+
+          <div class="formula">
+            pH = pKa + log (mol garam / mol asam)<br>
+            pH = ${angkaKoma(PKA)} + log (${angkaMol(h.garamSetelahNaOH)} / ${angkaMol(h.asamSetelahNaOH)})<br>
+            pH = <b>${angkaKoma(h.phNaOH)}</b>
+          </div>
+        </div>
+
+        <div class="section-title">4. Setelah Ditambahkan Akuades 10 mL</div>
+
+        <div class="step-card">
+          <h3>Diketahui</h3>
+          <ul>
+            <li>Larutan campuran yang diambil = 20 mL</li>
+            <li>Ditambahkan akuades = 10 mL</li>
+            <li>Volume total setelah pengenceran = 30 mL</li>
+          </ul>
+
+          <p>
+            Penambahan akuades hanya mengencerkan larutan. Jumlah mol HCOOH dan HCOONa tetap,
+            sehingga perbandingan mol garam dan asam tidak berubah.
+          </p>
+
+          <div class="formula">
+            Karena perbandingan mol garam dan mol asam tetap, maka pH larutan juga tetap.<br>
+            pH = <b>${angkaKoma(h.phAir)}</b>
+          </div>
+        </div>
+
+        <div class="section-title">5. Kesimpulan</div>
+
+        <div class="table-wrapper">
+        <table>
+          <thead>
+            <tr>
+              <th>No</th>
+              <th>Perlakuan</th>
+              <th>pH</th>
+              <th>Keterangan</th>
+            </tr>
+          </thead>
+
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td>HCOOH ${formatM(cAsam)} 40 mL + HCOONa ${formatM(cGaram)} 40 mL</td>
+              <td><b>${angkaKoma(h.phAwal)}</b></td>
+              <td>Buffer</td>
+            </tr>
+
+            <tr>
+              <td>2</td>
+              <td>20 mL campuran + HCl 1 M sebanyak 5 tetes</td>
+              <td><b>${angkaKoma(h.phHCl)}</b></td>
+              <td>Buffer</td>
+            </tr>
+
+            <tr>
+              <td>3</td>
+              <td>20 mL campuran + NaOH 1 M sebanyak 5 tetes</td>
+              <td><b>${angkaKoma(h.phNaOH)}</b></td>
+              <td>Buffer</td>
+            </tr>
+
+            <tr>
+              <td>4</td>
+              <td>20 mL campuran + akuades 10 mL</td>
+              <td><b>${angkaKoma(h.phAir)}</b></td>
+              <td>Buffer</td>
+            </tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div class="note">
+          Berdasarkan hasil perhitungan, larutan HCOOH dan HCOONa termasuk larutan penyangga asam.
+          Saat ditambahkan sedikit HCl atau NaOH, pH hanya berubah sedikit. Saat ditambahkan akuades,
+          pH tetap karena perbandingan mol asam dan garam tidak berubah.
+        </div>
+      `;
+    }
+
+    function setNilaiDariSimulasi() {
+      const raw = localStorage.getItem("buffer_simulasi");
+      if (!raw) {
+        acidSelect.value = "0.25";
+        saltSelect.value = "1";
+        return;
+      }
+
+      try {
+        const data = JSON.parse(raw);
+        const s1 = data.s1;
+        const s2 = data.s2;
+
+        if (s1?.chem === "HCOOH" && s2?.chem === "HCOONa") {
+          acidSelect.value = String(s1.kons);
+          saltSelect.value = String(s2.kons);
+        } else if (s2?.chem === "HCOOH" && s1?.chem === "HCOONa") {
+          acidSelect.value = String(s2.kons);
+          saltSelect.value = String(s1.kons);
+        } else {
+          acidSelect.value = "0.25";
+          saltSelect.value = "1";
+        }
+      } catch (error) {
+        acidSelect.value = "0.25";
+        saltSelect.value = "1";
+      }
+    }
+
+    acidSelect.addEventListener("change", () => {
+      playClickSound();
+      tampilkanPembahasan();
+    });
+
+    saltSelect.addEventListener("change", () => {
+      playClickSound();
+      tampilkanPembahasan();
+    });
+
+    setNilaiDariSimulasi();
+    tampilkanPembahasan();
+  </script>
+</body>
+
+</html>

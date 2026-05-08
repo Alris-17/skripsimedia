@@ -1,0 +1,734 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PRA-LAB</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #dff3ff;
+        }
+
+        body {
+            min-width: 100vw;
+            min-height: 100vh;
+            min-height: 100dvh;
+        }
+
+        .stage {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            background-image: url("assets/BG PRA LAB.png");
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* TOMBOL MUSIK DISAMAKAN DENGAN HALAMAN HOME */
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 80;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 34px;
+            right: 46px;
+            width: 72px;
+            height: 72px;
+            border: 0;
+            border-radius: 50%;
+            background: linear-gradient(#72c3ff, #4098ea);
+            color: #ffffff;
+            font-size: 46px;
+            font-weight: 900;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #2c67bd, 0 12px 20px rgba(0, 0, 0, .22);
+            z-index: 70;
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+
+        .close-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 6px 0 #2c67bd, 0 10px 18px rgba(0, 0, 0, .20);
+        }
+
+        .title-wrap {
+            position: absolute;
+            top: 38px;
+            left: 50%;
+            width: 560px;
+            height: 250px;
+            transform: translateX(-50%);
+            overflow: hidden;
+            z-index: 5;
+            pointer-events: none;
+        }
+
+        .title-wrap img {
+            position: absolute;
+            width: 570px;
+            height: auto;
+            left: -38px;
+            top: -56px;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .menu-area {
+            position: absolute;
+            left: 110px;
+            right: 110px;
+            top: 250px;
+            bottom: 55px;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            align-items: center;
+            justify-items: center;
+            gap: 32px;
+            z-index: 10;
+        }
+
+        .menu-card {
+            position: relative;
+            display: block;
+            width: 230px;
+            height: 230px;
+            overflow: visible;
+            border: 0;
+            background: transparent;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform .18s ease, filter .18s ease;
+        }
+
+        .menu-card:hover {
+            transform: translateY(-8px) scale(1.04);
+            filter: drop-shadow(0 12px 12px rgba(0, 0, 0, .20));
+        }
+
+        .menu-card:active {
+            transform: translateY(0) scale(.98);
+        }
+
+        .crop-box {
+            position: absolute;
+            left: 50%;
+            top: 50%;
+            width: 230px;
+            height: 230px;
+            overflow: hidden;
+            transform: translate(-50%, -50%);
+            transform-origin: center center;
+        }
+
+        .crop-box img {
+            position: absolute;
+            max-width: none;
+            height: auto;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        /* ===================== UKURAN BUTTON DISAMAKAN ===================== */
+        .btn-keselamatan,
+        .btn-tatatertib,
+        .btn-lambang,
+        .btn-alat {
+            width: 230px;
+            height: 230px;
+        }
+
+        .btn-keselamatan img {
+            width: 1134.2px;
+            left: -452.6px;
+            top: -280.4px;
+        }
+
+        .btn-tatatertib img {
+            width: 788.6px;
+            left: -278.2px;
+            top: -2.9px;
+        }
+
+        .btn-lambang img {
+            width: 1155.3px;
+            left: -463.2px;
+            top: -287.8px;
+        }
+
+        .btn-alat img {
+            width: 267.3px;
+            left: -18.7px;
+            top: -19.1px;
+        }
+
+        .label-fallback {
+            position: absolute;
+            left: 50%;
+            bottom: -10px;
+            transform: translateX(-50%);
+            min-width: 190px;
+            padding: 8px 12px;
+            border-radius: 14px;
+            background: rgba(255, 255, 255, .78);
+            color: #1d5d9e;
+            font-size: 18px;
+            font-weight: 900;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+        }
+
+        .menu-card img[src=""]+.label-fallback {
+            opacity: 1;
+        }
+
+        .cloud-decor {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            inset: 0;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .bubble {
+            position: absolute;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, .35);
+            filter: blur(.2px);
+        }
+
+        .bubble-1 {
+            width: 34px;
+            height: 34px;
+            left: 130px;
+            top: 150px;
+        }
+
+        .bubble-2 {
+            width: 24px;
+            height: 24px;
+            right: 190px;
+            top: 220px;
+        }
+
+        .bubble-3 {
+            width: 42px;
+            height: 42px;
+            right: 115px;
+            bottom: 120px;
+        }
+
+        .bubble-4 {
+            width: 22px;
+            height: 22px;
+            left: 240px;
+            bottom: 130px;
+        }
+
+        @media (max-width: 1366px) {
+            .close-btn {
+                top: 28px;
+                right: 38px;
+                width: 64px;
+                height: 64px;
+                font-size: 40px;
+            }
+
+            .title-wrap {
+                top: 26px;
+                width: 510px;
+                height: 225px;
+            }
+
+            .title-wrap img {
+                width: 520px;
+                left: -35px;
+                top: -51px;
+            }
+
+            .menu-area {
+                left: 80px;
+                right: 80px;
+                top: 220px;
+                bottom: 45px;
+                gap: 20px;
+            }
+
+            .menu-card {
+                width: 220px;
+                height: 220px;
+            }
+
+            .crop-box {
+                width: 220px;
+                height: 220px;
+            }
+
+            .btn-keselamatan,
+            .btn-tatatertib,
+            .btn-lambang,
+            .btn-alat {
+                width: 220px;
+                height: 220px;
+            }
+
+            .btn-keselamatan img {
+                width: 1084.9px;
+                left: -433px;
+                top: -268.2px;
+            }
+
+            .btn-tatatertib img {
+                width: 754.3px;
+                left: -266.1px;
+                top: -2.8px;
+            }
+
+            .btn-lambang img {
+                width: 1105.1px;
+                left: -443.1px;
+                top: -275.3px;
+            }
+
+            .btn-alat img {
+                width: 255.7px;
+                left: -17.9px;
+                top: -18.2px;
+            }
+        }
+
+        /* MODE MOBILE TEGAK */
+        @media (max-width: 700px) and (orientation: portrait) {
+
+            html,
+            body {
+                overflow: hidden;
+            }
+
+            .stage {
+                background-size: cover;
+                background-position: center center;
+            }
+
+            .music-btn {
+                width: 54px;
+                height: 54px;
+                left: 14px;
+                top: 14px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 26px;
+                height: 26px;
+            }
+
+            .close-btn {
+                top: 18px;
+                right: 18px;
+                width: 54px;
+                height: 54px;
+                font-size: 34px;
+            }
+
+            .title-wrap {
+                top: 36px;
+                transform: translateX(-50%) scale(.72);
+            }
+
+            .menu-area {
+                left: 34px;
+                right: 34px;
+                top: 185px;
+                bottom: 35px;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 18px 16px;
+                align-items: center;
+            }
+
+            .menu-card {
+                width: 142px;
+                height: 142px;
+            }
+
+            .crop-box {
+                width: 230px;
+                height: 230px;
+                transform: translate(-50%, -50%) scale(.62);
+            }
+
+            .btn-keselamatan,
+            .btn-tatatertib,
+            .btn-lambang,
+            .btn-alat {
+                width: 230px;
+                height: 230px;
+            }
+
+            .btn-keselamatan img {
+                width: 1134.2px;
+                left: -452.6px;
+                top: -280.4px;
+            }
+
+            .btn-tatatertib img {
+                width: 788.6px;
+                left: -278.2px;
+                top: -2.9px;
+            }
+
+            .btn-lambang img {
+                width: 1155.3px;
+                left: -463.2px;
+                top: -287.8px;
+            }
+
+            .btn-alat img {
+                width: 267.3px;
+                left: -18.7px;
+                top: -19.1px;
+            }
+        }
+
+        /* MODE LANDSCAPE HP: DIBUAT MIRIP DESKTOP */
+        @media (max-height: 500px) and (orientation: landscape) {
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .stage {
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                background-size: 100% 100%;
+                background-position: center center;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+                box-shadow: 0 10px 18px rgba(0, 0, 0, .32);
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .close-btn {
+                top: 16px;
+                right: 32px;
+                width: 40px;
+                height: 40px;
+                font-size: 27px;
+                box-shadow: 0 4px 0 #2c67bd, 0 7px 10px rgba(0, 0, 0, .20);
+            }
+
+            .title-wrap {
+                top: 0px;
+                left: 50%;
+                width: 510px;
+                height: 160px;
+                transform: translateX(-50%) scale(.58);
+            }
+
+            .title-wrap img {
+                width: 520px;
+                left: -35px;
+                top: -51px;
+            }
+
+            .menu-area {
+                left: 52px;
+                right: 52px;
+                top: 128px;
+                bottom: 20px;
+                grid-template-columns: repeat(4, 1fr);
+                align-items: center;
+                justify-items: center;
+                gap: 10px;
+            }
+
+            .menu-card {
+                width: 130px;
+                height: 130px;
+            }
+
+            .menu-card:hover {
+                transform: translateY(-4px) scale(1.03);
+            }
+
+            .crop-box {
+                width: 230px;
+                height: 230px;
+                transform: translate(-50%, -50%) scale(.57);
+            }
+
+            .btn-keselamatan,
+            .btn-tatatertib,
+            .btn-lambang,
+            .btn-alat {
+                width: 230px;
+                height: 230px;
+            }
+
+            .btn-keselamatan img {
+                width: 1134.2px;
+                left: -452.6px;
+                top: -280.4px;
+            }
+
+            .btn-tatatertib img {
+                width: 788.6px;
+                left: -278.2px;
+                top: -2.9px;
+            }
+
+            .btn-lambang img {
+                width: 1155.3px;
+                left: -463.2px;
+                top: -287.8px;
+            }
+
+            .btn-alat img {
+                width: 267.3px;
+                left: -18.7px;
+                top: -19.1px;
+            }
+
+            .bubble-1 {
+                width: 22px;
+                height: 22px;
+                left: 95px;
+                top: 92px;
+            }
+
+            .bubble-2 {
+                width: 18px;
+                height: 18px;
+                right: 120px;
+                top: 105px;
+            }
+
+            .bubble-3 {
+                width: 28px;
+                height: 28px;
+                right: 80px;
+                bottom: 60px;
+            }
+
+            .bubble-4 {
+                width: 16px;
+                height: 16px;
+                left: 150px;
+                bottom: 58px;
+            }
+        }
+
+        /* LANDSCAPE HP SANGAT PENDEK */
+        @media (max-height: 390px) and (orientation: landscape) {
+            .title-wrap {
+                top: -4px;
+                transform: translateX(-50%) scale(.55);
+            }
+
+            .menu-area {
+                top: 116px;
+                bottom: 18px;
+                left: 48px;
+                right: 48px;
+                gap: 8px;
+            }
+
+            .menu-card {
+                width: 122px;
+                height: 122px;
+            }
+
+            .crop-box {
+                transform: translate(-50%, -50%) scale(.53);
+            }
+
+            .close-btn {
+                top: 14px;
+                right: 30px;
+                width: 38px;
+                height: 38px;
+                font-size: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="stage">
+        <div class="cloud-decor">
+            <span class="bubble bubble-1"></span>
+            <span class="bubble bubble-2"></span>
+            <span class="bubble bubble-3"></span>
+            <span class="bubble bubble-4"></span>
+        </div>
+
+        <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+            </svg>
+        </button>
+
+        <button class="close-btn" id="closeBtn" type="button" aria-label="Kembali ke menu">×</button>
+
+        <div class="title-wrap">
+            <img src="assets/0. JUDUL TULISAN PRA-LAB.png" alt="PRA-LAB">
+        </div>
+
+        <main class="menu-area">
+            <a href="keselamatanlab.html" class="menu-card">
+                <div class="crop-box btn-keselamatan">
+                    <img src="assets/btn. keselamatan lab (1).png" alt="Keselamatan Laboratorium">
+                </div>
+                <span class="label-fallback">Keselamatan Laboratorium</span>
+            </a>
+
+            <a href="tatatertib.html" class="menu-card">
+                <div class="crop-box btn-tatatertib">
+                    <img src="assets/btn. tata tertib.png" alt="Tata Tertib Laboratorium">
+                </div>
+                <span class="label-fallback">Tata Tertib Laboratorium</span>
+            </a>
+
+            <a href="simbolkimia.html" class="menu-card">
+                <div class="crop-box btn-lambang">
+                    <img src="assets/btn. lambang kimia (1).png" alt="Lambang Kimia">
+                </div>
+                <span class="label-fallback">Lambang Kimia</span>
+            </a>
+
+            <a href="alatlab.html" class="menu-card">
+                <div class="crop-box btn-alat">
+                    <img src="assets/btn. alat-alat lab.png" alt="Alat-Alat Laboratorium">
+                </div>
+                <span class="label-fallback">Alat-Alat Laboratorium</span>
+            </a>
+        </main>
+    </div>
+
+    <script>
+        const musicBtn = document.getElementById("musicBtn");
+        const closeBtn = document.getElementById("closeBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+        const menuCards = document.querySelectorAll(".menu-card");
+
+        let musicOn = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        closeBtn.addEventListener("click", () => {
+            playClickSound();
+            setTimeout(() => {
+                window.location.href = "menu.html";
+            }, 350);
+        });
+
+        menuCards.forEach((card) => {
+            card.addEventListener("click", (event) => {
+                event.preventDefault();
+                playClickSound();
+                const target = card.getAttribute("href");
+                setTimeout(() => {
+                    window.location.href = target;
+                }, 350);
+            });
+        });
+    </script>
+</body>
+
+</html>

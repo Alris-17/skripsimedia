@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profil Pengembang</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            background:
+                radial-gradient(circle at top left, rgba(255, 220, 175, 0.35), transparent 34%),
+                radial-gradient(circle at bottom right, rgba(255, 232, 194, 0.45), transparent 35%),
+                linear-gradient(135deg, #fff7ee, #f7eadc);
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .wrap {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stage {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            opacity: 1;
+        }
+
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 58px;
+            height: 58px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 16px 26px rgba(0, 0, 0, .28);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 80;
+        }
+
+        .music-btn.off {
+            opacity: .55;
+        }
+
+        .music-btn:active {
+            transform: scale(.96);
+        }
+
+        .music-btn svg {
+            width: 28px;
+            height: 28px;
+            fill: #fff;
+        }
+
+        .profile-card {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 1120px;
+            height: 630px;
+            transform: translate(-50%, -50%);
+            border-radius: 38px;
+            background:
+                radial-gradient(circle at 7% 15%, rgba(235, 194, 129, 0.18), transparent 22%),
+                radial-gradient(circle at 92% 86%, rgba(235, 194, 129, 0.18), transparent 24%),
+                linear-gradient(180deg, rgba(255, 253, 248, 0.97), rgba(255, 249, 239, 0.98));
+            border: 3px solid rgba(222, 185, 123, 0.65);
+            box-shadow: 0 18px 45px rgba(123, 80, 35, 0.18);
+            overflow: hidden;
+        }
+
+        .profile-card::before,
+        .profile-card::after {
+            content: "";
+            position: absolute;
+            width: 330px;
+            height: 330px;
+            border: 3px solid rgba(218, 184, 124, 0.28);
+            border-radius: 45%;
+            pointer-events: none;
+        }
+
+        .profile-card::before {
+            top: -170px;
+            left: -115px;
+            transform: rotate(25deg);
+        }
+
+        .profile-card::after {
+            right: -130px;
+            bottom: -170px;
+            transform: rotate(25deg);
+        }
+
+        .corner-line {
+            position: absolute;
+            border-color: rgba(205, 162, 91, 0.75);
+            z-index: 1;
+        }
+
+        .line-top {
+            top: 42px;
+            right: 78px;
+            width: 230px;
+            border-top: 2px solid rgba(205, 162, 91, 0.75);
+        }
+
+        .line-right {
+            top: 42px;
+            right: 55px;
+            height: 190px;
+            border-right: 2px solid rgba(205, 162, 91, 0.75);
+        }
+
+        .line-bottom {
+            bottom: 42px;
+            left: 78px;
+            width: 230px;
+            border-bottom: 2px solid rgba(205, 162, 91, 0.75);
+        }
+
+        .line-left {
+            bottom: 42px;
+            left: 55px;
+            height: 190px;
+            border-left: 2px solid rgba(205, 162, 91, 0.75);
+        }
+
+        .title-img {
+            position: absolute;
+            top: 18px;
+            left: 50%;
+            width: 560px;
+            height: 120px;
+            transform: translateX(-50%);
+            background-image: url("profil/tulisan profil pengembang.png");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: center 54%;
+            z-index: 5;
+            filter: drop-shadow(0 6px 9px rgba(133, 62, 35, 0.20));
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 25px;
+            right: 32px;
+            width: 58px;
+            height: 58px;
+            border: none;
+            border-radius: 50%;
+            background: #ef2b2b;
+            color: white;
+            font-size: 36px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 7px 0 #b41717, 0 11px 18px rgba(0, 0, 0, 0.22);
+            z-index: 30;
+            transition: 0.2s ease;
+            line-height: 1;
+        }
+
+        .close-btn:hover {
+            transform: translateY(3px);
+            box-shadow: 0 4px 0 #b41717, 0 8px 14px rgba(0, 0, 0, 0.22);
+        }
+
+        .close-btn:active {
+            transform: scale(.94);
+        }
+
+        .photo-box {
+            position: absolute;
+            top: 135px;
+            left: 95px;
+            width: 185px;
+            height: 235px;
+            border-radius: 18px;
+            padding: 7px;
+            background: linear-gradient(180deg, #fff, #f7dcc7);
+            box-shadow: 0 10px 20px rgba(108, 67, 31, 0.20);
+            z-index: 6;
+        }
+
+        .photo-box img {
+            width: 100%;
+            height: 100%;
+            border-radius: 13px;
+            object-fit: cover;
+            object-position: center top;
+            display: block;
+        }
+
+        .bio-text {
+            position: absolute;
+            z-index: 6;
+            color: #593d2f;
+            font-size: 16px;
+            font-weight: 650;
+            line-height: 1.55;
+            text-align: justify;
+        }
+
+        .bio-top {
+            top: 150px;
+            left: 315px;
+            width: 725px;
+            min-height: 210px;
+        }
+
+        .bio-bottom {
+            top: 395px;
+            left: 95px;
+            width: 950px;
+            min-height: 140px;
+        }
+
+        .highlight {
+            color: #9b4f2a;
+            font-weight: 900;
+        }
+
+        .contact {
+            margin-top: 8px;
+            color: #8f4b25;
+            font-weight: 900;
+        }
+
+        /* DESKTOP KECIL */
+        @media (max-width: 1150px) {
+            .profile-card {
+                width: 94vw;
+                height: 620px;
+            }
+
+            .title-img {
+                width: 500px;
+                height: 110px;
+            }
+
+            .photo-box {
+                left: 70px;
+            }
+
+            .bio-top {
+                left: 295px;
+                width: calc(100% - 370px);
+            }
+
+            .bio-bottom {
+                left: 70px;
+                width: calc(100% - 140px);
+            }
+        }
+
+        /* TABLET / MOBILE */
+        @media (max-width: 850px) and (orientation: portrait) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+                overflow-x: hidden;
+            }
+
+            .wrap {
+                min-height: 100vh;
+                height: auto;
+                padding: 24px 0;
+                overflow: visible;
+            }
+
+            .stage {
+                position: relative;
+                min-height: 100vh;
+                overflow: visible;
+            }
+
+            .music-btn {
+                position: fixed;
+                width: 50px;
+                height: 50px;
+                left: 14px;
+                top: 14px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 24px;
+                height: 24px;
+            }
+
+            .profile-card {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                width: 92vw;
+                height: auto;
+                min-height: auto;
+                margin: 0 auto;
+                padding: 18px 0 32px;
+                border-radius: 30px;
+                overflow: hidden;
+            }
+
+            .corner-line {
+                display: none;
+            }
+
+            .title-img {
+                position: relative;
+                top: auto;
+                left: auto;
+                transform: none;
+                width: min(78vw, 430px);
+                height: 95px;
+                margin: 0 auto 8px;
+                background-size: cover;
+            }
+
+            .close-btn {
+                top: 16px;
+                right: 16px;
+                width: 50px;
+                height: 50px;
+                font-size: 30px;
+            }
+
+            .photo-box {
+                position: relative;
+                top: auto;
+                left: auto;
+                width: 165px;
+                height: 215px;
+                margin: 8px auto 20px;
+            }
+
+            .bio-text {
+                position: relative;
+                top: auto;
+                left: auto;
+                width: calc(100% - 46px);
+                margin: 0 auto 16px;
+                font-size: 15px;
+                line-height: 1.6;
+                text-align: justify;
+            }
+
+            .bio-top,
+            .bio-bottom {
+                width: calc(100% - 46px);
+                left: auto;
+                top: auto;
+                min-height: auto;
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) and (orientation: portrait) {
+            .wrap {
+                padding: 18px 0;
+            }
+
+            .profile-card {
+                width: 92vw;
+                border-radius: 24px;
+                padding: 14px 0 26px;
+            }
+
+            .title-img {
+                width: min(72vw, 320px);
+                height: 78px;
+                margin-bottom: 8px;
+            }
+
+            .close-btn {
+                width: 42px;
+                height: 42px;
+                top: 12px;
+                right: 12px;
+                font-size: 26px;
+                box-shadow: 0 5px 0 #b41717, 0 8px 14px rgba(0, 0, 0, 0.22);
+            }
+
+            .photo-box {
+                width: 145px;
+                height: 188px;
+                margin-bottom: 16px;
+                border-radius: 16px;
+            }
+
+            .photo-box img {
+                border-radius: 11px;
+            }
+
+            .bio-text {
+                width: calc(100% - 34px);
+                font-size: 13.5px;
+                line-height: 1.55;
+                margin-bottom: 14px;
+            }
+
+            .contact {
+                font-size: 13px;
+                line-height: 1.5;
+                word-break: break-word;
+            }
+        }
+
+        /* MOBILE KECIL */
+        @media (max-width: 380px) and (orientation: portrait) {
+            .profile-card {
+                width: 94vw;
+                border-radius: 22px;
+            }
+
+            .title-img {
+                width: 72vw;
+                height: 70px;
+            }
+
+            .close-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 24px;
+            }
+
+            .photo-box {
+                width: 132px;
+                height: 172px;
+            }
+
+            .bio-text {
+                font-size: 12.8px;
+            }
+        }
+
+        /* HP LANDSCAPE - DISAMAKAN DENGAN TAMPILAN DESKTOP */
+        @media (orientation: landscape) and (max-height: 500px) {
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .wrap,
+            .stage {
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                padding: 0;
+                overflow: hidden;
+            }
+
+            .music-btn {
+                position: absolute;
+                left: 14px;
+                top: 12px;
+                width: 46px;
+                height: 46px;
+                border-width: 3px;
+                z-index: 90;
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            /* Card tetap memakai ukuran desktop, lalu diskalakan agar masuk layar HP landscape */
+            .profile-card {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                width: 1120px;
+                height: 630px;
+                margin: 0;
+                padding: 0;
+                transform: translate(-50%, -50%) scale(.54);
+                transform-origin: center center;
+                border-radius: 38px;
+                overflow: hidden;
+            }
+
+            .profile-card::before,
+            .profile-card::after,
+            .corner-line {
+                display: block;
+            }
+
+            .title-img {
+                position: absolute;
+                top: 18px;
+                left: 50%;
+                width: 560px;
+                height: 120px;
+                transform: translateX(-50%);
+                margin: 0;
+                background-size: cover;
+                background-position: center 54%;
+            }
+
+            .close-btn {
+                top: 25px;
+                right: 32px;
+                width: 58px;
+                height: 58px;
+                font-size: 36px;
+                line-height: 1;
+                box-shadow: 0 7px 0 #b41717, 0 11px 18px rgba(0, 0, 0, 0.22);
+            }
+
+            .photo-box {
+                position: absolute;
+                top: 135px;
+                left: 95px;
+                width: 185px;
+                height: 235px;
+                margin: 0;
+                padding: 7px;
+                border-radius: 18px;
+            }
+
+            .bio-text {
+                position: absolute;
+                width: auto;
+                margin: 0;
+                font-size: 16px;
+                line-height: 1.55;
+                text-align: justify;
+            }
+
+            .bio-top {
+                top: 150px;
+                left: 315px;
+                right: auto;
+                width: 725px;
+                min-height: 210px;
+            }
+
+            .bio-bottom {
+                top: 395px;
+                left: 95px;
+                right: auto;
+                width: 950px;
+                min-height: 140px;
+            }
+
+            .contact {
+                margin-top: 8px;
+                font-size: 16px;
+                line-height: 1.55;
+            }
+        }
+
+        /* HP LANDSCAPE SANGAT PENDEK, CONTOH 604 x 320 */
+        @media (orientation: landscape) and (max-height: 330px) {
+            .profile-card {
+                transform: translate(-50%, -50%) scale(.47);
+            }
+
+            .music-btn {
+                width: 42px;
+                height: 42px;
+                left: 12px;
+                top: 10px;
+            }
+
+            .music-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+        }
+
+        /* HP LANDSCAPE 740 x 360 */
+        @media (orientation: landscape) and (min-height: 331px) and (max-height: 390px) {
+            .profile-card {
+                transform: translate(-50%, -50%) scale(.53);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="wrap">
+        <div class="stage" id="stage">
+
+            <button class="music-btn off" id="musicBtn" title="Music" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+                </svg>
+            </button>
+
+            <div class="profile-card">
+                <button class="close-btn" id="closeBtn" type="button">×</button>
+
+                <div class="corner-line line-top"></div>
+                <div class="corner-line line-right"></div>
+                <div class="corner-line line-bottom"></div>
+                <div class="corner-line line-left"></div>
+
+                <div class="title-img" aria-label="Profil Pengembang"></div>
+
+                <div class="photo-box">
+                    <img src="profil/my photo.png" alt="Foto Pengembang">
+                </div>
+
+                <div class="bio-text bio-top">
+                    <p>
+                        <span class="highlight">Icha Sabina Syarofie</span>, lahir di Kediri pada 25 Januari 2004,
+                        merupakan lulusan MAN 5 Kediri tahun 2022 dan saat ini sedang menempuh pendidikan S1
+                        di UIN Sayyid Ali Rahmatullah Tulungagung semester 8 di Program Studi Tadris Kimia,
+                        Fakultas Tarbiyah dan Ilmu Keguruan. Penulis memiliki ketertarikan dalam pengembangan
+                        media pembelajaran, khususnya laboratorium virtual, yang sedang dikembangkan dalam tugas akhir.
+                    </p>
+
+                    <p>
+                        Melalui pengembangan ini, penulis berupaya menghadirkan media pembelajaran interaktif
+                        yang mampu membantu visualisasi konsep kimia yang abstrak serta memberikan gambaran awal
+                        praktikum kepada siswa sebelum kegiatan di laboratorium.
+                    </p>
+                </div>
+
+                <div class="bio-text bio-bottom">
+                    <p>
+                        Pengalaman yang dimiliki antara lain terlibat dalam pembuatan soal Olimpiade Kimia SMA/MA
+                        se-derajat se-Jawa Timur (OKSALAT) 2023, kegiatan Kuliah Kerja Nyata (KKN) 2025 dengan
+                        pengalaman mengajar siswa sekolah dasar, serta kegiatan magang (2025) yang memberikan
+                        pengalaman mengajar siswa sekolah menengah atas sesuai bidang studi kimia.
+                    </p>
+
+                    <p>
+                        Penulis berharap dengan adanya media ini dapat meningkatkan pemahaman dan kesiapan siswa
+                        dalam praktikum. Penulis juga terbuka terhadap kritik dan saran yang membangun guna
+                        penyempurnaan produk.
+                    </p>
+
+                    <p class="contact">
+                        Email: Ichasabina01@gmail.com | Instagram: icha_runa
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const stage = document.getElementById("stage");
+        const closeBtn = document.getElementById("closeBtn");
+        const musicBtn = document.getElementById("musicBtn");
+
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let isClosing = false;
+        let musicOn = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+
+            sound.play().catch(() => { });
+
+            setTimeout(() => {
+                sound.pause();
+                sound.currentTime = 0;
+            }, 120);
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        function goBackToMenu() {
+            if (isClosing) return;
+            isClosing = true;
+
+            playClickSound();
+
+            setTimeout(() => {
+                stage.style.transition = "opacity 0.2s ease";
+                stage.style.opacity = "0";
+
+                setTimeout(() => {
+                    window.location.href = "menu.html";
+                }, 180);
+            }, 100);
+        }
+
+        closeBtn.addEventListener("click", goBackToMenu);
+    </script>
+</body>
+
+</html>

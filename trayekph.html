@@ -1,0 +1,1659 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trayek pH</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            color: #14375d;
+            background: #d9ecff;
+        }
+
+        .stage {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            background-image: url("assets/bg trayek pH.png");
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+
+
+        /* TOMBOL MUSIK DISAMAKAN DENGAN HALAMAN HOME */
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 80;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 34px;
+            right: 45px;
+            width: 72px;
+            height: 72px;
+            border: 0;
+            border-radius: 50%;
+            background: linear-gradient(#72c3ff, #4098ea);
+            color: #fff;
+            font-size: 46px;
+            font-weight: 900;
+            line-height: 72px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #2c67bd, 0 12px 20px rgba(0, 0, 0, .22);
+            z-index: 20;
+        }
+
+        .close-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 6px 0 #2c67bd, 0 10px 18px rgba(0, 0, 0, .20);
+        }
+
+        .main-content {
+            position: absolute;
+            left: 88px;
+            right: 88px;
+            top: 160px;
+            bottom: 20px;
+            display: grid;
+            grid-template-columns: 38% 62%;
+            gap: 18px;
+            align-items: stretch;
+        }
+
+        .panel {
+            height: 100%;
+            overflow: hidden;
+            background: rgba(255, 255, 255, .96);
+            border: 5px solid #8ec8f7;
+            border-radius: 28px;
+            box-shadow: 0 8px 20px rgba(45, 108, 169, .18);
+        }
+
+        /* ===================== PANEL KIRI ===================== */
+        .left-panel {
+            display: flex;
+            flex-direction: column;
+            padding: 16px 20px 12px;
+        }
+
+        .left-panel h1 {
+            margin: 0 0 6px;
+            color: #1f5c9e;
+            font-weight: 900;
+            line-height: 1.05;
+            font-size: 34px;
+            letter-spacing: .3px;
+        }
+
+        .instruction {
+            margin: 0 0 8px;
+            color: #173456;
+            font-size: 13px;
+            line-height: 1.28;
+        }
+
+        .instruction b {
+            color: #123b67;
+        }
+
+        .input-box {
+            background: #eaf6ff;
+            border: 4px solid #9acaf8;
+            border-radius: 22px;
+            padding: 7px 16px 9px;
+            margin-bottom: 9px;
+        }
+
+        .input-box h2 {
+            margin: 0 0 7px;
+            color: #1f5c9e;
+            font-weight: 900;
+            line-height: 1;
+            font-size: 26px;
+        }
+
+        .input-row {
+            display: grid;
+            grid-template-columns: 26% 36% 26%;
+            gap: 10px;
+            align-items: center;
+        }
+
+        #phInput {
+            width: 100%;
+            height: 50px;
+            outline: none;
+            background: #fff;
+            color: #777;
+            border: 5px solid #97c4f2;
+            border-radius: 16px;
+            text-align: center;
+            font-size: 28px;
+            font-weight: 900;
+        }
+
+        .btn {
+            width: 100%;
+            min-height: 50px;
+            border: 0;
+            border-radius: 14px;
+            cursor: pointer;
+            color: #fff;
+            font-size: 14px;
+            font-weight: 900;
+            line-height: 1.1;
+            padding: 4px 5px;
+            box-shadow: inset 0 -7px 0 rgba(0, 0, 0, .20), 0 4px 0 rgba(0, 0, 0, .13);
+        }
+
+        .btn-blue {
+            background: linear-gradient(#55bdff, #167bd1);
+        }
+
+        .btn-red {
+            background: linear-gradient(#ff6464, #d51922);
+        }
+
+        .btn-green {
+            background: linear-gradient(#52c977, #16894a);
+            min-height: 36px;
+            margin-top: 6px;
+            font-size: 13px;
+        }
+
+        .section-title {
+            margin: 0 0 6px;
+            color: #1f5c9e;
+            font-weight: 900;
+            line-height: 1.05;
+            font-size: 24px;
+        }
+
+        .table-wrap {
+            flex: 1;
+            min-height: 0;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 2px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            table-layout: fixed;
+            font-size: 10.5px;
+            font-weight: 900;
+            color: #092642;
+        }
+
+        th {
+            color: white;
+            padding: 5px 4px;
+            text-align: center;
+            line-height: 1.05;
+        }
+
+        th:nth-child(1) {
+            background: #3179bd;
+            border-top-left-radius: 12px;
+            width: 34%;
+        }
+
+        th:nth-child(2) {
+            background: #ed9fbd;
+            width: 28%;
+        }
+
+        th:nth-child(3) {
+            background: #8c8c8b;
+            border-top-right-radius: 12px;
+            width: 38%;
+        }
+
+        td {
+            background: #fff;
+            border-bottom: 2px solid #cde2f8;
+            padding: 4px 3px;
+            text-align: center;
+            line-height: 1.05;
+        }
+
+        td:nth-child(2) {
+            background: #ffd2df;
+        }
+
+        select {
+            width: 100%;
+            height: 28px;
+            border: 2px solid #b8b8b8;
+            border-radius: 9px;
+            padding: 0 6px;
+            font-size: 10.5px;
+            font-weight: 800;
+            background: #fff;
+            color: #222;
+        }
+
+        /* ===================== PANEL KANAN ===================== */
+        .right-panel {
+            padding: 13px 18px 10px;
+        }
+
+        .right-head {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 5px;
+        }
+
+        .right-title {
+            margin: 0;
+            color: #1f5c9e;
+            font-weight: 900;
+            letter-spacing: .3px;
+            line-height: 1;
+            font-size: 40px;
+        }
+
+        .ph-result {
+            min-width: 130px;
+            height: 54px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 4px 10px;
+            border: 4px solid #ffa764;
+            border-radius: 18px;
+            background: #fff;
+            color: #000;
+            font-size: 25px;
+            font-weight: 900;
+            text-align: center;
+            white-space: nowrap;
+        }
+
+        .trayek-chart {
+            position: relative;
+            height: calc(100% - 60px);
+            display: grid;
+            grid-template-rows: repeat(6, minmax(0, 1fr)) 18px;
+            row-gap: 2px;
+            overflow: hidden;
+        }
+
+        .indicator-line {
+            display: grid;
+            grid-template-columns: 22% 78%;
+            align-items: center;
+            min-height: 0;
+        }
+
+        .indicator-name {
+            text-align: right;
+            padding-right: 9px;
+            line-height: .95;
+            color: #111;
+            overflow: visible;
+        }
+
+        .indicator-name b {
+            display: block;
+            margin-bottom: 2px;
+            color: #071a2f;
+            font-weight: 900;
+            font-size: 16px;
+        }
+
+        .indicator-name span {
+            display: block;
+            color: #111;
+            font-weight: 700;
+            font-size: 8px;
+            line-height: 1.05;
+        }
+
+        .bar-wrap {
+            position: relative;
+            height: 100%;
+            padding-top: 10px;
+            overflow: visible;
+        }
+
+        .top-mark {
+            position: absolute;
+            top: 0;
+            transform: translateX(-50%);
+            color: #111;
+            font-size: 9px;
+            font-weight: 900;
+            z-index: 6;
+        }
+
+        .m-20 {
+            left: 14.29%;
+        }
+
+        .m-31 {
+            left: 22.14%;
+        }
+
+        .m-40 {
+            left: 28.57%;
+        }
+
+        .m-44 {
+            left: 31.43%;
+        }
+
+        .m-60 {
+            left: 42.86%;
+        }
+
+        .m-62 {
+            left: 44.29%;
+        }
+
+        .m-70 {
+            left: 50%;
+        }
+
+        .m-76 {
+            left: 54.29%;
+        }
+
+        .m-80 {
+            left: 57.14%;
+        }
+
+        .m-82 {
+            left: 58.57%;
+        }
+
+        .m-100 {
+            left: 71.43%;
+        }
+
+        .m-130 {
+            left: 92.86%;
+        }
+
+        .range-bar {
+            position: relative;
+            display: flex;
+            width: 100%;
+            height: 19px;
+            border: 2px solid rgba(0, 0, 0, .35);
+            border-radius: 3px;
+            overflow: visible;
+            background: #fff;
+        }
+
+        .seg {
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 8.5px;
+            font-weight: 900;
+            line-height: 1;
+            overflow: hidden;
+            padding: 0 2px;
+        }
+
+        .transition-line {
+            position: absolute;
+            top: -9px;
+            height: calc(100% + 11px);
+            border-left: 1px dashed #111;
+            z-index: 4;
+        }
+
+        .axis-ticks {
+            width: 100%;
+            height: 14px;
+            display: grid;
+            grid-template-columns: repeat(15, 1fr);
+            color: #1e324b;
+            font-size: 8.5px;
+            font-weight: 900;
+        }
+
+        .axis-ticks span {
+            position: relative;
+            padding-top: 2px;
+            text-align: left;
+            transform: translateX(-1px);
+        }
+
+        .axis-ticks span::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 4px;
+            border-left: 1px solid #111;
+        }
+
+        .axis-ticks span:last-child {
+            text-align: right;
+            transform: translateX(1px);
+        }
+
+        .axis-ticks span:last-child::before {
+            left: auto;
+            right: 0;
+        }
+
+        .bottom-axis-label {
+            text-align: center;
+            margin-top: -2px;
+            font-size: 12px;
+            font-weight: 900;
+            color: #111;
+        }
+
+        .ph-arrow {
+            display: none;
+            position: absolute;
+            top: 4px;
+            width: 0;
+            height: 0;
+            border-left: 8px solid transparent;
+            border-right: 8px solid transparent;
+            border-bottom: 16px solid #e32626;
+            filter: drop-shadow(0 2px 3px rgba(0, 0, 0, .35));
+            transform: translateX(-50%);
+            z-index: 30;
+        }
+
+        .student-marker {
+            position: absolute;
+            top: 0;
+            bottom: 7px;
+            width: 0;
+            border-left: 1px dashed #e60000;
+            transform: translateX(-1px);
+            z-index: 25;
+            display: none;
+            pointer-events: none;
+        }
+
+        .student-marker::before {
+            content: "";
+            position: absolute;
+            top: -5px;
+            left: -4px;
+            width: 8px;
+            height: 8px;
+            background: #e60000;
+            border-radius: 50%;
+            box-shadow: 0 0 0 2px rgba(255, 255, 255, .85);
+        }
+
+        .no-color {
+            background: #fff;
+            color: #111;
+        }
+
+        .fenol-pink {
+            background: linear-gradient(90deg, #f8c4dc, #ec3f9b);
+            color: #111;
+        }
+
+        .btb-yellow {
+            background: #ffe900;
+            color: #111;
+        }
+
+        .btb-green {
+            background: #51be52;
+            color: #111;
+        }
+
+        .btb-blue {
+            background: #0d55c7;
+            color: white;
+        }
+
+        .mm-red,
+        .mj-red,
+        .lakmus-red,
+        .univ-red {
+            background: #f11f2d;
+            color: white;
+        }
+
+        .mm-orange,
+        .mj-orange,
+        .univ-orange {
+            background: #ff981b;
+            color: #111;
+        }
+
+        .mm-yellow,
+        .mj-yellow,
+        .univ-yellow {
+            background: #fff000;
+            color: #111;
+        }
+
+        .univ-green {
+            background: #36b85c;
+            color: #111;
+        }
+
+        .univ-tosca {
+            background: #26b8c8;
+            color: #111;
+        }
+
+        .univ-blue {
+            background: #0d55c7;
+            color: white;
+        }
+
+        .univ-purple {
+            background: #9255c8;
+            color: white;
+        }
+
+        .lakmus-purple {
+            background: #9255c8;
+            color: white;
+        }
+
+        .lakmus-blue {
+            background: #105fc5;
+            color: white;
+        }
+
+
+        @media (max-width: 1366px) {
+            .music-btn {
+                top: 18px;
+                left: 22px;
+                width: 64px;
+                height: 64px;
+                border-width: 4px;
+            }
+
+            .music-btn svg {
+                width: 31px;
+                height: 31px;
+            }
+
+            .close-btn {
+                top: 28px;
+                right: 38px;
+                width: 64px;
+                height: 64px;
+                line-height: 64px;
+                font-size: 40px;
+            }
+
+            .main-content {
+                left: 58px;
+                right: 62px;
+                top: 128px;
+                bottom: 24px;
+                grid-template-columns: 37% 63%;
+                gap: 16px;
+            }
+
+            .panel {
+                border-width: 4px;
+                border-radius: 24px;
+            }
+
+            .left-panel {
+                padding: 13px 16px 10px;
+            }
+
+            .left-panel h1 {
+                font-size: 28px;
+            }
+
+            .instruction {
+                font-size: 11.5px;
+            }
+
+            .input-box {
+                padding: 7px 12px 8px;
+                margin-bottom: 7px;
+            }
+
+            .input-box h2 {
+                font-size: 22px;
+            }
+
+            #phInput {
+                height: 43px;
+                font-size: 24px;
+                border-width: 4px;
+            }
+
+            .btn {
+                min-height: 43px;
+                font-size: 12px;
+                border-radius: 12px;
+            }
+
+            .btn-green {
+                min-height: 32px;
+                font-size: 11.5px;
+            }
+
+            .section-title {
+                font-size: 20px;
+            }
+
+            table {
+                font-size: 9.4px;
+            }
+
+            th,
+            td {
+                padding: 4px 3px;
+            }
+
+            select {
+                height: 24px;
+                font-size: 9.2px;
+            }
+
+            .right-panel {
+                padding: 11px 14px 9px;
+            }
+
+            .right-title {
+                font-size: 32px;
+            }
+
+            .ph-result {
+                min-width: 112px;
+                height: 46px;
+                font-size: 21px;
+                border-width: 3px;
+            }
+
+            .trayek-chart {
+                height: calc(100% - 52px);
+            }
+
+            .indicator-name b {
+                font-size: 13px;
+            }
+
+            .indicator-name span {
+                font-size: 7px;
+            }
+
+            .range-bar {
+                height: 17px;
+            }
+
+            .seg {
+                font-size: 7.6px;
+            }
+        }
+
+        /* MODE PORTRAIT / MOBILE TEGAK */
+        @media (max-width: 900px) and (orientation: portrait) {
+
+            html,
+            body {
+                overflow: auto;
+            }
+
+            .stage {
+                min-height: 100vh;
+                height: auto;
+                overflow: visible;
+                background-size: cover;
+                background-position: center center;
+                padding: 90px 0 24px;
+            }
+
+            .music-btn {
+                position: fixed;
+                left: 14px;
+                top: 14px;
+                width: 54px;
+                height: 54px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 26px;
+                height: 26px;
+            }
+
+            .close-btn {
+                position: fixed;
+                top: 18px;
+                right: 18px;
+                width: 54px;
+                height: 54px;
+                line-height: 54px;
+                font-size: 34px;
+            }
+
+            .main-content {
+                position: relative;
+                left: auto;
+                right: auto;
+                top: auto;
+                bottom: auto;
+                width: calc(100% - 28px);
+                margin: 0 auto;
+                grid-template-columns: 1fr;
+                gap: 14px;
+            }
+
+            .panel {
+                height: auto;
+                border-width: 4px;
+                border-radius: 22px;
+            }
+
+            .left-panel {
+                min-height: 520px;
+            }
+
+            .right-panel {
+                min-height: 540px;
+            }
+        }
+
+        /* MODE LANDSCAPE HP, CONTOH 604 x 320 / 740 x 360 */
+        @media (max-height: 500px) and (orientation: landscape) {
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .stage {
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                overflow: hidden;
+                background-size: 100% 100%;
+                background-position: center center;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+                box-shadow: 0 10px 18px rgba(0, 0, 0, .32);
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .close-btn {
+                top: 20px;
+                right: 42px;
+                width: 38px;
+                height: 38px;
+                line-height: 38px;
+                font-size: 26px;
+                box-shadow: 0 4px 0 #2c67bd, 0 7px 10px rgba(0, 0, 0, .20);
+            }
+
+            .main-content {
+                position: absolute;
+                left: 26px;
+                right: 28px;
+                top: 64px;
+                bottom: 10px;
+                display: grid;
+                grid-template-columns: 34% 66%;
+                gap: 9px;
+                align-items: stretch;
+            }
+
+            .panel {
+                height: 100%;
+                border-width: 3px;
+                border-radius: 18px;
+                overflow: hidden;
+            }
+
+            .left-panel {
+                padding: 7px 8px 6px;
+            }
+
+            .left-panel h1 {
+                font-size: 15.5px;
+                margin-bottom: 2px;
+            }
+
+            .instruction {
+                font-size: 6.9px;
+                line-height: 1.18;
+                margin-bottom: 4px;
+            }
+
+            .input-box {
+                border-width: 2px;
+                border-radius: 12px;
+                padding: 4px 6px 5px;
+                margin-bottom: 4px;
+            }
+
+            .input-box h2 {
+                font-size: 12px;
+                margin-bottom: 4px;
+            }
+
+            .input-row {
+                grid-template-columns: 28% 36% 28%;
+                gap: 4px;
+            }
+
+            #phInput {
+                height: 27px;
+                border-width: 2px;
+                border-radius: 9px;
+                font-size: 15px;
+            }
+
+            .btn {
+                min-height: 27px;
+                border-radius: 8px;
+                font-size: 7.2px;
+                padding: 2px 3px;
+                box-shadow: inset 0 -4px 0 rgba(0, 0, 0, .18), 0 2px 0 rgba(0, 0, 0, .12);
+            }
+
+            .section-title {
+                font-size: 12px;
+                margin-bottom: 3px;
+            }
+
+            .table-wrap {
+                padding-right: 1px;
+            }
+
+            table {
+                font-size: 6.6px;
+            }
+
+            th {
+                padding: 3px 2px;
+                line-height: 1.05;
+            }
+
+            td {
+                padding: 2px 1px;
+                line-height: 1.05;
+                border-bottom-width: 1px;
+            }
+
+            select {
+                height: 17px;
+                border-width: 1px;
+                border-radius: 5px;
+                padding: 0 2px;
+                font-size: 6.2px;
+            }
+
+            .btn-green {
+                min-height: 21px;
+                margin-top: 3px;
+                font-size: 6.8px;
+            }
+
+            .right-panel {
+                padding: 6px 8px 5px;
+            }
+
+            .right-head {
+                gap: 6px;
+                margin-bottom: 2px;
+                align-items: center;
+            }
+
+            .right-title {
+                font-size: 16px;
+            }
+
+            .ph-result {
+                min-width: 55px;
+                height: 25px;
+                padding: 2px 5px;
+                border-width: 2px;
+                border-radius: 9px;
+                font-size: 11.5px;
+            }
+
+            .trayek-chart {
+                height: calc(100% - 28px);
+                grid-template-rows: repeat(6, minmax(0, 1fr)) 12px;
+                row-gap: 1px;
+            }
+
+            .indicator-line {
+                grid-template-columns: 22% 78%;
+            }
+
+            .indicator-name {
+                padding-right: 4px;
+            }
+
+            .indicator-name b {
+                font-size: 7.6px;
+                margin-bottom: 1px;
+                line-height: 1;
+            }
+
+            .indicator-name span {
+                font-size: 4.8px;
+                line-height: 1.05;
+            }
+
+            .bar-wrap {
+                padding-top: 6px;
+            }
+
+            .top-mark {
+                font-size: 5.4px;
+            }
+
+            .range-bar {
+                height: 11px;
+                border-width: 1px;
+            }
+
+            .seg {
+                font-size: 4.7px;
+                padding: 0 1px;
+                line-height: .95;
+            }
+
+            .transition-line {
+                top: -6px;
+                height: calc(100% + 7px);
+            }
+
+            .axis-ticks {
+                height: 8px;
+                font-size: 5px;
+            }
+
+            .axis-ticks span {
+                padding-top: 1px;
+            }
+
+            .axis-ticks span::before {
+                height: 3px;
+            }
+
+            .bottom-axis-label {
+                margin-top: -3px;
+                font-size: 7px;
+            }
+
+            .ph-arrow {
+                top: 1px;
+                border-left-width: 5px;
+                border-right-width: 5px;
+                border-bottom-width: 10px;
+            }
+
+            .student-marker {
+                bottom: 4px;
+            }
+
+            .student-marker::before {
+                width: 5px;
+                height: 5px;
+                left: -3px;
+                top: -3px;
+            }
+        }
+
+        /* LANDSCAPE HP SANGAT PENDEK, CONTOH 604 x 320 */
+        @media (max-height: 340px) and (orientation: landscape) {
+            .main-content {
+                top: 58px;
+                left: 24px;
+                right: 26px;
+                bottom: 8px;
+                grid-template-columns: 33% 67%;
+                gap: 8px;
+            }
+
+            .close-btn {
+                top: 18px;
+                right: 38px;
+                width: 34px;
+                height: 34px;
+                line-height: 34px;
+                font-size: 23px;
+            }
+
+            .music-btn {
+                width: 42px;
+                height: 42px;
+            }
+
+            .left-panel {
+                padding: 6px 7px 5px;
+            }
+
+            .left-panel h1 {
+                font-size: 14px;
+            }
+
+            .instruction {
+                font-size: 6.2px;
+                margin-bottom: 3px;
+            }
+
+            .input-box {
+                padding: 3px 5px 4px;
+                margin-bottom: 3px;
+            }
+
+            .input-box h2 {
+                font-size: 10.5px;
+                margin-bottom: 3px;
+            }
+
+            #phInput,
+            .btn {
+                height: 23px;
+                min-height: 23px;
+            }
+
+            #phInput {
+                font-size: 13px;
+            }
+
+            .btn {
+                font-size: 6.2px;
+            }
+
+            .section-title {
+                font-size: 10.5px;
+            }
+
+            table {
+                font-size: 5.8px;
+            }
+
+            select {
+                height: 15px;
+                font-size: 5.5px;
+            }
+
+            .btn-green {
+                min-height: 18px;
+                font-size: 5.8px;
+            }
+
+            .right-panel {
+                padding: 5px 7px 4px;
+            }
+
+            .right-title {
+                font-size: 14px;
+            }
+
+            .ph-result {
+                min-width: 49px;
+                height: 22px;
+                font-size: 10px;
+            }
+
+            .trayek-chart {
+                height: calc(100% - 24px);
+                grid-template-rows: repeat(6, minmax(0, 1fr)) 10px;
+            }
+
+            .indicator-name b {
+                font-size: 6.7px;
+            }
+
+            .indicator-name span {
+                font-size: 4.1px;
+            }
+
+            .range-bar {
+                height: 9px;
+            }
+
+            .seg {
+                font-size: 4.1px;
+            }
+
+            .axis-ticks {
+                font-size: 4.4px;
+                height: 7px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="stage">
+        <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+            </svg>
+        </button>
+
+        <button class="close-btn" id="closeBtn" type="button" aria-label="Kembali ke menu">×</button>
+
+        <main class="main-content">
+            <section class="panel left-panel">
+                <h1>Latihan Trayek pH</h1>
+                <p class="instruction">
+                    Ketik nilai pH dari <b>0 sampai 14</b>. Angka yang dimasukkan hanya boleh <b>satu angka di belakang
+                        koma</b>, contoh: <b>1,2</b>.
+                </p>
+
+                <div class="input-box">
+                    <h2>Masukkan pH</h2>
+                    <div class="input-row">
+                        <input type="text" id="phInput" value="1,2">
+                        <button class="btn btn-blue" onclick="showArrow()">Tampilkan<br>Panah</button>
+                        <button class="btn btn-red" onclick="resetAll()">Reset</button>
+                    </div>
+                </div>
+
+                <h2 class="section-title">Perubahan Warna Indikator</h2>
+                <div class="table-wrap">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Indikator</th>
+                                <th>Jawaban<br>Benar</th>
+                                <th>Jawaban<br>Siswa</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>pH Universal</td>
+                                <td id="ans-universal">-</td>
+                                <td>
+                                    <select>
+                                        <option value="">Pilih warna</option>
+                                        <option>Merah</option>
+                                        <option>Jingga</option>
+                                        <option>Kuning</option>
+                                        <option>Hijau</option>
+                                        <option>Biru Kehijauan</option>
+                                        <option>Biru</option>
+                                        <option>Ungu</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Kertas Lakmus</td>
+                                <td id="ans-lakmus">-</td>
+                                <td>
+                                    <select>
+                                        <option value="">Pilih warna</option>
+                                        <option>Merah</option>
+                                        <option>Ungu</option>
+                                        <option>Biru</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Metil Jingga</td>
+                                <td id="ans-jingga">-</td>
+                                <td>
+                                    <select>
+                                        <option value="">Pilih warna</option>
+                                        <option>Merah</option>
+                                        <option>Jingga</option>
+                                        <option>Kuning</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Metil Merah</td>
+                                <td id="ans-merah">-</td>
+                                <td>
+                                    <select>
+                                        <option value="">Pilih warna</option>
+                                        <option>Merah</option>
+                                        <option>Jingga</option>
+                                        <option>Kuning</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Bromtimol Biru</td>
+                                <td id="ans-biru">-</td>
+                                <td>
+                                    <select>
+                                        <option value="">Pilih warna</option>
+                                        <option>Kuning</option>
+                                        <option>Hijau</option>
+                                        <option>Biru</option>
+                                    </select>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td>Fenolftalein</td>
+                                <td id="ans-pp">-</td>
+                                <td>
+                                    <select>
+                                        <option value="">Pilih warna</option>
+                                        <option>Tidak Berwarna</option>
+                                        <option>Merah Muda</option>
+                                    </select>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <button class="btn btn-green" onclick="showAnswers()">Tampilkan Jawaban Benar</button>
+                </div>
+            </section>
+
+            <section class="panel right-panel">
+                <div class="right-head">
+                    <h1 class="right-title">Bagan Trayek pH</h1>
+                    <div class="ph-result" id="phResult">pH = -</div>
+                </div>
+
+                <div class="trayek-chart" id="chartArea">
+                    <div class="ph-arrow" id="phArrow"></div>
+
+                    <div class="indicator-line">
+                        <div class="indicator-name">
+                            <b>pH Universal</b>
+                            <span>Trayek warna:<br>pH 0 - 14</span>
+                        </div>
+                        <div class="bar-wrap">
+                            <div class="top-mark m-20">2</div>
+                            <div class="top-mark m-40">4</div>
+                            <div class="top-mark m-60">6</div>
+                            <div class="top-mark m-80">8</div>
+                            <div class="top-mark m-100">10</div>
+                            <div class="top-mark m-130">13</div>
+                            <div class="range-bar scale-anchor">
+                                <div class="seg univ-red" style="width:14.29%">Merah</div>
+                                <div class="seg univ-orange" style="width:14.29%">Jingga</div>
+                                <div class="seg univ-yellow" style="width:14.29%">Kuning</div>
+                                <div class="seg univ-green" style="width:14.29%">Hijau</div>
+                                <div class="seg univ-tosca" style="width:14.29%">Biru kehijauan</div>
+                                <div class="seg univ-blue" style="width:21.43%">Biru</div>
+                                <div class="seg univ-purple" style="width:7.14%">Ungu</div>
+                                <span class="transition-line" style="left:14.29%"></span>
+                                <span class="transition-line" style="left:28.57%"></span>
+                                <span class="transition-line" style="left:42.86%"></span>
+                                <span class="transition-line" style="left:57.14%"></span>
+                                <span class="transition-line" style="left:71.43%"></span>
+                                <span class="transition-line" style="left:92.86%"></span>
+                            </div>
+                            <div class="axis-ticks"></div>
+                        </div>
+                    </div>
+
+                    <div class="indicator-line">
+                        <div class="indicator-name">
+                            <b>Fenolftalein</b>
+                            <span>Trayek perubahan:<br>pH 8,2 - 10,0</span>
+                        </div>
+                        <div class="bar-wrap">
+                            <div class="top-mark m-82">8,2</div>
+                            <div class="top-mark m-100">10,0</div>
+                            <div class="range-bar">
+                                <div class="seg no-color" style="width:58.57%">Tidak berwarna</div>
+                                <div class="seg fenol-pink" style="width:41.43%">Merah muda (pink)</div>
+                                <span class="transition-line" style="left:58.57%"></span>
+                                <span class="transition-line" style="left:71.43%"></span>
+                            </div>
+                            <div class="axis-ticks"></div>
+                        </div>
+                    </div>
+
+                    <div class="indicator-line">
+                        <div class="indicator-name">
+                            <b>Bromtimol Biru</b>
+                            <span>Trayek perubahan:<br>pH 6,0 - 7,6</span>
+                        </div>
+                        <div class="bar-wrap">
+                            <div class="top-mark m-60">6,0</div>
+                            <div class="top-mark m-76">7,6</div>
+                            <div class="range-bar">
+                                <div class="seg btb-yellow" style="width:42.86%">Kuning</div>
+                                <div class="seg btb-green" style="width:11.43%">Hijau</div>
+                                <div class="seg btb-blue" style="width:45.71%">Biru</div>
+                                <span class="transition-line" style="left:42.86%"></span>
+                                <span class="transition-line" style="left:54.29%"></span>
+                            </div>
+                            <div class="axis-ticks"></div>
+                        </div>
+                    </div>
+
+                    <div class="indicator-line">
+                        <div class="indicator-name">
+                            <b>Metil Merah</b>
+                            <span>Trayek perubahan:<br>pH 4,4 - 6,2</span>
+                        </div>
+                        <div class="bar-wrap">
+                            <div class="top-mark m-44">4,4</div>
+                            <div class="top-mark m-62">6,2</div>
+                            <div class="range-bar">
+                                <div class="seg mm-red" style="width:31.43%">Merah</div>
+                                <div class="seg mm-orange" style="width:12.86%">Oranye</div>
+                                <div class="seg mm-yellow" style="width:55.71%">Kuning</div>
+                                <span class="transition-line" style="left:31.43%"></span>
+                                <span class="transition-line" style="left:44.29%"></span>
+                            </div>
+                            <div class="axis-ticks"></div>
+                        </div>
+                    </div>
+
+                    <div class="indicator-line">
+                        <div class="indicator-name">
+                            <b>Metil Jingga</b>
+                            <span>Trayek perubahan:<br>pH 3,1 - 4,4</span>
+                        </div>
+                        <div class="bar-wrap">
+                            <div class="top-mark m-31">3,1</div>
+                            <div class="top-mark m-44">4,4</div>
+                            <div class="range-bar">
+                                <div class="seg mj-red" style="width:22.14%">Merah</div>
+                                <div class="seg mj-orange" style="width:9.29%">Oranye</div>
+                                <div class="seg mj-yellow" style="width:68.57%">Kuning</div>
+                                <span class="transition-line" style="left:22.14%"></span>
+                                <span class="transition-line" style="left:31.43%"></span>
+                            </div>
+                            <div class="axis-ticks"></div>
+                        </div>
+                    </div>
+
+                    <div class="indicator-line">
+                        <div class="indicator-name">
+                            <b>Kertas Lakmus</b>
+                            <span>pH 7 = Netral</span>
+                        </div>
+                        <div class="bar-wrap">
+                            <div class="top-mark m-70">7</div>
+                            <div class="range-bar">
+                                <div class="seg lakmus-red" style="width:35.71%">Merah<br>(asam, pH &lt; 7)</div>
+                                <div class="seg lakmus-purple" style="width:21.43%">Ungu<br>(netral, pH = 7)</div>
+                                <div class="seg lakmus-blue" style="width:42.86%">Biru<br>(basa, pH &gt; 7)</div>
+                            </div>
+                            <div class="axis-ticks"></div>
+                        </div>
+                    </div>
+
+                    <div class="bottom-axis-label">pH</div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const musicBtn = document.getElementById("musicBtn");
+        const closeBtn = document.getElementById("closeBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+        let currentPH = null;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        closeBtn.addEventListener("click", () => {
+            playClickSound();
+            setTimeout(() => {
+                window.location.href = "menu.html";
+            }, 350);
+        });
+
+        document.querySelectorAll(".axis-ticks").forEach(axis => {
+            for (let i = 0; i <= 14; i++) {
+                const span = document.createElement("span");
+                span.textContent = i;
+                axis.appendChild(span);
+            }
+        });
+
+        function toComma(num) {
+            return String(num).replace(".", ",");
+        }
+
+        function parsePH() {
+            let value = document.getElementById("phInput").value.trim().replace(",", ".");
+
+            if (!/^\d{1,2}(\.\d)?$/.test(value)) {
+                alert("Nilai pH hanya boleh 0 sampai 14 dan maksimal satu angka di belakang koma. Contoh: 1,2");
+                return null;
+            }
+
+            const ph = parseFloat(value);
+            if (ph < 0 || ph > 14) {
+                alert("Nilai pH harus dari 0 sampai 14.");
+                return null;
+            }
+
+            return ph;
+        }
+
+        function ensureStudentMarkers() {
+            document.querySelectorAll('.bar-wrap').forEach(wrap => {
+                if (!wrap.querySelector('.student-marker')) {
+                    const marker = document.createElement('div');
+                    marker.className = 'student-marker';
+                    wrap.appendChild(marker);
+                }
+            });
+        }
+
+        function updateStudentMarkers(ph) {
+            ensureStudentMarkers();
+            document.querySelectorAll('.bar-wrap').forEach(wrap => {
+                const bar = wrap.querySelector('.range-bar');
+                const marker = wrap.querySelector('.student-marker');
+                if (!bar || !marker) return;
+                const x = (ph / 14) * bar.offsetWidth;
+                marker.style.left = x + 'px';
+                marker.style.display = 'block';
+            });
+        }
+
+        function showArrow(silent = false) {
+            if (!silent) playClickSound();
+            const ph = parsePH();
+            if (ph === null) return;
+            currentPH = ph;
+
+            const arrow = document.getElementById("phArrow");
+            const result = document.getElementById("phResult");
+            const chartArea = document.getElementById("chartArea");
+            const scaleAnchor = document.querySelector(".scale-anchor");
+
+            const areaRect = chartArea.getBoundingClientRect();
+            const barRect = scaleAnchor.getBoundingClientRect();
+            const x = (barRect.left - areaRect.left) + (ph / 14) * barRect.width;
+
+            arrow.style.display = "block";
+            arrow.style.left = x + "px";
+            result.textContent = "pH = " + toComma(ph);
+            updateStudentMarkers(ph);
+        }
+
+        function getUniversalColor(ph) {
+            if (ph < 2) return "Merah";
+            if (ph < 4) return "Jingga";
+            if (ph < 6) return "Kuning";
+            if (ph < 8) return "Hijau";
+            if (ph < 10) return "Biru Kehijauan";
+            if (ph < 13) return "Biru";
+            return "Ungu";
+        }
+
+        function getLakmus(ph) {
+            if (ph < 7) return "Merah";
+            if (ph === 7) return "Ungu";
+            return "Biru";
+        }
+
+        function getMetilJingga(ph) {
+            if (ph < 3.1) return "Merah";
+            if (ph <= 4.4) return "Jingga";
+            return "Kuning";
+        }
+
+        function getMetilMerah(ph) {
+            if (ph < 4.4) return "Merah";
+            if (ph <= 6.2) return "Jingga";
+            return "Kuning";
+        }
+
+        function getBromtimolBiru(ph) {
+            if (ph < 6.0) return "Kuning";
+            if (ph <= 7.6) return "Hijau";
+            return "Biru";
+        }
+
+        function getFenolftalein(ph) {
+            if (ph < 8.2) return "Tidak Berwarna";
+            return "Merah Muda";
+        }
+
+        function showAnswers() {
+            playClickSound();
+            const ph = currentPH ?? parsePH();
+            if (ph === null) return;
+            currentPH = ph;
+            showArrow(true);
+
+            document.getElementById("ans-universal").textContent = getUniversalColor(ph);
+            document.getElementById("ans-lakmus").textContent = getLakmus(ph);
+            document.getElementById("ans-jingga").textContent = getMetilJingga(ph);
+            document.getElementById("ans-merah").textContent = getMetilMerah(ph);
+            document.getElementById("ans-biru").textContent = getBromtimolBiru(ph);
+            document.getElementById("ans-pp").textContent = getFenolftalein(ph);
+        }
+
+        function resetAll() {
+            playClickSound();
+            currentPH = null;
+            document.getElementById("phInput").value = "1,2";
+            document.getElementById("phResult").textContent = "pH = -";
+            document.getElementById("phArrow").style.display = "none";
+            document.querySelectorAll(".student-marker").forEach(marker => marker.style.display = "none");
+
+            ["ans-universal", "ans-lakmus", "ans-jingga", "ans-merah", "ans-biru", "ans-pp"].forEach(id => {
+                document.getElementById(id).textContent = "-";
+            });
+
+            document.querySelectorAll("select").forEach(select => select.value = "");
+        }
+
+        document.querySelectorAll("select").forEach(select => {
+            select.addEventListener("change", playClickSound);
+        });
+
+        window.addEventListener("resize", () => {
+            if (currentPH !== null) showArrow(true);
+        });
+    </script>
+</body>
+
+</html>

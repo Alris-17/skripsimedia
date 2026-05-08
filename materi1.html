@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi 1</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            width: 100%;
+            min-height: 100%;
+            overflow-x: hidden;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url("assets/BG MATERI.png");
+            background-size: cover;
+            background-position: center center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #123b63;
+            overflow-x: hidden;
+        }
+
+        .page {
+            width: 100%;
+            min-height: 100vh;
+            padding: 35px 25px 90px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .content-box {
+            width: 88%;
+            max-width: 1100px;
+            background: rgba(255, 255, 255, 0.88);
+            border: 3px solid #77bff0;
+            border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(43, 120, 190, 0.25);
+            padding: 35px;
+            backdrop-filter: blur(4px);
+        }
+
+        .title-box {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 22px 20px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #e9f7ff, #ffffff);
+            border: 3px solid #8cccf3;
+            box-shadow: 0 5px 16px rgba(41, 120, 190, 0.18);
+        }
+
+        .title-box h1 {
+            font-size: 42px;
+            color: #174f91;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .title-box h2 {
+            font-size: 22px;
+            color: #2b6fa8;
+            font-weight: bold;
+        }
+
+        .section {
+            margin-bottom: 28px;
+            padding: 24px;
+            border-radius: 22px;
+            background: rgba(239, 249, 255, 0.85);
+            border: 2px solid #b9e2ff;
+        }
+
+        .section h3 {
+            font-size: 26px;
+            color: #15528e;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #8cccf3;
+        }
+
+        .section p {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .question-box {
+            margin-top: 15px;
+            padding: 18px;
+            border-left: 6px solid #3d93d6;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(50, 120, 180, 0.12);
+        }
+
+        .question-box p {
+            font-weight: bold;
+            color: #174f91;
+            margin-bottom: 8px;
+        }
+
+        .activity-list {
+            padding-left: 24px;
+            margin-top: 12px;
+        }
+
+        .activity-list li {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 8px;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 16px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            border: 2px solid #9bd3f5;
+            padding: 14px;
+            font-size: 17px;
+            text-align: left;
+        }
+
+        th {
+            background: #dff3ff;
+            color: #174f91;
+            text-align: center;
+        }
+
+        td:first-child {
+            text-align: center;
+            font-weight: bold;
+            width: 70px;
+        }
+
+        .video-box {
+            margin-top: 18px;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 18px;
+            border: 2px solid #b9e2ff;
+            box-shadow: 0 4px 14px rgba(50, 120, 180, 0.14);
+        }
+
+        .video-box h4 {
+            font-size: 20px;
+            color: #174f91;
+            margin-bottom: 12px;
+        }
+
+        video {
+            width: 100%;
+            border-radius: 16px;
+            border: 3px solid #8cccf3;
+            background: #000;
+        }
+
+        .lab-btn {
+            display: inline-block;
+            margin-top: 15px;
+            text-decoration: none;
+            padding: 13px 28px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #3d93d6, #78c8f4);
+            color: white;
+            font-size: 18px;
+            font-weight: bold;
+            box-shadow: 0 5px 14px rgba(30, 100, 170, 0.32);
+            transition: 0.25s ease;
+        }
+
+        .lab-btn:hover {
+            transform: scale(1.05);
+            background: linear-gradient(135deg, #287fc4, #58b7ee);
+        }
+
+        .lab-btn:active,
+        .back-btn:active,
+        summary:active {
+            transform: scale(.96);
+        }
+
+        .quiz-list {
+            padding-left: 24px;
+            margin-top: 12px;
+        }
+
+        .quiz-list li {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 16px;
+        }
+
+        .quiz-list ol {
+            padding-left: 25px;
+            margin-top: 8px;
+        }
+
+        .conclusion-box {
+            min-height: 120px;
+            background: #ffffff;
+            border: 2px dashed #5aaee6;
+            border-radius: 18px;
+            padding: 18px;
+            font-size: 18px;
+            color: #5a7894;
+            line-height: 1.6;
+        }
+
+        /* TOMBOL MUSIK */
+        .music-btn {
+            position: fixed;
+            left: 22px;
+            top: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 10000;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        .back-btn {
+            position: fixed;
+            left: 25px;
+            bottom: 25px;
+            z-index: 9999;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #ffffff, #dff3ff);
+            color: #1b5f9e;
+            font-size: 18px;
+            font-weight: bold;
+            border: 3px solid #5aaee6;
+            box-shadow: 0 5px 14px rgba(30, 100, 170, 0.35);
+            transition: 0.25s ease;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.07);
+            background: #cfeeff;
+        }
+
+        @media (max-width: 900px) {
+            .content-box {
+                width: 95%;
+                padding: 25px;
+            }
+
+            .title-box h1 {
+                font-size: 34px;
+            }
+
+            .title-box h2 {
+                font-size: 19px;
+            }
+
+            .section h3 {
+                font-size: 23px;
+            }
+
+            .section p,
+            .activity-list li,
+            .quiz-list li,
+            th,
+            td {
+                font-size: 16px;
+            }
+
+            .back-btn {
+                font-size: 15px;
+                padding: 9px 20px;
+                left: 15px;
+                bottom: 15px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .page {
+                padding: 20px 12px 85px;
+            }
+
+            .content-box {
+                width: 100%;
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .title-box {
+                padding: 18px 12px;
+            }
+
+            .title-box h1 {
+                font-size: 28px;
+            }
+
+            .title-box h2 {
+                font-size: 16px;
+            }
+
+            .section {
+                padding: 18px;
+            }
+        }
+
+
+        /* MOBILE PORTRAIT */
+        @media (max-width: 600px) and (orientation: portrait) {
+            body {
+                background-attachment: scroll;
+            }
+
+            .music-btn {
+                width: 48px;
+                height: 48px;
+                left: 10px;
+                top: 10px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 23px;
+                height: 23px;
+            }
+
+            .table-wrapper {
+                -webkit-overflow-scrolling: touch;
+            }
+        }
+
+        /* HP LANDSCAPE - tetap nyaman dibaca dan bisa discroll */
+        @media (orientation: landscape) and (max-height: 500px) {
+            body {
+                background-size: 100% 100%;
+                background-position: center center;
+                background-attachment: scroll;
+            }
+
+            .page {
+                padding: 14px 10px 68px;
+            }
+
+            .content-box {
+                width: min(94vw, 900px);
+                padding: 16px;
+                border-radius: 18px;
+                border-width: 2px;
+            }
+
+            .title-box {
+                padding: 12px 14px;
+                margin-bottom: 14px;
+                border-radius: 16px;
+                border-width: 2px;
+            }
+
+            .title-box h1 {
+                font-size: 24px;
+                letter-spacing: 1px;
+                margin-bottom: 4px;
+            }
+
+            .title-box h2 {
+                font-size: 14px;
+            }
+
+            .section {
+                padding: 14px;
+                margin-bottom: 14px;
+                border-radius: 16px;
+            }
+
+            .section h3 {
+                font-size: 18px;
+                margin-bottom: 9px;
+                padding-bottom: 6px;
+                border-bottom-width: 2px;
+            }
+
+            .section p,
+            .activity-list li,
+            .quiz-list li,
+            th,
+            td,
+            .example-box p,
+            details p,
+            .formula-card p {
+                font-size: 13px;
+                line-height: 1.45;
+            }
+
+            .info-box,
+            .example-box,
+            .video-box,
+            details,
+            .formula-card,
+            .conclusion-box {
+                padding: 12px;
+                border-radius: 14px;
+            }
+
+            .formula-wrapper {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 12px;
+            }
+
+            .formula-card h4,
+            .example-box h4,
+            .video-box h4 {
+                font-size: 15px;
+                margin-bottom: 8px;
+            }
+
+            .formula {
+                font-size: 14px;
+                padding: 10px;
+                line-height: 1.45;
+                margin-bottom: 10px;
+            }
+
+            summary {
+                font-size: 14px;
+            }
+
+            th,
+            td {
+                padding: 9px;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+                box-shadow: 0 10px 18px rgba(0, 0, 0, .32);
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .back-btn {
+                left: 12px;
+                bottom: 10px;
+                padding: 7px 15px;
+                font-size: 12.5px;
+                border-width: 2px;
+                border-radius: 22px;
+            }
+        }
+
+        /* HP LANDSCAPE SANGAT PENDEK, CONTOH 604 x 320 */
+        @media (orientation: landscape) and (max-height: 360px) {
+            .page {
+                padding: 10px 8px 62px;
+            }
+
+            .content-box {
+                width: 96vw;
+                padding: 13px;
+            }
+
+            .title-box h1 {
+                font-size: 22px;
+            }
+
+            .title-box h2 {
+                font-size: 13px;
+            }
+
+            .section {
+                padding: 12px;
+            }
+
+            .section p,
+            .activity-list li,
+            .quiz-list li,
+            th,
+            td,
+            .example-box p,
+            details p,
+            .formula-card p {
+                font-size: 12.4px;
+                line-height: 1.42;
+            }
+
+            .formula {
+                font-size: 13px;
+            }
+
+            .back-btn {
+                left: 10px;
+                bottom: 8px;
+                padding: 6px 13px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+        </svg>
+    </button>
+
+    <div class="page">
+        <main class="content-box">
+
+            <div class="title-box">
+                <h1>PERTEMUAN 1</h1>
+                <h2>Mengidentifikasi Sifat dan Prinsip Larutan Penyangga</h2>
+            </div>
+
+            <section class="section">
+                <h3>A. Pendahuluan</h3>
+
+                <p>
+                    Apakah kamu sudah memahami konsep asam dan basa? Berdasarkan pemahaman tersebut,
+                    coba bayangkan apa yang terjadi jika tubuh kita kemasukan zat asam atau basa.
+                    pH dalam tubuh dapat berubah secara tiba-tiba, baik meningkat maupun menurun.
+                </p>
+
+                <p>
+                    Agar kondisi pH di dalam tubuh tetap stabil, diperlukan suatu sistem yang mampu
+                    mempertahankan keseimbangan tersebut. Sistem inilah yang berperan penting dalam
+                    menjaga kestabilan pH tubuh.
+                </p>
+
+                <p>
+                    Pernahkah kamu melihat seseorang mengalami iritasi mata? Umumnya, iritasi mata
+                    dapat diatasi dengan menggunakan obat tetes mata. Obat tetes mata aman digunakan
+                    karena memiliki pH yang sesuai dengan kondisi alami mata.
+                </p>
+
+                <div class="question-box">
+                    <p>Mengapa obat tetes mata dapat meredakan iritasi?</p>
+                    <p>Mengapa larutan tersebut aman digunakan pada mata?</p>
+                    <p>Bagaimana suatu larutan dapat mempertahankan pH agar tetap stabil ketika ditambahkan asam atau
+                        basa?</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>B. Demonstrasi Lab</h3>
+
+                <p>
+                    Untuk mengetahui bagaimana perubahan pH pada suatu larutan, lakukan percobaan
+                    menggunakan menu Demonstrasi Lab.
+                </p>
+
+                <a href="demo_lab.html" class="lab-btn">Buka Demonstrasi Lab</a>
+
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Langkah Kegiatan</th>
+                                <th>Hasil Pengamatan pH</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Amati pH awal larutan</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Tambahkan 5 tetes larutan HCl, amati perubahan pH</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>3</td>
+                                <td>Tambahkan 5 tetes larutan NaOH, amati perubahan pH</td>
+                                <td></td>
+                            </tr>
+                            <tr>
+                                <td>4</td>
+                                <td>Tambahkan 10 mL akuades, amati perubahan pH</td>
+                                <td></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>C. Pertanyaan Diskusi</h3>
+
+                <p>
+                    Setelah melakukan percobaan pada menu Demonstrasi Lab, kerjakan pertanyaan berikut!
+                </p>
+
+                <ol class="activity-list">
+                    <li>Berdasarkan hasil percobaan yang telah dilakukan, rumuskan pengertian larutan penyangga menurut
+                        pemahamanmu sendiri.</li>
+                    <li>Bagaimana perubahan pH setelah ditambahkan 5 tetes HCl?</li>
+                    <li>Bagaimana perubahan pH setelah ditambahkan 5 tetes NaOH?</li>
+                    <li>Bagaimana perubahan pH setelah ditambahkan 10 mL akuades?</li>
+                    <li>Jelaskan hasil pengamatanmu!</li>
+                    <li>Diskusikan dengan teman sebangkumu, bagaimana sifat larutan penyangga?</li>
+                </ol>
+            </section>
+
+            <section class="section">
+                <h3>D. Video Pembelajaran</h3>
+
+                <p>
+                    Video berikut dapat kamu simak untuk menambah pemahaman mengenai pengertian
+                    dan sifat larutan penyangga.
+                </p>
+
+                <div class="video-box">
+                    <h4>Video 1: Pengertian dan Sifat Larutan Penyangga</h4>
+                    <video controls>
+                        <source src="/materi/materi1/pengertian dan sifat (1).mp4" type="video/mp4">
+                        Browser kamu tidak mendukung pemutar video.
+                    </video>
+                </div>
+
+                <p style="margin-top: 22px;">
+                    Diskusikan dengan teman sebangkumu, bagaimana prinsip kerja dari larutan penyangga?
+                    Untuk memperkuat pemahamanmu tentang cara kerja larutan penyangga, simak video berikut.
+                </p>
+
+                <div class="video-box">
+                    <h4>Video 2: Prinsip Kerja Larutan Penyangga</h4>
+                    <video controls>
+                        <source src="materi/materi1/ANIMASI PRINSIP KERJA LARUTAN PENYANGGA_1080p.mp4" type="video/mp4">
+                        Browser kamu tidak mendukung pemutar video.
+                    </video>
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>E. Presentasi Hasil Diskusi</h3>
+
+                <p>
+                    Berdasarkan hasil diskusi dengan teman, presentasikanlah hasil diskusi di depan kelas.
+                    Jika terdapat perbedaan pendapat, sampaikan pendapatmu dengan alasan yang jelas dan logis.
+                    Gabungkan berbagai pendapat yang diperoleh untuk merumuskan kesimpulan bersama.
+                </p>
+            </section>
+
+            <section class="section">
+                <h3>F. Evaluasi</h3>
+
+                <ol class="quiz-list">
+                    <li>
+                        Larutan penyangga adalah larutan yang mampu ....
+                        <ol type="A">
+                            <li>Menaikkan pH secara drastis</li>
+                            <li>Menurunkan pH secara drastis</li>
+                            <li>Mempertahankan pH ketika ditambahkan sedikit asam atau basa</li>
+                            <li>Mengubah pH menjadi netral</li>
+                            <li>Menghilangkan sifat asam dan basa</li>
+                        </ol>
+                    </li>
+
+                    <li>
+                        Berdasarkan percobaan yang telah dilakukan, perubahan pH larutan penyangga
+                        setelah ditambahkan sedikit asam atau basa adalah ....
+                        <ol type="A">
+                            <li>Sangat besar</li>
+                            <li>Berubah drastis</li>
+                            <li>Berubah sedikit</li>
+                            <li>Langsung menjadi netral</li>
+                            <li>Tidak dapat diukur</li>
+                        </ol>
+                    </li>
+
+                    <li>
+                        Jika suatu larutan tidak memiliki sifat penyangga, maka ketika ditambahkan
+                        sedikit asam atau basa, pH larutan akan ....
+                        <ol type="A">
+                            <li>Tetap stabil</li>
+                            <li>Berubah drastis</li>
+                            <li>Berubah sedikit</li>
+                            <li>Menjadi netral</li>
+                            <li>Tidak berubah</li>
+                        </ol>
+                    </li>
+
+                    <li>
+                        Fungsi utama larutan penyangga dalam tubuh manusia adalah ....
+                        <ol type="A">
+                            <li>Mempercepat reaksi metabolisme</li>
+                            <li>Menjaga suhu tubuh</li>
+                            <li>Mempertahankan kestabilan pH</li>
+                            <li>Meningkatkan kadar air</li>
+                            <li>Mempercepat pernapasan</li>
+                        </ol>
+                    </li>
+
+                    <li>
+                        Obat tetes mata dibuat dengan prinsip larutan penyangga karena ....
+                        <ol type="A">
+                            <li>Agar warnanya lebih jernih</li>
+                            <li>Agar rasanya tidak pahit</li>
+                            <li>Agar pH sesuai dengan kondisi mata</li>
+                            <li>Agar mudah menguap</li>
+                            <li>Agar lebih kental</li>
+                        </ol>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="section">
+                <h3>G. Kesimpulan</h3>
+
+                <p>
+                    Dari pembelajaran yang dilakukan, cobalah tarik kesimpulan dari materi yang telah dipelajari.
+                </p>
+
+                <div class="conclusion-box">
+                    Tuliskan kesimpulanmu di buku catatan atau lembar kerja masing-masing.
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <a href="materi.html" class="back-btn">← Kembali</a>
+
+
+    <script>
+        const musicBtn = document.getElementById("musicBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+        let isNavigating = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+
+            setTimeout(() => {
+                sound.pause();
+                sound.currentTime = 0;
+            }, 150);
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        document.querySelectorAll("a[href]").forEach(link => {
+            link.addEventListener("click", function (event) {
+                const href = this.getAttribute("href");
+                if (!href || href.startsWith("#") || isNavigating) return;
+
+                event.preventDefault();
+                isNavigating = true;
+                playClickSound();
+
+                setTimeout(() => {
+                    window.location.href = href;
+                }, 180);
+            });
+        });
+
+        document.querySelectorAll("summary").forEach(summary => {
+            summary.addEventListener("click", playClickSound);
+        });
+    </script>
+
+</body>
+
+</html>

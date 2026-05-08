@@ -1,0 +1,617 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+    <title>Petunjuk Penggunaan</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+        }
+
+        body {
+            background: #e9f8f7;
+            font-family: Arial, Helvetica, sans-serif;
+            user-select: none;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .wrap {
+            width: 100vw;
+            height: 100vh;
+            width: 100dvw;
+            height: 100dvh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stage {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            background-image: url("assets/bg petunjuk penggunaan.png");
+            background-position: center center;
+            background-size: 100% 100%;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 42px;
+            right: 42px;
+            width: 66px;
+            height: 66px;
+            border: none;
+            border-radius: 50%;
+            background: #ef2b2b;
+            color: white;
+            font-size: 40px;
+            font-weight: 900;
+            line-height: 1;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #b41717, 0 12px 20px rgba(0, 0, 0, 0.22);
+            z-index: 30;
+            transition: 0.2s ease;
+        }
+
+        .close-btn:hover,
+        .close-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 5px 0 #b41717, 0 8px 16px rgba(0, 0, 0, 0.22);
+        }
+
+        /* POSISI DESKTOP */
+        .guide-wrapper {
+            position: absolute;
+            top: 130px;
+            right: 170px;
+            width: 640px;
+            height: 415px;
+            z-index: 10;
+        }
+
+        .content-box {
+            width: 100%;
+            height: 345px;
+            padding: 0 16px 10px 0;
+            background: transparent;
+            border-radius: 0;
+            overflow-y: auto;
+            scrollbar-width: thin;
+            scrollbar-color: #1d9ee6 #dff2ff;
+        }
+
+        .content-box::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .content-box::-webkit-scrollbar-track {
+            background: #dff2ff;
+            border-radius: 20px;
+        }
+
+        .content-box::-webkit-scrollbar-thumb {
+            background: #1d9ee6;
+            border-radius: 20px;
+        }
+
+        .intro {
+            width: 100%;
+            margin-bottom: 18px;
+            color: #244965;
+            font-size: 17px;
+            font-weight: 800;
+            line-height: 1.55;
+            text-align: left;
+        }
+
+        .list {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+            padding-bottom: 10px;
+        }
+
+        .item {
+            display: grid;
+            grid-template-columns: 52px 1fr;
+            gap: 14px;
+            align-items: flex-start;
+            padding: 15px 18px;
+            border-radius: 20px;
+            background: rgba(245, 251, 255, 0.94);
+            border: 3px solid #bfe7ff;
+            box-shadow: 0 6px 14px rgba(23, 134, 199, 0.10);
+        }
+
+        .number {
+            width: 48px;
+            height: 48px;
+            border-radius: 15px;
+            background: linear-gradient(#ffcf58, #ff981b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 24px;
+            font-weight: 900;
+            box-shadow: 0 4px 0 #c66a0a;
+        }
+
+        .text h3 {
+            color: #0a7cc3;
+            font-size: 20px;
+            margin-bottom: 7px;
+            line-height: 1.25;
+        }
+
+        .text p,
+        .text li {
+            color: #28445b;
+            font-size: 15px;
+            font-weight: 700;
+            line-height: 1.5;
+            text-align: left;
+            letter-spacing: 0;
+            word-spacing: normal;
+        }
+
+        .text ul {
+            padding-left: 20px;
+            margin-top: 7px;
+        }
+
+        .text li {
+            margin-bottom: 4px;
+        }
+
+        .nav-area {
+            width: 100%;
+            height: 70px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            padding-right: 8px;
+        }
+
+        .nav-btn {
+            min-width: 250px;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(#ffc84b, #f58b15);
+            color: white;
+            font-size: 18px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 7px 0 #b95b08, 0 12px 18px rgba(0, 0, 0, 0.15);
+            transition: 0.2s ease;
+        }
+
+        .nav-btn:hover,
+        .nav-btn:active {
+            transform: translateY(3px);
+            box-shadow: 0 4px 0 #b95b08, 0 8px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 50;
+            transition: 0.15s ease;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        @media (max-width: 900px) and (min-height: 560px) {
+            .music-btn {
+                width: 62px;
+                height: 62px;
+                left: 18px;
+                top: 16px;
+            }
+
+            .music-btn svg {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        @media (max-width: 1200px) and (min-height: 560px) {
+            .guide-wrapper {
+                top: 250px;
+                right: 95px;
+                width: 600px;
+                height: 410px;
+            }
+
+            .content-box {
+                height: 340px;
+            }
+        }
+
+        @media (max-width: 992px) and (min-height: 560px) {
+            .guide-wrapper {
+                top: 230px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                width: 82vw;
+                height: 430px;
+            }
+
+            .content-box {
+                height: 350px;
+            }
+
+            .nav-area {
+                justify-content: center;
+                padding-right: 0;
+            }
+
+            .nav-btn {
+                min-width: 230px;
+                font-size: 17px;
+            }
+
+            .close-btn {
+                top: 24px;
+                right: 24px;
+                width: 60px;
+                height: 60px;
+                font-size: 34px;
+            }
+        }
+
+        /* BAGIAN INI YANG MEMPERBAIKI LANDSCAPE HP */
+        @media (orientation: landscape) and (max-height: 540px) {
+            .bg {
+                background-size: 100% 100%;
+            }
+
+            .close-btn {
+                top: clamp(12px, 5.8vh, 24px);
+                right: clamp(18px, 4vw, 34px);
+                width: clamp(42px, 8vh, 52px);
+                height: clamp(42px, 8vh, 52px);
+                font-size: clamp(25px, 5vh, 32px);
+                box-shadow: 0 5px 0 #b41717, 0 8px 14px rgba(0, 0, 0, 0.20);
+            }
+
+            .guide-wrapper {
+                top: clamp(76px, 20.5vh, 96px);
+                right: clamp(54px, 10vw, 92px);
+                left: auto;
+                transform: none;
+                width: clamp(390px, 57vw, 520px);
+                height: calc(100dvh - clamp(104px, 28vh, 126px));
+            }
+
+            .content-box {
+                height: calc(100% - 42px);
+                padding-right: 8px;
+            }
+
+            .content-box::-webkit-scrollbar {
+                width: 5px;
+            }
+
+            .intro {
+                margin-bottom: 7px;
+                font-size: clamp(10.5px, 1.65vw, 13px);
+                line-height: 1.35;
+            }
+
+            .list {
+                gap: 7px;
+                padding-bottom: 5px;
+            }
+
+            .item {
+                grid-template-columns: 32px 1fr;
+                gap: 8px;
+                padding: 7px 9px;
+                border-radius: 12px;
+                border-width: 2px;
+                box-shadow: 0 3px 8px rgba(23, 134, 199, 0.10);
+            }
+
+            .number {
+                width: 30px;
+                height: 30px;
+                border-radius: 9px;
+                font-size: 16px;
+                box-shadow: 0 3px 0 #c66a0a;
+            }
+
+            .text h3 {
+                font-size: clamp(12.5px, 1.85vw, 15px);
+                margin-bottom: 3px;
+                line-height: 1.15;
+            }
+
+            .text p,
+            .text li {
+                font-size: clamp(9.5px, 1.45vw, 11.5px);
+                line-height: 1.32;
+                font-weight: 700;
+            }
+
+            .text ul {
+                padding-left: 15px;
+                margin-top: 3px;
+            }
+
+            .text li {
+                margin-bottom: 2px;
+            }
+
+            .nav-area {
+                height: 42px;
+                justify-content: flex-end;
+                align-items: center;
+                padding-right: 4px;
+            }
+
+            .nav-btn {
+                min-width: 160px;
+                padding: 8px 13px;
+                border-radius: 13px;
+                font-size: clamp(11px, 1.65vw, 13px);
+                box-shadow: 0 4px 0 #b95b08, 0 7px 10px rgba(0, 0, 0, 0.14);
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+        }
+
+        /* Landscape HP yang sangat pendek, misalnya 740 x 360 */
+        @media (orientation: landscape) and (max-height: 390px) {
+            .guide-wrapper {
+                top: 74px;
+                right: 58px;
+                width: 410px;
+                height: 238px;
+            }
+
+            .content-box {
+                height: 198px;
+            }
+
+            .intro {
+                font-size: 10.5px;
+                line-height: 1.28;
+                margin-bottom: 5px;
+            }
+
+            .item {
+                padding: 6px 8px;
+            }
+
+            .text h3 {
+                font-size: 12.5px;
+            }
+
+            .text p,
+            .text li {
+                font-size: 9.5px;
+                line-height: 1.26;
+            }
+
+            .nav-area {
+                height: 38px;
+            }
+
+            .nav-btn {
+                min-width: 150px;
+                padding: 7px 11px;
+                font-size: 11px;
+            }
+        }
+
+        /* Supaya masih aman kalau layar landscape lebih kecil dari 650px */
+        @media (orientation: landscape) and (max-width: 650px) {
+            .guide-wrapper {
+                right: 42px;
+                width: 360px;
+            }
+
+            .close-btn {
+                right: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="wrap">
+        <div class="stage">
+            <div class="bg"></div>
+
+            <button class="close-btn sound-click" onclick="goToPage('menu.html')">×</button>
+
+            <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+                </svg>
+            </button>
+
+            <div class="guide-wrapper">
+                <div class="content-box">
+                    <p class="intro">
+                        Bacalah petunjuk penggunaan berikut agar kamu dapat menggunakan media pembelajaran
+                        kimia materi larutan penyangga dengan benar dan terarah.
+                    </p>
+
+                    <div class="list">
+                        <div class="item">
+                            <div class="number">1</div>
+                            <div class="text">
+                                <h3>Buka Media Pembelajaran</h3>
+                                <p>
+                                    Buka media pembelajaran kimia materi larutan penyangga. Setelah terbuka,
+                                    kamu akan masuk ke halaman menu utama.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="number">2</div>
+                            <div class="text">
+                                <h3>Pilih Menu yang Tersedia</h3>
+                                <p>
+                                    Pada halaman menu utama, pilih menu sesuai kebutuhan pembelajaran.
+                                </p>
+                                <ul>
+                                    <li>Kompetensi Dasar berisi tujuan dan capaian pembelajaran.</li>
+                                    <li>Pra-Lab berisi keselamatan laboratorium, simbol kimia, tata tertib, dan alat
+                                        laboratorium.</li>
+                                    <li>Materi Pembelajaran berisi materi larutan penyangga.</li>
+                                    <li>Demonstrasi Lab berisi percobaan dan pembahasan.</li>
+                                    <li>Laboratorium digunakan untuk melakukan kegiatan praktikum.</li>
+                                    <li>Soal Evaluasi digunakan untuk mengukur pemahaman.</li>
+                                    <li>Trayek pH digunakan untuk melihat perubahan warna indikator.</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="number">3</div>
+                            <div class="text">
+                                <h3>Gunakan Tombol Navigasi</h3>
+                                <p>
+                                    Gunakan tombol kembali, tombol lanjut, dan tombol silang untuk berpindah
+                                    halaman atau kembali ke menu utama.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="number">4</div>
+                            <div class="text">
+                                <h3>Pelajari Secara Berurutan</h3>
+                                <p>
+                                    Pelajari media pembelajaran secara berurutan mulai dari Kompetensi Dasar,
+                                    Pra-Lab, Materi Pembelajaran, Demonstrasi Lab, Laboratorium, hingga Soal Evaluasi.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-area">
+                    <button class="nav-btn sound-click" onclick="goToPage('petunjukprak.html')">
+                        Petunjuk Praktikum
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <script>
+        const musicBtn = document.getElementById("musicBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+        musicBtn.classList.add("off");
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        function goToPage(page) {
+            playClickSound();
+            setTimeout(() => {
+                window.location.href = page;
+            }, 180);
+        }
+    </script>
+</body>
+
+</html>

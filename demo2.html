@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Simulasi Buffer - Halaman 2</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --pour1-x: 520px;
+            --pour2-x: 340px;
+            --pour-y: -250px;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: "Segoe UI", Arial, Helvetica, sans-serif;
+            background: #eee;
+        }
+
+        .container {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            object-position: center center;
+            display: block;
+            z-index: 0;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        /* SOUND */
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 16px 26px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 120;
+        }
+
+        .music-btn:active {
+            transform: scale(.96);
+        }
+
+        .music-btn.off {
+            opacity: .55;
+        }
+
+        .music-btn svg {
+            width: 30px;
+            height: 30px;
+            fill: #fff;
+        }
+
+        /* BOX kiri */
+        .box-percobaan {
+            position: absolute;
+            top: 34px;
+            left: 104px;
+            width: 280px;
+            padding: 16px 14px;
+            background: rgba(255, 255, 255, 0.93);
+            border: 2px solid rgba(0, 0, 0, 0.28);
+            text-align: center;
+            font-size: 20px;
+            line-height: 1.2;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.08);
+            z-index: 40;
+        }
+
+        .box-percobaan strong {
+            display: block;
+            margin-top: 8px;
+            font-weight: 900;
+            letter-spacing: .3px;
+        }
+
+        /* BOX reaksi */
+        .box-reaksi {
+            position: absolute;
+            top: 60px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 270px;
+            min-height: 62px;
+            padding: 10px 16px;
+            background: rgba(255, 255, 255, 0.93);
+            border: 2px solid #6fb35d;
+            border-radius: 22px;
+            box-shadow: 0 12px 22px rgba(0, 0, 0, 0.10);
+            text-align: center;
+            z-index: 40;
+        }
+
+        .box-reaksi .title {
+            font-size: 14px;
+            margin: 0 0 5px 0;
+            font-weight: 800;
+        }
+
+        .rx-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 18px;
+            font-size: 15px;
+            margin-top: 2px;
+            font-weight: 800;
+        }
+
+        .rx-row .plus {
+            font-weight: 900;
+        }
+
+        /* BEAKER + AIR */
+        .beaker-wrap {
+            position: absolute;
+            left: 55%;
+            transform: translateX(-50%);
+            bottom: 2px;
+            width: 900px;
+            height: 350px;
+            z-index: 20;
+            pointer-events: none;
+        }
+
+        .beaker {
+            position: absolute;
+            left: 30%;
+            transform: translateX(-50%);
+            bottom: 0;
+            width: 650px;
+            z-index: 20;
+            pointer-events: none;
+            user-select: none;
+        }
+
+        .beaker-fill {
+            position: absolute;
+            left: 30%;
+            transform: translateX(-50%);
+            bottom: 80px;
+            width: 170px;
+            height: 210px;
+            border-radius: 0 0 80px 80px;
+            overflow: hidden;
+            z-index: 30;
+            pointer-events: none;
+        }
+
+        .water {
+            position: absolute;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            height: 0px;
+            background: rgba(140, 200, 255, 0.40);
+            border-radius: 0 0 80px 80px;
+            transition: height 0.8s ease;
+        }
+
+        .water::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 10px;
+            background: rgba(255, 255, 255, 0.25);
+        }
+
+        /* BOTOL + KONSENTRASI */
+        .botol-area {
+            position: absolute;
+            left: 100px;
+            bottom: 2px;
+            display: flex;
+            gap: 20px;
+            align-items: flex-end;
+            z-index: 50;
+        }
+
+        .botol-item {
+            width: 100px;
+            text-align: center;
+            position: relative;
+        }
+
+        .botol-item img {
+            display: block;
+            margin: 0 auto;
+        }
+
+        .mol-top {
+            width: 180px;
+            height: 20px;
+            margin: 0 auto 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+
+        .mol-top img {
+            width: 180px;
+            height: 70px;
+            object-fit: contain;
+            display: block;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .kons-badge {
+            position: absolute;
+            top: 55px;
+            left: 90%;
+            transform: translateX(-50%);
+            min-width: 68px;
+            padding: 4px 8px;
+            background: rgba(255, 255, 255, 0.92);
+            border: 2px solid rgba(0, 0, 0, 0.18);
+            border-radius: 14px;
+            font-weight: 900;
+            color: #444;
+            font-size: 14px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+            z-index: 70;
+            pointer-events: none;
+        }
+
+        .botol {
+            width: 180px;
+            display: block;
+            margin: auto;
+            cursor: pointer;
+            transition: .2s;
+            transform-origin: 75% 85%;
+            filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.10));
+            pointer-events: auto;
+            position: relative;
+            z-index: 60;
+            user-select: none;
+        }
+
+        .botol:hover {
+            transform: scale(1.05);
+        }
+
+        .botol.poured {
+            cursor: default;
+            opacity: 0.93;
+            filter: drop-shadow(0 10px 12px rgba(0, 0, 0, 0.10)) grayscale(0.15);
+        }
+
+        /* ANIMASI TUANG */
+        @keyframes pour1 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            45% {
+                transform: translate(var(--pour1-x), var(--pour-y)) rotate(-40deg);
+            }
+
+            75% {
+                transform: translate(var(--pour1-x), var(--pour-y)) rotate(-40deg);
+            }
+
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+        }
+
+        @keyframes pour2 {
+            0% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+
+            45% {
+                transform: translate(var(--pour2-x), var(--pour-y)) rotate(-40deg);
+            }
+
+            75% {
+                transform: translate(var(--pour2-x), var(--pour-y)) rotate(-40deg);
+            }
+
+            100% {
+                transform: translate(0, 0) rotate(0deg);
+            }
+        }
+
+        /* pH scale kanan */
+        .ph-wrap {
+            position: absolute;
+            top: 3px;
+            right: 36px;
+            width: 100px;
+            height: 560px;
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            z-index: 60;
+        }
+
+        .ph-scale {
+            height: 500px;
+            width: 34px;
+            border: 2px solid rgba(0, 0, 0, 0.30);
+            overflow: hidden;
+            background: linear-gradient(to bottom,
+                    #f01818 0%,
+                    #ff4b00 7%,
+                    #ff9800 14%,
+                    #fff000 21%,
+                    #c7f43b 28%,
+                    #75c943 36%,
+                    #39b54a 43%,
+                    #34b65a 50%,
+                    #22bfa2 57%,
+                    #20b8d0 64%,
+                    #2697d4 71%,
+                    #2b62b8 78%,
+                    #3949ab 85%,
+                    #4b2ca3 92%,
+                    #5b2ca0 100%);
+            box-shadow: 0 12px 18px rgba(0, 0, 0, 0.10);
+            border-radius: 4px;
+        }
+
+        .ph-numbers {
+            position: absolute;
+            left: 0px;
+            top: 0;
+            height: 500px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            font-size: 13px;
+            color: #333;
+            opacity: .85;
+            transform: translateX(-22px);
+        }
+
+        .ph-arrow {
+            position: absolute;
+            top: 0px;
+            right: 58px;
+            width: 0;
+            height: 0;
+            border-top: 10px solid transparent;
+            border-bottom: 10px solid transparent;
+            border-right: 18px solid #d60000;
+            filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.15));
+            transition: top .6s ease;
+        }
+
+        .ph-value {
+            position: absolute;
+            right: 25px;
+            bottom: 40px;
+            width: 140px;
+            padding: 10px 18px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.93);
+            border: 2px solid rgba(255, 102, 0, 0.55);
+            box-shadow: 0 14px 22px rgba(0, 0, 0, 0.10);
+            font-weight: 1000;
+            font-size: 20px;
+            z-index: 60;
+        }
+
+        .btn-back {
+            position: absolute;
+            left: 26px;
+            bottom: 24px;
+            width: 80px;
+            cursor: pointer;
+            transition: .2s;
+            z-index: 80;
+            transform: scaleX(-1);
+            filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.12));
+        }
+
+        .btn-back:hover {
+            transform: scaleX(-1) scale(1.06);
+        }
+
+        .btn-next {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            bottom: 28px;
+            width: 80px;
+            cursor: pointer;
+            transition: .2s;
+            display: none;
+            z-index: 80;
+            filter: drop-shadow(0 12px 16px rgba(0, 0, 0, 0.12));
+        }
+
+        .btn-next:hover {
+            transform: translateX(-50%) scale(1.06);
+        }
+
+        .hint {
+            position: absolute;
+            left: 150px;
+            bottom: 20px;
+            width: 250px;
+            padding: 16px 18px;
+            border-radius: 14px;
+            background: rgba(80, 80, 80, 0.68);
+            color: #fff;
+            font-weight: 900;
+            text-align: center;
+            z-index: 40;
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.12);
+            letter-spacing: .3px;
+        }
+
+        @media (max-width: 1200px) {
+            .box-percobaan {
+                left: 92px;
+                width: 245px;
+                font-size: 17px;
+            }
+
+            .box-reaksi {
+                top: 50px;
+                width: 240px;
+            }
+
+            .beaker-wrap {
+                left: 56%;
+                width: 770px;
+                height: 310px;
+            }
+
+            .beaker {
+                width: 560px;
+            }
+
+            .beaker-fill {
+                bottom: 70px;
+                width: 148px;
+                height: 180px;
+            }
+
+            .botol-area {
+                left: 82px;
+                gap: 8px;
+            }
+
+            .botol {
+                width: 150px;
+            }
+
+            .mol-top,
+            .mol-top img {
+                width: 145px;
+            }
+
+            .ph-wrap,
+            .ph-scale,
+            .ph-numbers {
+                height: 500px;
+            }
+        }
+
+        /* MOBILE PORTRAIT */
+        @media (max-width: 760px) and (orientation: portrait) {
+
+            html,
+            body {
+                overflow: hidden;
+            }
+
+            .bg {
+                object-fit: cover;
+            }
+
+            .music-btn {
+                width: 48px;
+                height: 48px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 23px;
+                height: 23px;
+            }
+
+            .box-percobaan {
+                top: 66px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 72vw;
+                padding: 8px 10px;
+                font-size: 13px;
+            }
+
+            .box-percobaan strong {
+                margin-top: 4px;
+            }
+
+            .box-reaksi {
+                top: 140px;
+                width: 70vw;
+                min-height: 48px;
+                padding: 7px 10px;
+                border-radius: 16px;
+            }
+
+            .box-reaksi .title {
+                font-size: 11px;
+                margin-bottom: 3px;
+            }
+
+            .rx-row {
+                font-size: 12px;
+                gap: 9px;
+            }
+
+            .botol-area {
+                left: 24px;
+                bottom: 95px;
+                gap: 4px;
+            }
+
+            .botol-item {
+                width: 78px;
+            }
+
+            .botol {
+                width: 98px;
+            }
+
+            .mol-top {
+                width: 100px;
+                height: 12px;
+                margin-bottom: 42px;
+            }
+
+            .mol-top img {
+                width: 102px;
+                height: 42px;
+            }
+
+            .kons-badge {
+                top: 32px;
+                left: 84%;
+                min-width: 48px;
+                padding: 2px 8px;
+                font-size: 11px;
+            }
+
+            .beaker-wrap {
+                left: 58%;
+                bottom: 72px;
+                width: 430px;
+                height: 205px;
+            }
+
+            .beaker {
+                width: 330px;
+            }
+
+            .beaker-fill {
+                bottom: 42px;
+                width: 86px;
+                height: 108px;
+            }
+
+            .ph-wrap {
+                top: 215px;
+                right: 8px;
+                width: 52px;
+                height: 320px;
+            }
+
+            .ph-scale,
+            .ph-numbers {
+                height: 320px;
+            }
+
+            .ph-scale {
+                width: 22px;
+            }
+
+            .ph-numbers {
+                font-size: 9px;
+                transform: translateX(-14px);
+            }
+
+            .ph-arrow {
+                right: 31px;
+                border-top-width: 7px;
+                border-bottom-width: 7px;
+                border-right-width: 13px;
+            }
+
+            .ph-value {
+                right: 8px;
+                bottom: 56px;
+                width: 82px;
+                padding: 7px 6px;
+                font-size: 12px;
+            }
+
+            .hint {
+                left: 50%;
+                transform: translateX(-50%);
+                bottom: 20px;
+                width: 210px;
+                padding: 10px 12px;
+                font-size: 12px;
+            }
+
+            .btn-back {
+                left: 12px;
+                bottom: 14px;
+                width: 54px;
+            }
+
+            .btn-next {
+                bottom: 14px;
+                width: 54px;
+            }
+
+            :root {
+                --pour1-x: 170px;
+                --pour2-x: 100px;
+                --pour-y: -150px;
+            }
+        }
+
+        /* HP LANDSCAPE */
+        @media (orientation: landscape) and (max-height: 500px) {
+            :root {
+                --pour1-x: 290px;
+                --pour2-x: 190px;
+                --pour-y: -135px;
+            }
+
+            html,
+            body {
+                overflow: hidden;
+            }
+
+            .bg {
+                object-fit: cover;
+                object-position: center center;
+            }
+
+            .music-btn {
+                width: 42px;
+                height: 42px;
+                left: 10px;
+                top: 9px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 20px;
+                height: 20px;
+            }
+
+            .box-percobaan {
+                top: 11px;
+                left: 62px;
+                width: 162px;
+                padding: 6px 7px;
+                font-size: 11px;
+                line-height: 1.15;
+                border-width: 1.5px;
+            }
+
+            .box-percobaan strong {
+                margin-top: 3px;
+                font-size: 11px;
+            }
+
+            .box-reaksi {
+                top: 12px;
+                width: 170px;
+                min-height: 42px;
+                padding: 5px 8px;
+                border-radius: 14px;
+                border-width: 1.5px;
+            }
+
+            .box-reaksi .title {
+                font-size: 9px;
+                margin-bottom: 2px;
+            }
+
+            .rx-row {
+                font-size: 10px;
+                gap: 8px;
+            }
+
+            .botol-area {
+                left: 56px;
+                bottom: 42px;
+                gap: 0;
+            }
+
+            .botol-item {
+                width: 76px;
+            }
+
+            .botol {
+                width: 102px;
+            }
+
+            .botol:hover {
+                transform: scale(1.03);
+            }
+
+            .mol-top {
+                width: 102px;
+                height: 12px;
+                margin-bottom: 40px;
+            }
+
+            .mol-top img {
+                width: 108px;
+                height: 42px;
+            }
+
+            .kons-badge {
+                top: 32px;
+                left: 83%;
+                min-width: 48px;
+                padding: 2px 7px;
+                font-size: 10px;
+                border-radius: 10px;
+            }
+
+            .beaker-wrap {
+                left: 54%;
+                bottom: 16px;
+                width: 410px;
+                height: 190px;
+            }
+
+            .beaker {
+                width: 350px;
+            }
+
+            .beaker-fill {
+                bottom: 43px;
+                width: 92px;
+                height: 113px;
+            }
+
+            .ph-wrap {
+                top: 10px;
+                right: 16px;
+                width: 52px;
+                height: 245px;
+            }
+
+            .ph-scale,
+            .ph-numbers {
+                height: 245px;
+            }
+
+            .ph-scale {
+                width: 21px;
+                border-width: 1.5px;
+            }
+
+            .ph-numbers {
+                font-size: 8px;
+                transform: translateX(-14px);
+            }
+
+            .ph-arrow {
+                right: 31px;
+                border-top-width: 6px;
+                border-bottom-width: 6px;
+                border-right-width: 12px;
+            }
+
+            .ph-value {
+                right: 8px;
+                bottom: 52px;
+                width: 82px;
+                padding: 6px 5px;
+                font-size: 12px;
+                border-width: 1.5px;
+            }
+
+            .hint {
+                left: 178px;
+                bottom: 12px;
+                width: 180px;
+                padding: 8px 10px;
+                font-size: 11px;
+                border-radius: 10px;
+            }
+
+            .btn-back {
+                left: 10px;
+                bottom: 10px;
+                width: 48px;
+            }
+
+            .btn-next {
+                bottom: 10px;
+                width: 48px;
+            }
+        }
+
+        /* HP LANDSCAPE SANGAT PENDEK, contoh 604 x 320 */
+        @media (orientation: landscape) and (max-height: 360px) {
+            :root {
+                --pour1-x: 250px;
+                --pour2-x: 165px;
+                --pour-y: -120px;
+            }
+
+            .box-percobaan {
+                top: 9px;
+                left: 58px;
+                width: 152px;
+                font-size: 10px;
+                padding: 5px 6px;
+            }
+
+            .box-reaksi {
+                top: 9px;
+                width: 160px;
+                min-height: 39px;
+                left: 55%;
+            }
+
+            .botol-area {
+                left: 50px;
+                bottom: 2px;
+            }
+
+            .botol-item {
+                width: 70px;
+            }
+
+            .botol {
+                width: 90px;
+            }
+
+            .mol-top {
+                width: 96px;
+                margin-bottom: 38px;
+            }
+
+            .mol-top img {
+                width: 95px;
+                height: 38px;
+            }
+
+            .kons-badge {
+                top: 25px;
+                font-size: 9px;
+                padding: 2px 3px;
+            }
+
+            .beaker-wrap {
+                left: 55%;
+                bottom: 2px;
+                width: 365px;
+                height: 168px;
+            }
+
+            .beaker {
+                width: 315px;
+            }
+
+            .beaker-fill {
+                bottom: 39px;
+                width: 82px;
+                height: 98px;
+            }
+
+            .ph-wrap {
+                top: 10px;
+                right: 12px;
+                height: 220px;
+            }
+
+            .ph-scale,
+            .ph-numbers {
+                height: 220px;
+            }
+
+            .hint {
+                left: 70px;
+                bottom: 10px;
+                width: 165px;
+                padding: 7px 8px;
+                font-size: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="container" id="stage">
+        <img src="assets/bg pink.png" class="bg" alt="bg" />
+
+        <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+            </svg>
+        </button>
+
+        <div class="box-percobaan">
+            Percobaan Reaksi:
+            <strong id="namaPercobaan">-</strong>
+        </div>
+
+        <div class="box-reaksi">
+            <div class="title">Persamaan Reaksi:</div>
+            <div class="rx-row">
+                <div id="rxA">-</div>
+                <div class="plus">+</div>
+                <div id="rxB">-</div>
+            </div>
+        </div>
+
+        <div class="beaker-wrap">
+            <div class="beaker-fill">
+                <div class="water" id="water"></div>
+            </div>
+            <img src="assets/beaker final.png" class="beaker" alt="beaker">
+        </div>
+
+        <div class="botol-area">
+            <div class="botol-item">
+                <div class="mol-top">
+                    <img id="molA" src="" alt="senyawa A">
+                </div>
+                <div class="kons-badge" id="kons1">-</div>
+                <img id="botol1" class="botol" src="" alt="botol1" onclick="tuang(1)">
+            </div>
+
+            <div class="botol-item">
+                <div class="mol-top">
+                    <img id="molB" src="" alt="senyawa B">
+                </div>
+                <div class="kons-badge" id="kons2">-</div>
+                <img id="botol2" class="botol" src="" alt="botol2" onclick="tuang(2)">
+            </div>
+        </div>
+
+        <div class="hint" id="hint">Tuangkan 2 larutan</div>
+
+        <div class="ph-wrap" id="phWrap">
+            <div class="ph-numbers">
+                <div>0</div>
+                <div>1</div>
+                <div>2</div>
+                <div>3</div>
+                <div>4</div>
+                <div>5</div>
+                <div>6</div>
+                <div>7</div>
+                <div>8</div>
+                <div>9</div>
+                <div>10</div>
+                <div>11</div>
+                <div>12</div>
+                <div>13</div>
+                <div>14</div>
+            </div>
+            <div class="ph-scale" id="phScale"></div>
+            <div class="ph-arrow" id="phArrow"></div>
+        </div>
+
+        <div class="ph-value" id="phValue">pH = 0,00</div>
+
+        <img src="assets/tombol_panah_kanan-removebg-preview.png" class="btn-back" alt="back" onclick="kembali()" />
+        <img src="assets/tombol_panah_kanan-removebg-preview.png" class="btn-next" id="btnNext" alt="next"
+            onclick="nextStep()">
+    </div>
+
+    <script>
+        const stage = document.getElementById("stage");
+        const musicBtn = document.getElementById("musicBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+            setTimeout(() => {
+                sound.pause();
+                sound.currentTime = 0;
+            }, 150);
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        function kembali() {
+            playClickSound();
+            setTimeout(() => {
+                window.location.href = "lab.html";
+            }, 180);
+        }
+
+        function nextStep() {
+            playClickSound();
+            setTimeout(() => {
+                window.location.href = "demo3.html";
+            }, 180);
+        }
+
+        const bufferMap = {
+            HCOOH: "HCOONa",
+            CH3COOH: "CH3COONa",
+            HF: "NaF",
+            H2CO3: "NaHCO3",
+            NH4OH: "NH4Cl",
+            H3PO4: "NaH2PO4",
+            HNO2: "NaNO2"
+        };
+
+        const pKaMap = {
+            HCOOH: 3.75,
+            CH3COOH: 4.76,
+            HF: 3.17,
+            H2CO3: 6.35,
+            HNO2: 3.35,
+            H3PO4: 2.15,
+            NH4OH: 9.25
+        };
+
+        const phAwalMap = {
+            HCOOH: { 0.1: 2.87, 0.25: 2.67, 0.5: 2.52, 0.75: 2.43, 1: 2.37 },
+            CH3COOH: { 0.1: 2.87, 0.25: 2.67, 0.5: 2.52, 0.75: 2.43, 1: 2.37 },
+            H2CO3: { 0.1: 3.68, 0.25: 3.53, 0.5: 3.38, 0.75: 3.30, 1: 3.23 },
+            NH4OH: { 0.1: 11.13, 0.25: 11.33, 0.5: 11.48, 0.75: 11.57, 1: 11.63 },
+            H3PO4: { 0.1: 1.57, 0.25: 1.37, 0.5: 1.22, 0.75: 1.13, 1: 1.07 },
+            HNO2: { 0.1: 2.70, 0.25: 2.50, 0.5: 2.35, 0.75: 2.27, 1: 2.20 },
+            HF: { 0.1: 2.58, 0.25: 2.38, 0.5: 2.23, 0.75: 2.15, 1: 2.08 }
+        };
+
+        let data = null;
+        let poured = { 1: false, 2: false };
+        let busy = false;
+        let lastPH = 0;
+
+        function formatKoma(x) {
+            return String(x).replace(".", ",");
+        }
+
+        function setPH(ph) {
+            ph = Math.max(0, Math.min(14, ph));
+            lastPH = ph;
+            document.getElementById("phValue").innerText = `pH = ${ph.toFixed(2).replace(".", ",")}`;
+
+            const scale = document.getElementById("phScale");
+            const arrow = document.getElementById("phArrow");
+            const scaleHeight = scale.clientHeight || 560;
+            const arrowHalf = arrow.offsetHeight ? arrow.offsetHeight / 2 : 10;
+            const y = (ph / 14) * (scaleHeight - arrowHalf * 2);
+            arrow.style.top = `${y}px`;
+        }
+
+        function getSinglePH(index) {
+            const s = data["s" + index];
+            const chem = s.chem;
+            const kons = Number(s.kons);
+
+            if (phAwalMap[chem] && phAwalMap[chem][kons] !== undefined) {
+                return phAwalMap[chem][kons];
+            }
+
+            return 0;
+        }
+
+        function computePH() {
+            const s1 = data.s1;
+            const s2 = data.s2;
+
+            let acid = null, Ca = null, Cb = null;
+
+            if (bufferMap[s1.chem] === s2.chem) {
+                acid = s1.chem;
+                Ca = Number(s1.kons);
+                Cb = Number(s2.kons);
+            } else if (bufferMap[s2.chem] === s1.chem) {
+                acid = s2.chem;
+                Ca = Number(s2.kons);
+                Cb = Number(s1.kons);
+            }
+
+            if (!acid || pKaMap[acid] === undefined || !Ca || !Cb) return 0;
+
+            return pKaMap[acid] + Math.log10(Cb / Ca);
+        }
+
+        function loadFromStorage() {
+            const raw = localStorage.getItem("buffer_simulasi");
+            if (!raw) {
+                alert("Data tidak ditemukan. Kembali ke halaman 1.");
+                kembali();
+                return;
+            }
+
+            data = JSON.parse(raw);
+
+            const s1 = data.s1;
+            const s2 = data.s2;
+
+            document.getElementById("namaPercobaan").innerText = `${s1.chem} + ${s2.chem}`;
+            document.getElementById("rxA").innerText = s1.chem;
+            document.getElementById("rxB").innerText = s2.chem;
+
+            document.getElementById("botol1").src = `tabung/${s1.chem}.png`;
+            document.getElementById("botol2").src = `tabung/${s2.chem}.png`;
+
+            document.getElementById("kons1").innerText = formatKoma(s1.kons) + " M";
+            document.getElementById("kons2").innerText = formatKoma(s2.kons) + " M";
+
+            document.getElementById("molA").src = `senyawa/${s1.chem}.png`;
+            document.getElementById("molB").src = `senyawa/${s2.chem}.png`;
+
+            setPH(0);
+        }
+
+        function naikkanAir() {
+            const water = document.getElementById("water");
+            const current = parseFloat(water.style.height || "0");
+            const fillBox = document.querySelector(".beaker-fill");
+            const maxH = Math.max(65, fillBox.clientHeight * 0.76);
+            const add = maxH / 2;
+            const next = Math.min(maxH, current + add);
+            water.style.height = next + "px";
+        }
+
+        function tuang(n) {
+            if (busy) return;
+            if (poured[n]) return;
+
+            if (n === 2 && !poured[1]) {
+                playClickSound();
+                alert("Tuangkan botol pertama terlebih dahulu!");
+                return;
+            }
+
+            busy = true;
+            playClickSound();
+
+            const botol = document.getElementById("botol" + n);
+            const hint = document.getElementById("hint");
+            const alreadyCount = (poured[1] ? 1 : 0) + (poured[2] ? 1 : 0);
+
+            botol.style.animation = "none";
+            void botol.offsetWidth;
+
+            botol.style.animation = (n === 1)
+                ? "pour1 1.35s ease forwards"
+                : "pour2 1.35s ease forwards";
+
+            setTimeout(() => {
+                naikkanAir();
+            }, 650);
+
+            setTimeout(() => {
+                poured[n] = true;
+                busy = false;
+
+                botol.classList.add("poured");
+                botol.style.pointerEvents = "none";
+                botol.style.animation = "none";
+
+                if (alreadyCount === 0) {
+                    const phSingle = getSinglePH(n);
+                    hint.innerText = `pH larutan = ${phSingle.toFixed(2).replace(".", ",")}`;
+                    setPH(phSingle);
+                } else {
+                    const finalPH = computePH();
+                    hint.innerText = `pH campuran = ${finalPH.toFixed(2).replace(".", ",")}`;
+                    setPH(finalPH);
+                    document.getElementById("btnNext").style.display = "block";
+                }
+            }, 1350);
+        }
+
+        window.addEventListener("resize", () => {
+            setPH(lastPH);
+        });
+
+        loadFromStorage();
+    </script>
+</body>
+
+</html>

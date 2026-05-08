@@ -1,0 +1,443 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Materi</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #dff3ff;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+        }
+
+        .container {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px;
+            background-image: url("assets/BG MATERI.png");
+            background-size: 100% 100%;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        /* TOMBOL MUSIK */
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 80;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        .papan {
+            position: relative;
+            width: min(78vw, 1050px);
+            aspect-ratio: 1080 / 720;
+            background-image: url("assets/BG papan tulis MATERI.png");
+            background-size: contain;
+            background-position: center center;
+            background-repeat: no-repeat;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .menu-button {
+            position: absolute;
+            width: 55%;
+            max-width: 650px;
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            transition: transform 0.25s ease, filter 0.25s ease;
+        }
+
+        .menu-button img {
+            width: 100%;
+            display: block;
+            user-select: none;
+            pointer-events: none;
+            -webkit-user-drag: none;
+        }
+
+        .menu-button:hover {
+            filter: drop-shadow(0 8px 12px rgba(25, 102, 180, 0.35));
+        }
+
+        .materi-1 {
+            top: 34%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .materi-1:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .materi-2 {
+            top: 57%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+        }
+
+        .materi-2:hover {
+            transform: translate(-50%, -50%) scale(1.05);
+        }
+
+        .back-btn {
+            position: fixed;
+            left: 25px;
+            bottom: 25px;
+            z-index: 90;
+            border: none;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #ffffff, #dff3ff);
+            color: #1b5f9e;
+            font-size: 18px;
+            font-weight: 900;
+            border: 3px solid #5aaee6;
+            box-shadow: 0 5px 14px rgba(30, 100, 170, 0.35);
+            transition: 0.25s ease;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.07);
+            background: #cfeeff;
+        }
+
+        .back-btn:active {
+            transform: scale(.96);
+        }
+
+        /* DESKTOP KECIL / TABLET */
+        @media (max-width: 900px) {
+            .container {
+                padding: 18px;
+            }
+
+            .papan {
+                width: 94vw;
+            }
+
+            .menu-button {
+                width: 66%;
+            }
+
+            .materi-1 {
+                top: 36%;
+            }
+
+            .materi-2 {
+                top: 57%;
+            }
+
+            .music-btn {
+                width: 56px;
+                height: 56px;
+                left: 14px;
+                top: 14px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 27px;
+                height: 27px;
+            }
+
+            .back-btn {
+                font-size: 15px;
+                padding: 9px 20px;
+                left: 15px;
+                bottom: 15px;
+            }
+        }
+
+        /* MOBILE PORTRAIT */
+        @media (max-width: 600px) and (orientation: portrait) {
+
+            html,
+            body {
+                overflow: hidden;
+            }
+
+            .container {
+                padding: 12px;
+                align-items: center;
+                background-size: cover;
+            }
+
+            .papan {
+                width: 100vw;
+                max-width: 100vw;
+            }
+
+            .menu-button {
+                width: 74%;
+            }
+
+            .materi-1 {
+                top: 38%;
+            }
+
+            .materi-2 {
+                top: 57%;
+            }
+
+            .music-btn {
+                width: 48px;
+                height: 48px;
+                left: 10px;
+                top: 10px;
+            }
+
+            .music-btn svg {
+                width: 23px;
+                height: 23px;
+            }
+
+            .back-btn {
+                font-size: 13px;
+                padding: 8px 16px;
+                left: 12px;
+                bottom: 12px;
+            }
+        }
+
+        /* HP LANDSCAPE - DISAMAKAN DENGAN DESKTOP */
+        @media (orientation: landscape) and (max-height: 500px) {
+
+            html,
+            body {
+                overflow: hidden;
+            }
+
+            .container {
+                padding: 0;
+                background-size: 100% 100%;
+                background-position: center center;
+            }
+
+            .papan {
+                width: min(74vw, calc(100vh * 1.45));
+                max-width: 560px;
+                aspect-ratio: 1080 / 720;
+            }
+
+            .menu-button {
+                width: 56%;
+            }
+
+            .materi-1 {
+                top: 34%;
+            }
+
+            .materi-2 {
+                top: 57%;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+                box-shadow: 0 10px 18px rgba(0, 0, 0, .32);
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .back-btn {
+                left: 12px;
+                bottom: 10px;
+                padding: 7px 15px;
+                font-size: 12.5px;
+                border-width: 2px;
+                border-radius: 22px;
+            }
+        }
+
+        /* HP LANDSCAPE SANGAT PENDEK, CONTOH 604 x 320 */
+        @media (orientation: landscape) and (max-height: 360px) {
+            .papan {
+                width: min(72vw, calc(100vh * 1.43));
+                max-width: 520px;
+            }
+
+            .menu-button {
+                width: 57%;
+            }
+
+            .materi-1 {
+                top: 34%;
+            }
+
+            .materi-2 {
+                top: 57%;
+            }
+
+            .back-btn {
+                left: 10px;
+                bottom: 8px;
+                padding: 6px 13px;
+                font-size: 12px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="container" id="stage">
+
+        <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+            </svg>
+        </button>
+
+        <div class="papan">
+            <button class="menu-button materi-1" type="button" data-link="materi1.html">
+                <img src="assets/MATERI 1 BUTTON (1).png" alt="Materi 1">
+            </button>
+
+            <button class="menu-button materi-2" type="button" data-link="materi2.html">
+                <img src="assets/MATERI 2 BUTTON (1).png" alt="Materi 2">
+            </button>
+        </div>
+
+        <button class="back-btn" type="button" data-link="menu.html">← Kembali</button>
+    </div>
+
+    <script>
+        const stage = document.getElementById("stage");
+        const musicBtn = document.getElementById("musicBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+        let isNavigating = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+
+            setTimeout(() => {
+                sound.pause();
+                sound.currentTime = 0;
+            }, 150);
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        function goToPage(url) {
+            if (isNavigating) return;
+            isNavigating = true;
+
+            playClickSound();
+
+            setTimeout(() => {
+                stage.style.transition = "opacity 0.22s ease";
+                stage.style.opacity = "0";
+
+                setTimeout(() => {
+                    window.location.href = url;
+                }, 220);
+            }, 180);
+        }
+
+        document.querySelectorAll("[data-link]").forEach(button => {
+            button.addEventListener("click", () => {
+                goToPage(button.dataset.link);
+            });
+        });
+    </script>
+
+</body>
+
+</html>

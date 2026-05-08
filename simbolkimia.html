@@ -1,0 +1,894 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Simbol Kimia</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        :root {
+            --symbol-card-width: 130px;
+            --symbol-card-height: 130px;
+            --symbol-card-gap: 10px;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #dff3ff;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+        }
+
+        .stage {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            background-image: url("assets/BG Simbol Kimia.png");
+            background-size: 100% 100%;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        /* TOMBOL MUSIK DISAMAKAN DENGAN HALAMAN HOME */
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 80;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 34px;
+            right: 46px;
+            width: 72px;
+            height: 72px;
+            border: 0;
+            border-radius: 50%;
+            background: linear-gradient(#72c3ff, #4098ea);
+            color: #ffffff;
+            font-size: 46px;
+            font-weight: 900;
+            line-height: 72px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #2c67bd, 0 12px 20px rgba(0, 0, 0, .22);
+            z-index: 70;
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+
+        .close-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 6px 0 #2c67bd, 0 10px 18px rgba(0, 0, 0, .20);
+        }
+
+        .page-title {
+            position: absolute;
+            top: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            padding: 10px 38px;
+            border: 5px solid #8ec8f7;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, .92);
+            color: #1f5c9e;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.05;
+            text-align: center;
+            letter-spacing: .5px;
+            white-space: nowrap;
+            box-shadow: 0 8px 18px rgba(45, 108, 169, .18);
+            z-index: 20;
+        }
+
+        .content-area {
+            position: absolute;
+            left: 70px;
+            right: 80px;
+            top: 155px;
+            bottom: 34px;
+            z-index: 10;
+        }
+
+        .main-panel {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: rgba(255, 255, 255, .94);
+            border: 5px solid #8ec8f7;
+            border-radius: 30px;
+            box-shadow: 0 8px 20px rgba(45, 108, 169, .18);
+            padding: 22px 28px 24px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .panel-head {
+            text-align: center;
+            margin-bottom: 16px;
+            flex: 0 0 auto;
+        }
+
+        .panel-head h2 {
+            color: #1f5c9e;
+            font-size: 36px;
+            font-weight: 900;
+            line-height: 1.05;
+        }
+
+        .panel-head p {
+            margin-top: 6px;
+            color: #14375d;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .symbol-grid {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            gap: var(--symbol-card-gap);
+            align-items: center;
+            justify-items: center;
+        }
+
+        .symbol-card {
+            width: var(--symbol-card-width);
+            height: var(--symbol-card-height);
+            border: 0;
+            border-radius: 20px;
+            padding: 0;
+            background: transparent;
+            cursor: pointer;
+            transition: transform .18s ease, filter .18s ease;
+        }
+
+        .symbol-card:hover {
+            transform: translateY(-7px) scale(1.04);
+            filter: drop-shadow(0 12px 10px rgba(0, 0, 0, .20));
+        }
+
+        .symbol-card:active {
+            transform: translateY(0) scale(.98);
+        }
+
+        .symbol-card.active {
+            transform: translateY(-4px) scale(1.04);
+            filter: drop-shadow(0 0 10px rgba(64, 152, 234, .75));
+        }
+
+        .symbol-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .preview-area {
+            margin-top: 18px;
+            height: 250px;
+            display: grid;
+            grid-template-columns: 145px 175px 1fr;
+            gap: 22px;
+            align-items: center;
+            padding: 16px 24px;
+            border: 4px solid #9acaf8;
+            border-radius: 24px;
+            background: #eaf6ff;
+            flex: 0 0 auto;
+        }
+
+        .preview-symbol,
+        .preview-bottle {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            justify-self: center;
+        }
+
+        .preview-symbol {
+            width: 125px;
+            height: 125px;
+        }
+
+        .preview-bottle {
+            width: 115px;
+            height: 185px;
+        }
+
+        .preview-symbol img,
+        .preview-bottle img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .preview-text h3 {
+            margin-bottom: 10px;
+            color: #1f5c9e;
+            font-size: 34px;
+            font-weight: 900;
+            line-height: 1.05;
+        }
+
+        .preview-text p {
+            margin-bottom: 10px;
+            color: #14375d;
+            font-size: 18px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .preview-text .note {
+            margin-bottom: 0;
+            color: #0d3b66;
+            font-size: 17px;
+            font-weight: 800;
+        }
+
+        @media (max-width: 1366px) {
+            :root {
+                --symbol-card-width: 132px;
+                --symbol-card-height: 90px;
+                --symbol-card-gap: 8px;
+            }
+
+            .close-btn {
+                top: 28px;
+                right: 38px;
+                width: 64px;
+                height: 64px;
+                line-height: 64px;
+                font-size: 40px;
+            }
+
+            .page-title {
+                top: 24px;
+                padding: 9px 34px;
+                font-size: 34px;
+                border-radius: 24px;
+            }
+
+            .content-area {
+                left: 58px;
+                right: 62px;
+                top: 128px;
+                bottom: 28px;
+            }
+
+            .main-panel {
+                padding: 18px 22px 18px;
+            }
+
+            .panel-head {
+                margin-bottom: 10px;
+            }
+
+            .panel-head h2 {
+                font-size: 30px;
+            }
+
+            .panel-head p {
+                font-size: 13px;
+            }
+
+            .preview-area {
+                height: 180px;
+                grid-template-columns: 115px 130px 1fr;
+                gap: 16px;
+                margin-top: 12px;
+                padding: 12px 18px;
+            }
+
+            .preview-symbol {
+                width: 98px;
+                height: 98px;
+            }
+
+            .preview-bottle {
+                width: 90px;
+                height: 150px;
+            }
+
+            .preview-text h3 {
+                font-size: 28px;
+                margin-bottom: 8px;
+            }
+
+            .preview-text p {
+                font-size: 15px;
+                line-height: 1.38;
+                margin-bottom: 8px;
+            }
+
+            .preview-text .note {
+                font-size: 15px;
+            }
+        }
+
+        /* MODE PORTRAIT / MOBILE TEGAK */
+        @media (max-width: 1100px) and (orientation: portrait) {
+
+            html,
+            body {
+                overflow: auto;
+            }
+
+            .stage {
+                min-height: 100vh;
+                height: auto;
+                overflow: visible;
+                background-size: cover;
+            }
+
+            .music-btn {
+                width: 56px;
+                height: 56px;
+                left: 14px;
+                top: 14px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 27px;
+                height: 27px;
+            }
+
+            .close-btn {
+                top: 24px;
+                right: 24px;
+                width: 56px;
+                height: 56px;
+                line-height: 56px;
+                font-size: 36px;
+            }
+
+            .page-title {
+                top: 24px;
+                font-size: 26px;
+                max-width: calc(100vw - 150px);
+                overflow: hidden;
+                text-overflow: ellipsis;
+                padding: 8px 22px;
+            }
+
+            .content-area {
+                position: relative;
+                left: auto;
+                right: auto;
+                top: auto;
+                bottom: auto;
+                width: calc(100% - 70px);
+                margin: 120px auto 24px;
+            }
+
+            .main-panel {
+                min-height: 850px;
+            }
+
+            .symbol-grid {
+                grid-template-columns: repeat(2, 1fr);
+                grid-template-rows: auto;
+                gap: 10px;
+            }
+
+            .preview-area {
+                height: auto;
+                grid-template-columns: 1fr;
+                justify-items: center;
+                text-align: center;
+                padding: 14px;
+            }
+        }
+
+        /* MODE LANDSCAPE HP, CONTOH 740 x 360 */
+        @media (max-height: 500px) and (orientation: landscape) {
+            :root {
+                --symbol-card-width: 86px;
+                --symbol-card-height: 58px;
+                --symbol-card-gap: 4px;
+            }
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .stage {
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                overflow: hidden;
+                background-size: 100% 100%;
+                background-position: center center;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+                box-shadow: 0 10px 18px rgba(0, 0, 0, .32);
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .close-btn {
+                top: 22px;
+                right: 46px;
+                width: 38px;
+                height: 38px;
+                line-height: 38px;
+                font-size: 26px;
+                box-shadow: 0 4px 0 #2c67bd, 0 7px 10px rgba(0, 0, 0, .20);
+            }
+
+            .page-title {
+                top: 15px;
+                padding: 5px 28px;
+                font-size: 20px;
+                border-width: 3px;
+                border-radius: 18px;
+            }
+
+            .content-area {
+                position: absolute;
+                left: 34px;
+                right: 36px;
+                top: 64px;
+                bottom: 12px;
+                width: auto;
+                margin: 0;
+            }
+
+            .main-panel {
+                height: 100%;
+                min-height: 0;
+                padding: 7px 10px 8px;
+                border-width: 3px;
+                border-radius: 18px;
+            }
+
+            .panel-head {
+                margin-bottom: 3px;
+            }
+
+            .panel-head h2 {
+                font-size: 16px;
+                line-height: 1.05;
+            }
+
+            .panel-head p {
+                margin-top: 2px;
+                font-size: 7.8px;
+                line-height: 1.25;
+            }
+
+            .symbol-grid {
+                flex: 0 0 118px;
+                grid-template-columns: repeat(5, 1fr);
+                grid-template-rows: repeat(2, 1fr);
+                gap: var(--symbol-card-gap);
+                align-items: center;
+                justify-items: center;
+            }
+
+            .symbol-card {
+                width: var(--symbol-card-width);
+                height: var(--symbol-card-height);
+                border-radius: 12px;
+            }
+
+            .symbol-card:hover,
+            .symbol-card.active {
+                transform: scale(1.04);
+            }
+
+            .preview-area {
+                height: 112px;
+                margin-top: 5px;
+                grid-template-columns: 72px 65px 1fr;
+                gap: 8px;
+                padding: 7px 10px;
+                border-width: 3px;
+                border-radius: 16px;
+            }
+
+            .preview-symbol {
+                width: 60px;
+                height: 60px;
+            }
+
+            .preview-bottle {
+                width: 48px;
+                height: 88px;
+            }
+
+            .preview-text h3 {
+                font-size: 13px;
+                margin-bottom: 3px;
+                line-height: 1.12;
+            }
+
+            .preview-text p {
+                font-size: 7.8px;
+                line-height: 1.28;
+                margin-bottom: 3px;
+            }
+
+            .preview-text .note {
+                font-size: 7.8px;
+                line-height: 1.25;
+            }
+        }
+
+        /* LANDSCAPE HP SANGAT PENDEK, CONTOH 740 x 360 */
+        @media (max-height: 390px) and (orientation: landscape) {
+            :root {
+                --symbol-card-width: 92px;
+                --symbol-card-height: 60px;
+                --symbol-card-gap: 1px;
+            }
+
+            .page-title {
+                top: 14px;
+                font-size: 19px;
+                padding: 4px 24px;
+            }
+
+            .content-area {
+                top: 55px;
+                left: 30px;
+                right: 32px;
+                bottom: 10px;
+            }
+
+            .main-panel {
+                padding: 6px 9px 7px;
+            }
+
+            .panel-head h2 {
+                font-size: 15px;
+            }
+
+            .panel-head p {
+                font-size: 7.4px;
+            }
+
+            .symbol-grid {
+                flex-basis: 120px;
+            }
+
+            .preview-area {
+                height: 88px;
+                margin-top: 3px;
+                grid-template-columns: 70px 50px 1fr;
+            }
+
+            .preview-symbol {
+                width: 88px;
+                height: 68px;
+            }
+
+            .preview-bottle {
+                width: 46px;
+                height: 84px;
+            }
+
+            .preview-text h3 {
+                font-size: 12.5px;
+            }
+
+            .preview-text p,
+            .preview-text .note {
+                font-size: 7.4px;
+            }
+
+            .close-btn {
+                top: 18px;
+                right: 44px;
+                width: 32px;
+                height: 32px;
+                line-height: 32px;
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="stage">
+        <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+            </svg>
+        </button>
+
+        <button class="close-btn" id="closeBtn" type="button" aria-label="Kembali ke Pra-Lab">×</button>
+
+        <h1 class="page-title">Simbol Kimia</h1>
+
+        <main class="content-area">
+            <section class="main-panel">
+                <div class="panel-head">
+                    <h2>Simbol Bahan Kimia Berbahaya</h2>
+                    <p>Pilih salah satu simbol kimia berikut untuk melihat penjelasannya.</p>
+                </div>
+
+                <div class="symbol-grid">
+                    <button class="symbol-card active" onclick="showSymbol('irritant', this)" aria-label="Irritant"
+                        type="button">
+                        <img src="simbolkimia/simbol/irritant (1).png" alt="Irritant">
+                    </button>
+
+                    <button class="symbol-card" onclick="showSymbol('explosive', this)" aria-label="Explosive"
+                        type="button">
+                        <img src="simbolkimia/simbol/explosive (1).png" alt="Explosive">
+                    </button>
+
+                    <button class="symbol-card" onclick="showSymbol('harmful', this)" aria-label="Harmful"
+                        type="button">
+                        <img src="simbolkimia/simbol/harmful (1).png" alt="Harmful">
+                    </button>
+
+                    <button class="symbol-card" onclick="showSymbol('environment', this)"
+                        aria-label="Dangerous for the environment" type="button">
+                        <img src="simbolkimia/simbol/dangerous for the environment (1).png"
+                            alt="Dangerous for the environment">
+                    </button>
+
+                    <button class="symbol-card" onclick="showSymbol('veryToxic', this)" aria-label="Very toxic"
+                        type="button">
+                        <img src="simbolkimia/simbol/very toxic (1).png" alt="Very toxic">
+                    </button>
+
+                    <button class="symbol-card" onclick="showSymbol('toxic', this)" aria-label="Toxic" type="button">
+                        <img src="simbolkimia/simbol/toxic (1).png" alt="Toxic">
+                    </button>
+
+                    <button class="symbol-card" onclick="showSymbol('corrosive', this)" aria-label="Corrosive"
+                        type="button">
+                        <img src="simbolkimia/simbol/corrosive (1).png" alt="Corrosive">
+                    </button>
+
+                    <button class="symbol-card" onclick="showSymbol('highlyFlammable', this)"
+                        aria-label="Highly flammable" type="button">
+                        <img src="simbolkimia/simbol/highly flammable (1).png" alt="Highly flammable">
+                    </button>
+
+                    <button class="symbol-card" onclick="showSymbol('extremelyFlammable', this)"
+                        aria-label="Extremely flammable" type="button">
+                        <img src="simbolkimia/simbol/extremely flammable (1).png" alt="Extremely flammable">
+                    </button>
+
+                    <button class="symbol-card" onclick="showSymbol('oxidising', this)" aria-label="Oxidising"
+                        type="button">
+                        <img src="simbolkimia/simbol/oxidising (1).png" alt="Oxidising">
+                    </button>
+                </div>
+
+                <div class="preview-area">
+                    <div class="preview-symbol">
+                        <img id="previewSymbolImg" src="simbolkimia/simbol/irritant (1).png" alt="Simbol kimia">
+                    </div>
+
+                    <div class="preview-bottle">
+                        <img id="previewBottleImg" src="simbolkimia/botol/irritant (1).png"
+                            alt="Simbol bahan pada botol">
+                    </div>
+
+                    <div class="preview-text">
+                        <h3 id="previewTitle">Irritant</h3>
+                        <p id="previewDesc">
+                            Simbol ini menunjukkan bahan yang dapat menyebabkan iritasi pada kulit, mata, atau saluran
+                            pernapasan jika terkena langsung.
+                        </p>
+                        <p class="note" id="previewNote">
+                            Gunakan alat pelindung diri dan hindari kontak langsung dengan bahan tersebut.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const musicBtn = document.getElementById("musicBtn");
+        const closeBtn = document.getElementById("closeBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        closeBtn.addEventListener("click", () => {
+            playClickSound();
+            setTimeout(() => {
+                window.location.href = "pralab.html";
+            }, 350);
+        });
+
+        const symbolData = {
+            irritant: {
+                title: "Irritant",
+                desc: "Simbol ini menunjukkan bahan yang dapat menyebabkan iritasi pada kulit, mata, atau saluran pernapasan jika terkena langsung.",
+                note: "Gunakan alat pelindung diri dan hindari kontak langsung dengan bahan tersebut.",
+                symbol: "simbolkimia/simbol/irritant (1).png",
+                bottle: "simbolkimia/botol/irritant (1).png"
+            },
+            explosive: {
+                title: "Explosive",
+                desc: "Simbol ini menunjukkan bahan yang mudah meledak apabila terkena panas, benturan, gesekan, atau sumber api.",
+                note: "Jauhkan dari api, panas, dan benturan keras.",
+                symbol: "simbolkimia/simbol/explosive (1).png",
+                bottle: "simbolkimia/botol/explosive (1).png"
+            },
+            harmful: {
+                title: "Harmful",
+                desc: "Simbol ini menunjukkan bahan yang berbahaya bagi kesehatan apabila terhirup, tertelan, atau terkena kulit.",
+                note: "Gunakan dengan hati-hati dan hindari kontak langsung.",
+                symbol: "simbolkimia/simbol/harmful (1).png",
+                bottle: "simbolkimia/botol/harmfull (1).png"
+            },
+            environment: {
+                title: "Dangerous for the Environment",
+                desc: "Simbol ini menunjukkan bahan yang berbahaya bagi lingkungan, terutama organisme air dan ekosistem.",
+                note: "Jangan membuang bahan ini sembarangan ke saluran air atau lingkungan.",
+                symbol: "simbolkimia/simbol/dangerous for the environment (1).png",
+                bottle: "simbolkimia/botol/dangerous for the environment (1).png"
+            },
+            veryToxic: {
+                title: "Very Toxic",
+                desc: "Simbol ini menunjukkan bahan yang sangat beracun dan dapat menyebabkan gangguan serius bahkan dalam jumlah kecil.",
+                note: "Gunakan hanya dengan pengawasan dan alat pelindung lengkap.",
+                symbol: "simbolkimia/simbol/very toxic (1).png",
+                bottle: "simbolkimia/botol/very toxic (1).png"
+            },
+            toxic: {
+                title: "Toxic",
+                desc: "Simbol ini menunjukkan bahan beracun yang dapat membahayakan tubuh jika terhirup, tertelan, atau terserap melalui kulit.",
+                note: "Hindari paparan langsung dan gunakan masker serta sarung tangan.",
+                symbol: "simbolkimia/simbol/toxic (1).png",
+                bottle: "simbolkimia/botol/toxic (1).png"
+            },
+            corrosive: {
+                title: "Corrosive",
+                desc: "Simbol ini menunjukkan bahan yang dapat merusak jaringan kulit, mata, atau mengikis permukaan logam.",
+                note: "Gunakan kacamata, sarung tangan, dan hindari percikan bahan.",
+                symbol: "simbolkimia/simbol/corrosive (1).png",
+                bottle: "simbolkimia/botol/corrosive (1).png"
+            },
+            highlyFlammable: {
+                title: "Highly Flammable",
+                desc: "Simbol ini menunjukkan bahan yang sangat mudah terbakar jika terkena api, percikan, atau suhu tinggi.",
+                note: "Jauhkan dari api, kompor, dan sumber panas.",
+                symbol: "simbolkimia/simbol/highly flammable (1).png",
+                bottle: "simbolkimia/botol/highly flammable (1).png"
+            },
+            extremelyFlammable: {
+                title: "Extremely Flammable",
+                desc: "Simbol ini menunjukkan bahan yang amat sangat mudah terbakar, bahkan pada suhu rendah atau paparan kecil terhadap api.",
+                note: "Simpan di tempat aman dan jauh dari sumber api.",
+                symbol: "simbolkimia/simbol/extremely flammable (1).png",
+                bottle: "simbolkimia/botol/extremely flammable (1).png"
+            },
+            oxidising: {
+                title: "Oxidising",
+                desc: "Simbol ini menunjukkan bahan pengoksidasi yang dapat mempercepat atau memperkuat proses pembakaran.",
+                note: "Jauhkan dari bahan mudah terbakar dan gunakan sesuai prosedur.",
+                symbol: "simbolkimia/simbol/oxidising (1).png",
+                bottle: "simbolkimia/botol/oxidising (1).png"
+            }
+        };
+
+        function showSymbol(type, button) {
+            playClickSound();
+
+            const data = symbolData[type];
+
+            document.getElementById("previewTitle").textContent = data.title;
+            document.getElementById("previewDesc").textContent = data.desc;
+            document.getElementById("previewNote").textContent = data.note;
+            document.getElementById("previewSymbolImg").src = data.symbol;
+            document.getElementById("previewBottleImg").src = data.bottle;
+
+            document.querySelectorAll(".symbol-card").forEach(card => {
+                card.classList.remove("active");
+            });
+
+            button.classList.add("active");
+        }
+    </script>
+</body>
+
+</html>

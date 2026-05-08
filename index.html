@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Larutan Penyangga - Home</title>
+
+    <style>
+        :root {
+            --start-size: 200px;
+            --banner-y: 2%;
+            --start-y: 60%;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            min-height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow: hidden;
+        }
+
+        body {
+            background: #000;
+        }
+
+        .wrap {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        .stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            opacity: 1;
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("assets/bg-home.jpeg");
+            background-size: 100% 100%;
+            background-position: center center;
+            background-repeat: no-repeat;
+            filter: saturate(1.03);
+            z-index: 0;
+        }
+
+        .vignette {
+            position: absolute;
+            inset: 0;
+            background: radial-gradient(ellipse at center,
+                    rgba(0, 0, 0, 0) 55%,
+                    rgba(0, 0, 0, .25) 100%);
+            pointer-events: none;
+            z-index: 5;
+        }
+
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 50;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        .banner-wrap {
+            position: absolute;
+            left: 50%;
+            top: var(--banner-y);
+            transform: translate(-50%, -55%);
+            z-index: 45;
+            pointer-events: none;
+        }
+
+        .banner {
+            width: 560px;
+            max-width: 70vw;
+            height: auto;
+            user-select: none;
+            filter: drop-shadow(0 18px 22px rgba(0, 0, 0, .45));
+            display: block;
+        }
+
+        .start-btn {
+            position: absolute;
+            left: 50%;
+            top: var(--start-y);
+            width: var(--start-size);
+            height: var(--start-size);
+            transform: translate(-50%, -50%);
+            border: none;
+            background: transparent;
+            cursor: pointer;
+            z-index: 40;
+            padding: 0;
+            outline: none;
+            filter:
+                drop-shadow(0 18px 25px rgba(0, 0, 0, .45)) drop-shadow(0 0 18px rgba(80, 180, 255, .65));
+        }
+
+        .start-btn img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            user-select: none;
+            -webkit-user-drag: none;
+            opacity: 1 !important;
+            filter: none !important;
+            transform: none !important;
+        }
+
+        @media (max-width: 900px) {
+            :root {
+                --start-size: 170px;
+                --banner-y: 5%;
+                --start-y: 60%;
+            }
+
+            .banner {
+                width: 520px;
+                max-width: 78vw;
+            }
+
+            .music-btn {
+                width: 62px;
+                height: 62px;
+                left: 18px;
+                top: 16px;
+            }
+
+            .music-btn svg {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            :root {
+                --start-size: 135px;
+                --banner-y: 17%;
+                --start-y: 62%;
+            }
+
+            .bg {
+                background-size: cover;
+                background-position: center center;
+            }
+
+            .banner {
+                width: 340px;
+                max-width: 82vw;
+            }
+
+            .music-btn {
+                width: 52px;
+                height: 52px;
+                left: 14px;
+                top: 14px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 25px;
+                height: 25px;
+            }
+        }
+
+        @media (max-width: 380px) {
+            :root {
+                --start-size: 120px;
+                --banner-y: 18%;
+                --start-y: 63%;
+            }
+
+            .banner {
+                width: 290px;
+                max-width: 84vw;
+            }
+        }
+
+        @media (max-height: 500px) and (orientation: landscape) {
+            :root {
+                --start-size: 115px;
+                --banner-y: -5%;
+                --start-y: 62%;
+            }
+
+            .bg {
+                background-size: 100% 100%;
+            }
+
+            .banner {
+                width: 390px;
+                max-width: 55vw;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="wrap">
+        <div class="stage" id="stage">
+            <div class="bg"></div>
+
+            <button class="music-btn" id="musicBtn" title="Music" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+                </svg>
+            </button>
+
+            <div class="banner-wrap" id="bannerWrap">
+                <img class="banner" id="banner" src="assets/banner.png" alt="Larutan Penyangga">
+            </div>
+
+            <button class="start-btn" id="startBtn" aria-label="Start" type="button">
+                <img src="assets/btn-start.png" alt="START">
+            </button>
+
+            <div class="vignette"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+    <script>
+        const stage = document.getElementById("stage");
+        const startBtn = document.getElementById("startBtn");
+        const musicBtn = document.getElementById("musicBtn");
+        const bannerWrap = document.getElementById("bannerWrap");
+
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+        let isStarting = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        musicBtn.classList.add("off");
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        gsap.set(bannerWrap, { y: -60, opacity: 0 });
+        gsap.set(startBtn, { opacity: 1 });
+
+        const intro = gsap.timeline({ delay: 0.25 });
+
+        intro.to(bannerWrap, {
+            y: 0,
+            opacity: 1,
+            duration: 1.0,
+            ease: "power3.out"
+        });
+
+        startBtn.addEventListener("mouseenter", () => {
+            startBtn.style.transform = "translate(-50%, -50%)";
+        });
+
+        startBtn.addEventListener("mouseleave", () => {
+            startBtn.style.transform = "translate(-50%, -50%)";
+        });
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        startBtn.addEventListener("click", () => {
+            if (isStarting) return;
+            isStarting = true;
+
+            playClickSound();
+
+            setTimeout(() => {
+                gsap.timeline()
+                    .to(startBtn, {
+                        opacity: 0,
+                        duration: 0.25,
+                        ease: "power2.in"
+                    })
+                    .to(bannerWrap, {
+                        opacity: 0,
+                        duration: 0.25,
+                        ease: "power2.in"
+                    }, "-=0.1")
+                    .to(stage, {
+                        opacity: 0,
+                        duration: 0.45,
+                        ease: "power1.out",
+                        onComplete: () => {
+                            window.location.href = "menu.html";
+                        }
+                    });
+            }, 800);
+        });
+    </script>
+
+    <script src="https://static.app/js/static.js" type="text/javascript"></script>
+</body>
+
+</html>

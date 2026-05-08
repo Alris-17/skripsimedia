@@ -1,0 +1,885 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Larutan Penyangga - Menu</title>
+
+    <style>
+        :root {
+            --banner-left: 140px;
+            --banner-top: -30px;
+            --banner-width: 320px;
+
+            --panel-left: 600px;
+            --panel-top: 20px;
+            --panel-width: 520px;
+            --panel-height: 560px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #000;
+        }
+
+        .wrap {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        .stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            opacity: 1;
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url("assets/bg-lab.png");
+            background-size: 100% 100%;
+            background-position: center center;
+            background-repeat: no-repeat;
+            z-index: 0;
+        }
+
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 16px 26px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 60;
+        }
+
+        .music-btn:active {
+            transform: scale(.96);
+        }
+
+        .music-btn.off {
+            opacity: .55;
+        }
+
+        .music-btn svg {
+            width: 31px;
+            height: 31px;
+            fill: #fff;
+        }
+
+        .banner {
+            position: absolute;
+            left: var(--banner-left);
+            top: var(--banner-top);
+            width: var(--banner-width);
+            z-index: 20;
+            pointer-events: none;
+            user-select: none;
+            filter: drop-shadow(0 10px 16px rgba(0, 0, 0, 0.25));
+        }
+
+        .whiteArea {
+            position: absolute;
+            left: var(--panel-left);
+            top: var(--panel-top);
+            width: var(--panel-width);
+            height: var(--panel-height);
+            z-index: 10;
+        }
+
+        .menu {
+            width: 100%;
+            height: 100%;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 16px;
+            align-content: start;
+            padding: 50px 24px 24px;
+        }
+
+        .menu-btn {
+            height: 90px;
+            border: none;
+            border-radius: 18px;
+            cursor: pointer;
+            padding: 12px 14px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            color: #fff;
+            font-weight: 800;
+            font-size: 18px;
+            text-align: left;
+            box-shadow:
+                0 16px 26px rgba(0, 0, 0, 0.20),
+                inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            transition: transform .18s ease, box-shadow .18s ease, filter .18s ease;
+        }
+
+        .menu-btn:hover {
+            transform: translateY(-5px) scale(1.03);
+            filter: brightness(1.02);
+            box-shadow:
+                0 22px 34px rgba(0, 0, 0, 0.26),
+                inset 0 1px 0 rgba(255, 255, 255, 0.45);
+        }
+
+        .menu-btn:active {
+            transform: translateY(-2px) scale(0.99);
+        }
+
+        .ico {
+            width: 54px;
+            height: 54px;
+            border-radius: 14px;
+            display: grid;
+            place-items: center;
+            font-size: 24px;
+            background: rgba(255, 255, 255, 0.22);
+            flex: 0 0 auto;
+        }
+
+        .kompetensi {
+            background: linear-gradient(135deg, #4fc3f7, #1976d2);
+        }
+
+        .pralab {
+            background: linear-gradient(135deg, #ffb74d, #f57c00);
+        }
+
+        .materi-pembelajaran {
+            background: linear-gradient(135deg, #81c784, #388e3c);
+        }
+
+        .demonstrasi {
+            background: linear-gradient(135deg, #64b5f6, #0288d1);
+        }
+
+        .laboratorium {
+            background: linear-gradient(135deg, #9575cd, #5e35b1);
+        }
+
+        .evaluasi {
+            background: linear-gradient(135deg, #ef5350, #b71c1c);
+        }
+
+        .trayek {
+            background: linear-gradient(135deg, #4db6ac, #00695c);
+        }
+
+        .floating-menu {
+            position: absolute;
+            right: 50px;
+            bottom: 20px;
+            display: flex;
+            gap: 14px;
+            z-index: 50;
+        }
+
+        .float-btn {
+            width: 60px;
+            height: 62px;
+            border-radius: 16px;
+            border: none;
+            cursor: pointer;
+            font-size: 28px;
+            background: linear-gradient(135deg, #ffffff, #dff7ff);
+            box-shadow:
+                0 12px 22px rgba(0, 0, 0, 0.25),
+                inset 0 1px 0 rgba(255, 255, 255, 0.8);
+            transition: transform .18s ease, box-shadow .18s ease;
+        }
+
+        .float-btn:hover {
+            transform: translateY(-4px) scale(1.08);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, 0.30);
+        }
+
+        .float-btn:active {
+            transform: scale(.96);
+        }
+
+        /* DESKTOP KECIL */
+        @media (max-width: 1150px) {
+            :root {
+                --banner-left: 70px;
+                --banner-top: -25px;
+                --banner-width: 270px;
+
+                --panel-left: 48%;
+                --panel-top: 25px;
+                --panel-width: 490px;
+                --panel-height: 540px;
+            }
+
+            .menu {
+                gap: 13px;
+                padding: 46px 22px 22px;
+            }
+
+            .menu-btn {
+                height: 82px;
+                font-size: 16px;
+                border-radius: 16px;
+            }
+
+            .ico {
+                width: 48px;
+                height: 48px;
+                font-size: 22px;
+            }
+
+            .floating-menu {
+                right: 30px;
+                bottom: 18px;
+            }
+        }
+
+        /* TABLET */
+        @media (max-width: 850px) {
+            .stage {
+                overflow-y: auto;
+                overflow-x: hidden;
+                padding-bottom: 20px;
+            }
+
+            .bg {
+                position: fixed;
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                background-image: url("assets/bg-lab.png");
+                background-size: 100% 100%;
+                background-position: center center;
+                background-repeat: no-repeat;
+            }
+
+            .banner {
+                position: relative;
+                left: 50%;
+                top: 18px;
+                transform: translateX(-50%);
+                width: min(68vw, 280px);
+                margin-bottom: 28px;
+            }
+
+            .whiteArea {
+                position: relative;
+                left: auto;
+                top: auto;
+                transform: none;
+                width: min(88vw, 520px);
+                height: auto;
+                margin: 0 auto;
+                padding: 16px;
+                border-radius: 24px;
+                background: rgba(255, 255, 255, .84);
+                box-shadow: 0 16px 35px rgba(0, 0, 0, .20);
+                backdrop-filter: blur(3px);
+            }
+
+            .menu {
+                grid-template-columns: 1fr;
+                gap: 10px;
+                padding: 0;
+            }
+
+            .menu-btn {
+                height: auto;
+                min-height: 64px;
+                font-size: 15px;
+                gap: 10px;
+                padding: 10px 12px;
+                border-radius: 15px;
+            }
+
+            .menu-btn:hover {
+                transform: none;
+            }
+
+            .ico {
+                width: 42px;
+                height: 42px;
+                border-radius: 12px;
+                font-size: 20px;
+            }
+
+            .music-btn {
+                position: fixed;
+                width: 52px;
+                height: 52px;
+                left: 12px;
+                top: 12px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 25px;
+                height: 25px;
+            }
+
+            .floating-menu {
+                position: relative;
+                right: auto;
+                bottom: auto;
+                justify-content: center;
+                margin: 12px auto 0;
+                gap: 10px;
+            }
+
+            .float-btn {
+                width: 50px;
+                height: 50px;
+                border-radius: 14px;
+                font-size: 23px;
+            }
+        }
+
+        /* MOBILE */
+        @media (max-width: 600px) {
+            .stage {
+                padding-bottom: 16px;
+            }
+
+            .bg {
+                position: fixed;
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                background-image: url("assets/bg-lab.png");
+                background-size: 100% 100%;
+                background-position: center center;
+                background-repeat: no-repeat;
+            }
+
+            .banner {
+                width: min(60vw, 230px);
+                top: 12px;
+                margin-bottom: 20px;
+            }
+
+            .whiteArea {
+                width: 92vw;
+                padding: 12px;
+                border-radius: 20px;
+            }
+
+            .menu {
+                gap: 8px;
+            }
+
+            .menu-btn {
+                min-height: 54px;
+                font-size: 13px;
+                gap: 9px;
+                padding: 8px 10px;
+                border-radius: 14px;
+            }
+
+            .ico {
+                width: 36px;
+                height: 36px;
+                border-radius: 10px;
+                font-size: 17px;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 10px;
+                top: 10px;
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .floating-menu {
+                margin-top: 10px;
+            }
+
+            .float-btn {
+                width: 46px;
+                height: 46px;
+                font-size: 21px;
+            }
+        }
+
+        /* MOBILE PENDEK */
+        @media (max-width: 430px) and (max-height: 620px) {
+            .banner {
+                width: 220px;
+                top: 8px;
+                margin-bottom: 14px;
+            }
+
+            .whiteArea {
+                width: 86vw;
+                padding: 10px;
+                border-radius: 18px;
+            }
+
+            .menu {
+                gap: 7px;
+            }
+
+            .menu-btn {
+                min-height: 49px;
+                font-size: 12.8px;
+                gap: 8px;
+                padding: 7px 9px;
+                border-radius: 13px;
+            }
+
+            .ico {
+                width: 33px;
+                height: 33px;
+                font-size: 16px;
+                border-radius: 9px;
+            }
+
+            .floating-menu {
+                margin-top: 8px;
+            }
+
+            .float-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 20px;
+                border-radius: 12px;
+            }
+        }
+
+        /* MOBILE SANGAT KECIL */
+        @media (max-width: 380px) {
+            .banner {
+                width: 200px;
+            }
+
+            .whiteArea {
+                width: 88vw;
+            }
+
+            .menu-btn {
+                min-height: 48px;
+                font-size: 12.5px;
+            }
+
+            .ico {
+                width: 32px;
+                height: 32px;
+                font-size: 15px;
+            }
+        }
+
+        /* HP LANDSCAPE - DISAMAKAN DENGAN DESKTOP */
+        @media (orientation: landscape) and (max-height: 500px) {
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .wrap,
+            .stage {
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                overflow: hidden;
+                padding-bottom: 0;
+            }
+
+            .bg {
+                position: absolute;
+                inset: 0;
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                background-image: url("assets/bg-lab.png");
+                background-size: 100% 100%;
+                background-position: center center;
+                background-repeat: no-repeat;
+            }
+
+            .music-btn {
+                position: absolute;
+                left: 12px;
+                top: 10px;
+                width: 44px;
+                height: 44px;
+                border-width: 3px;
+                box-shadow: 0 10px 18px rgba(0, 0, 0, .32);
+            }
+
+            .music-btn svg {
+                width: 21px;
+                height: 21px;
+            }
+
+            .banner {
+                position: absolute;
+                left: 10%;
+                top: -5%;
+                transform: none;
+                width: clamp(190px, 32vw, 250px);
+                margin: 0;
+            }
+
+            .whiteArea {
+                position: absolute;
+                left: 43%;
+                top: 15%;
+                transform: none;
+                width: 49%;
+                max-width: none;
+                height: auto;
+                margin: 0;
+                padding: 0;
+                border-radius: 0;
+                background: transparent;
+                box-shadow: none;
+                backdrop-filter: none;
+            }
+
+            .menu {
+                width: 100%;
+                height: auto;
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 8px;
+                align-content: start;
+                padding: 8px 6px 6px;
+            }
+
+            .menu-btn {
+                width: 100%;
+                height: 42px;
+                min-height: 42px;
+                border-radius: 12px;
+                font-size: 12px;
+                line-height: 1.12;
+                gap: 7px;
+                padding: 5px 7px;
+                box-shadow:
+                    0 8px 14px rgba(0, 0, 0, 0.18),
+                    inset 0 1px 0 rgba(255, 255, 255, 0.35);
+            }
+
+            .menu-btn:hover {
+                transform: none;
+            }
+
+            .ico {
+                width: 30px;
+                height: 30px;
+                border-radius: 9px;
+                font-size: 15px;
+            }
+
+            .floating-menu {
+                position: absolute;
+                right: 34px;
+                bottom: 12px;
+                display: flex;
+                gap: 9px;
+                margin: 0;
+            }
+
+            .float-btn {
+                width: 40px;
+                height: 40px;
+                border-radius: 12px;
+                font-size: 19px;
+            }
+        }
+
+        /* HP LANDSCAPE PENDEK */
+        @media (orientation: landscape) and (max-height: 430px) {
+            .banner {
+                left: 10%;
+                top: -7%;
+                width: clamp(180px, 30vw, 230px);
+            }
+
+            .whiteArea {
+                left: 43%;
+                top: 15%;
+                width: 49%;
+            }
+
+            .menu {
+                gap: 7px;
+                padding: 7px 6px 5px;
+            }
+
+            .menu-btn {
+                height: 39px;
+                min-height: 39px;
+                font-size: 11.2px;
+                line-height: 1.1;
+                gap: 6px;
+                padding: 5px 6px;
+                border-radius: 11px;
+            }
+
+            .ico {
+                width: 28px;
+                height: 28px;
+                font-size: 14px;
+                border-radius: 8px;
+            }
+
+            .floating-menu {
+                right: 32px;
+                bottom: 11px;
+                gap: 8px;
+            }
+
+            .float-btn {
+                width: 38px;
+                height: 38px;
+                font-size: 18px;
+                border-radius: 11px;
+            }
+        }
+
+        /* KHUSUS LAYAR LANDSCAPE SEMPIT, CONTOH 604 x 320 */
+        @media (orientation: landscape) and (max-height: 360px) and (max-width: 680px) {
+            .banner {
+                left: 9%;
+                top: -7%;
+                width: 185px;
+            }
+
+            .whiteArea {
+                left: 42%;
+                top: 14%;
+                width: 51%;
+            }
+
+            .menu {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+                padding: 6px 5px 5px;
+            }
+
+            .menu-btn {
+                height: 37px;
+                min-height: 37px;
+                font-size: 10.8px;
+                line-height: 1.08;
+                gap: 5px;
+                padding: 4px 5px;
+                border-radius: 10px;
+            }
+
+            .ico {
+                width: 26px;
+                height: 26px;
+                font-size: 13px;
+                border-radius: 8px;
+            }
+
+            .floating-menu {
+                right: 30px;
+                bottom: 10px;
+                gap: 7px;
+            }
+
+            .float-btn {
+                width: 36px;
+                height: 36px;
+                font-size: 17px;
+                border-radius: 10px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="wrap">
+        <div class="stage" id="stage">
+            <div class="bg"></div>
+
+            <button class="music-btn off" id="musicBtn" title="Music" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+                </svg>
+            </button>
+
+            <img src="assets/banner.png" class="banner" alt="Larutan Penyangga">
+
+            <div class="whiteArea">
+                <div class="menu">
+                    <button class="menu-btn kompetensi" id="btnKompetensi" type="button">
+                        <div class="ico">📚</div>
+                        <div>Kompetensi Dasar</div>
+                    </button>
+
+                    <button class="menu-btn pralab" id="btnPraLab" type="button">
+                        <div class="ico">🧪</div>
+                        <div>Pra-Lab</div>
+                    </button>
+
+                    <button class="menu-btn materi-pembelajaran" id="btnMateriPembelajaran" type="button">
+                        <div class="ico">📘</div>
+                        <div>Materi Pembelajaran</div>
+                    </button>
+
+                    <button class="menu-btn demonstrasi" id="btnDemoLab" type="button">
+                        <div class="ico">🔍</div>
+                        <div>Demonstrasi Lab</div>
+                    </button>
+
+                    <button class="menu-btn laboratorium" id="btnLaboratorium" type="button">
+                        <div class="ico">🔬</div>
+                        <div>Laboratorium</div>
+                    </button>
+
+                    <button class="menu-btn evaluasi" id="btnSoalEvaluasi" type="button">
+                        <div class="ico">📝</div>
+                        <div>Soal Evaluasi</div>
+                    </button>
+
+                    <button class="menu-btn trayek" id="btnTrayekPH" type="button">
+                        <div class="ico">📊</div>
+                        <div>Trayek pH</div>
+                    </button>
+                </div>
+            </div>
+
+            <div class="floating-menu">
+                <button class="float-btn" id="btnPetunjuk" title="Petunjuk" type="button">❓</button>
+                <button class="float-btn" id="btnProfil" title="Profil Pengembang" type="button">👤</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/gsap@3/dist/gsap.min.js"></script>
+
+    <script>
+        const stage = document.getElementById("stage");
+        const musicBtn = document.getElementById("musicBtn");
+
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+        let isNavigating = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        gsap.from(".banner", {
+            x: -40,
+            opacity: 0,
+            duration: 1,
+            ease: "power3.out"
+        });
+
+        gsap.from(".menu-btn", {
+            y: 20,
+            opacity: 0,
+            duration: 0.45,
+            stagger: 0.08,
+            ease: "power2.out",
+            delay: 0.15
+        });
+
+        function go(url) {
+            if (isNavigating) return;
+            isNavigating = true;
+
+            playClickSound();
+
+            setTimeout(() => {
+                gsap.to(stage, {
+                    opacity: 0,
+                    duration: 0.20,
+                    ease: "power1.out",
+                    onComplete: () => {
+                        location.href = url;
+                    }
+                });
+            }, 450);
+        }
+
+        document.getElementById("btnKompetensi").onclick = () => go("kompetensi.html");
+        document.getElementById("btnPraLab").onclick = () => go("pralab.html");
+        document.getElementById("btnMateriPembelajaran").onclick = () => go("materi.html");
+        document.getElementById("btnDemoLab").onclick = () => go("demo_lab.html");
+        document.getElementById("btnLaboratorium").onclick = () => go("lab.html");
+        document.getElementById("btnSoalEvaluasi").onclick = () => go("evaluasi.html");
+        document.getElementById("btnTrayekPH").onclick = () => go("trayekph.html");
+        document.getElementById("btnPetunjuk").onclick = () => go("petunjuk.html");
+        document.getElementById("btnProfil").onclick = () => go("profil.html");
+    </script>
+</body>
+
+</html>

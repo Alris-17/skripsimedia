@@ -1,0 +1,653 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Kompetensi Dasar</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: transparent;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+        }
+
+        .wrap {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        .stage {
+            position: absolute;
+            inset: 0;
+            overflow: hidden;
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            background: url("assets/bg-kompetensi.png") center center / 100% 100% no-repeat;
+            z-index: 0;
+        }
+
+        /* TOMBOL MUSIK DISAMAKAN DENGAN HALAMAN HOME */
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 80;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 72px;
+            right: 95px;
+            width: 52px;
+            height: 52px;
+            border: none;
+            border-radius: 50%;
+            background: #ef2b2b;
+            color: white;
+            font-size: 34px;
+            font-weight: 900;
+            line-height: 52px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 6px 0 #b41717, 0 10px 16px rgba(0, 0, 0, 0.2);
+            z-index: 70;
+            transition: 0.2s ease;
+        }
+
+        .close-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 4px 0 #b41717, 0 7px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .kompetensi-wrapper {
+            position: absolute;
+            top: 90px;
+            left: 180px;
+            width: 820px;
+            z-index: 10;
+        }
+
+        .top-buttons {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-bottom: -60px;
+            align-items: end;
+        }
+
+        .top-btn {
+            width: 100%;
+            height: 200px;
+            border: none;
+            background-color: transparent;
+            background-repeat: no-repeat;
+            background-size: 250px auto;
+            background-position: center;
+            cursor: default;
+            filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.22));
+        }
+
+        .btn-cp {
+            background-image: url("assets/CP (1).png");
+        }
+
+        .btn-tp {
+            background-image: url("assets/TP (1).png");
+        }
+
+        .btn-atp {
+            background-image: url("assets/ATP (1).png");
+        }
+
+        .content-columns {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 26px;
+        }
+
+        .content-box {
+            height: 327px;
+            background: rgba(255, 255, 255, 0.28);
+            border: 2px solid rgba(120, 120, 120, 0.22);
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.12);
+            overflow-y: auto;
+            padding: 14px 14px 18px;
+        }
+
+        .content-box::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .content-box::-webkit-scrollbar-track {
+            background: rgba(220, 220, 220, 0.7);
+            border-radius: 20px;
+        }
+
+        .content-box::-webkit-scrollbar-thumb {
+            background: #9fa4a8;
+            border-radius: 20px;
+        }
+
+        .section-title {
+            font-size: 15px;
+            font-weight: 800;
+            color: #0d6fb8;
+            margin-bottom: 8px;
+            line-height: 1.35;
+        }
+
+        .section-text {
+            font-size: 12.8px;
+            color: #2d3f52;
+            line-height: 1.55;
+            text-align: left;
+            font-weight: 700;
+        }
+
+        .mini-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .mini-item {
+            padding: 10px 10px;
+            border-radius: 12px;
+            background: rgba(255, 248, 238, 0.9);
+            border: 2px solid #ffd9a7;
+        }
+
+        .mini-item h4 {
+            color: #e57a00;
+            font-size: 13px;
+            margin-bottom: 5px;
+            line-height: 1.3;
+        }
+
+        .mini-item p {
+            color: #29445b;
+            font-size: 12px;
+            line-height: 1.45;
+            font-weight: 700;
+        }
+
+        @media (max-width: 1200px) {
+            .kompetensi-wrapper {
+                left: 70px;
+                width: 760px;
+            }
+
+            .content-columns,
+            .top-buttons {
+                gap: 18px;
+            }
+
+            .content-box {
+                height: 320px;
+            }
+        }
+
+        /* MODE PORTRAIT / MOBILE TEGAK */
+        @media (max-width: 950px) and (orientation: portrait) {
+
+            html,
+            body {
+                overflow: auto;
+            }
+
+            .wrap,
+            .stage {
+                position: relative;
+                min-height: 100vh;
+                height: auto;
+                overflow: visible;
+            }
+
+            .bg {
+                position: fixed;
+                background-size: cover;
+                background-position: center center;
+            }
+
+            .kompetensi-wrapper {
+                position: relative;
+                top: 145px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 90vw;
+                padding-bottom: 40px;
+            }
+
+            .top-buttons,
+            .content-columns {
+                grid-template-columns: 1fr;
+                gap: 16px;
+            }
+
+            .top-buttons {
+                margin-bottom: 14px;
+            }
+
+            .top-btn {
+                height: 70px;
+            }
+
+            .content-box {
+                height: 250px;
+            }
+
+            .close-btn {
+                top: 24px;
+                right: 24px;
+                width: 56px;
+                height: 56px;
+                line-height: 56px;
+                font-size: 36px;
+            }
+
+            .music-btn {
+                width: 56px;
+                height: 56px;
+                left: 14px;
+                top: 14px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 27px;
+                height: 27px;
+            }
+        }
+
+        /* MODE LANDSCAPE HP: DIBUAT MIRIP DESKTOP DAN TIDAK TERPOTONG */
+        @media (max-height: 500px) and (orientation: landscape) {
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .wrap {
+                position: fixed;
+                inset: 0;
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                overflow: hidden;
+            }
+
+            .stage {
+                position: absolute;
+                inset: 0;
+                overflow: hidden;
+            }
+
+            .bg {
+                position: absolute;
+                inset: 0;
+                background-size: 100% 100%;
+                background-position: center center;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+                box-shadow: 0 10px 18px rgba(0, 0, 0, .32);
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .close-btn {
+                top: 22px;
+                right: 52px;
+                width: 34px;
+                height: 34px;
+                line-height: 34px;
+                font-size: 24px;
+                box-shadow: 0 4px 0 #b41717, 0 7px 10px rgba(0, 0, 0, 0.20);
+            }
+
+            .kompetensi-wrapper {
+                position: absolute;
+                top: 72px;
+                left: 50%;
+                transform: translateX(-50%);
+                width: 74vw;
+                max-width: 590px;
+                z-index: 10;
+                padding-bottom: 0;
+            }
+
+            .top-buttons {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+                margin-bottom: 6px;
+            }
+
+            .top-btn {
+                height: 25px;
+                background-size: contain;
+            }
+
+            .content-columns {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 10px;
+            }
+
+            .content-box {
+                height: 175px;
+                padding: 7px 7px 9px;
+                border-radius: 4px;
+                border-width: 1.5px;
+            }
+
+            .content-box::-webkit-scrollbar {
+                width: 4px;
+            }
+
+            .section-title {
+                font-size: 9px;
+                margin-bottom: 4px;
+                line-height: 1.25;
+            }
+
+            .section-text {
+                font-size: 7.5px;
+                line-height: 1.42;
+                font-weight: 700;
+            }
+
+            .mini-list {
+                gap: 5px;
+            }
+
+            .mini-item {
+                padding: 5px 5px;
+                border-radius: 7px;
+                border-width: 1.5px;
+            }
+
+            .mini-item h4 {
+                font-size: 7.8px;
+                margin-bottom: 3px;
+                line-height: 1.25;
+            }
+
+            .mini-item p {
+                font-size: 7.2px;
+                line-height: 1.35;
+            }
+        }
+
+        /* LANDSCAPE HP SANGAT PENDEK */
+        @media (max-height: 390px) and (orientation: landscape) {
+            .kompetensi-wrapper {
+                top: 64px;
+                width: 78vw;
+                max-width: 620px;
+            }
+
+            .top-buttons {
+                gap: 10px;
+                margin-bottom: -26px;
+                /* jarak tombol ke kotak tulisan */
+                align-items: end;
+            }
+
+            .content-box {
+                height: 160px;
+            }
+
+            .top-btn {
+                height: 90px;
+            }
+
+            .close-btn {
+                top: 18px;
+                right: 44px;
+                width: 32px;
+                height: 32px;
+                line-height: 32px;
+                font-size: 23px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="wrap">
+        <div class="stage">
+            <div class="bg"></div>
+
+            <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+                </svg>
+            </button>
+
+            <button class="close-btn" id="closeBtn" type="button" aria-label="Kembali ke menu">×</button>
+
+            <div class="kompetensi-wrapper">
+                <div class="top-buttons">
+                    <button class="top-btn btn-cp" aria-label="Capaian Pembelajaran" type="button"></button>
+                    <button class="top-btn btn-tp" aria-label="Tujuan Pembelajaran" type="button"></button>
+                    <button class="top-btn btn-atp" aria-label="Alur Tujuan Pembelajaran" type="button"></button>
+                </div>
+
+                <div class="content-columns">
+                    <!-- CAPAIAN PEMBELAJARAN -->
+                    <div class="content-box">
+                        <div class="section-title">Capaian Pembelajaran</div>
+                        <div class="section-text">
+                            Peserta didik memiliki kemampuan memahami konsep mol dan stoikiometri dalam
+                            menyelesaikan perhitungan kimia; ikatan kimia dalam kaitannya dengan interaksi
+                            antarpartikel materi dan sifat fisik materi; teori tumbukan antarpartikel materi
+                            sebagai dasar konsep laju reaksi; kesetimbangan kimia untuk mengamati perilaku
+                            reaktan dan produk pada level mikroskopik; korelasi antara pH larutan asam,
+                            basa, garam, dan larutan penyangga serta penerapannya dalam kehidupan
+                            sehari-hari; serta termokimia.
+                        </div>
+                    </div>
+
+                    <!-- TUJUAN PEMBELAJARAN -->
+                    <div class="content-box">
+                        <div class="mini-list">
+                            <div class="mini-item">
+                                <h4>1. Identifikasi Larutan Penyangga</h4>
+                                <p>
+                                    Mengidentifikasi dan mengelompokkan larutan penyangga asam atau basa
+                                    berdasarkan komposisi larutan penyangga.
+                                </p>
+                            </div>
+
+                            <div class="mini-item">
+                                <h4>2. Pengamatan pH Larutan</h4>
+                                <p>
+                                    Menganalisis dan mengamati pH campuran larutan dengan indikator untuk
+                                    menemukan larutan yang dapat mempertahankan pH.
+                                </p>
+                            </div>
+
+                            <div class="mini-item">
+                                <h4>3. Analisis Komposisi Larutan</h4>
+                                <p>
+                                    Menganalisis komposisi larutan penyangga berdasarkan perubahan nilai pH
+                                    pada penambahan sedikit asam atau basa.
+                                </p>
+                            </div>
+
+                            <div class="mini-item">
+                                <h4>4. Perhitungan pH</h4>
+                                <p>
+                                    Menganalisis dan menghitung nilai pH larutan penyangga berdasarkan
+                                    komposisinya.
+                                </p>
+                            </div>
+
+                            <div class="mini-item">
+                                <h4>5. Peran dalam Kehidupan</h4>
+                                <p>
+                                    Menganalisis peran larutan penyangga dalam kehidupan sehari-hari.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- ATP -->
+                    <div class="content-box">
+                        <div class="mini-list">
+                            <div class="mini-item">
+                                <h4>1. Pemahaman Awal</h4>
+                                <p>
+                                    Mengidentifikasi dan mengelompokkan larutan penyangga asam atau basa.
+                                </p>
+                            </div>
+
+                            <div class="mini-item">
+                                <h4>2. Observasi Terbimbing</h4>
+                                <p>
+                                    Mengamati pH beberapa campuran larutan melalui demonstrasi laboratorium.
+                                </p>
+                            </div>
+
+                            <div class="mini-item">
+                                <h4>3. Pendalaman Konsep</h4>
+                                <p>
+                                    Menghitung nilai pH larutan penyangga dan menganalisis perubahannya.
+                                </p>
+                            </div>
+
+                            <div class="mini-item">
+                                <h4>4. Praktikum Mandiri</h4>
+                                <p>
+                                    Menganalisis hasil praktikum dan menyimpulkan sifat larutan penyangga.
+                                </p>
+                            </div>
+
+                            <div class="mini-item">
+                                <h4>5. Aplikasi Kontekstual</h4>
+                                <p>
+                                    Mengaitkan larutan penyangga dengan kehidupan sehari-hari, misalnya
+                                    pada tetes mata.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const musicBtn = document.getElementById("musicBtn");
+        const closeBtn = document.getElementById("closeBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        closeBtn.addEventListener("click", () => {
+            playClickSound();
+            setTimeout(() => {
+                window.location.href = "menu.html";
+            }, 350);
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,622 @@
+<!doctype html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Petunjuk Praktikum</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            font-family: Arial, Helvetica, sans-serif;
+            overflow: hidden;
+        }
+
+        body {
+            background: #000;
+        }
+
+        .wrap {
+            position: fixed;
+            inset: 0;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+        }
+
+        .stage {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            background: transparent;
+        }
+
+        .bg {
+            position: absolute;
+            inset: 0;
+            width: 100%;
+            height: 100%;
+            background: url("assets/BG PETUNJUK PRAKTIKUM.png") center center / 100% 100% no-repeat;
+            z-index: 0;
+        }
+
+        /* TOMBOL SOUND DISAMAKAN DENGAN HOME */
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 50;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 42px;
+            right: 42px;
+            width: 66px;
+            height: 66px;
+            border: none;
+            border-radius: 50%;
+            background: #ef2b2b;
+            color: white;
+            font-size: 40px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #b41717, 0 12px 20px rgba(0, 0, 0, 0.22);
+            z-index: 45;
+            transition: 0.2s ease;
+        }
+
+        .close-btn:hover {
+            transform: translateY(3px);
+            box-shadow: 0 5px 0 #b41717, 0 8px 16px rgba(0, 0, 0, 0.22);
+        }
+
+        /* AREA ISI DISESUAIKAN DENGAN RUANG PUTIH BACKGROUND */
+        .guide-wrapper {
+            position: absolute;
+            top: 120px;
+            right: 250px;
+            width: 760px;
+            height: 500px;
+            z-index: 10;
+        }
+
+        .content-box {
+            width: 100%;
+            height: 415px;
+            padding: 0 12px 8px 0;
+            background: transparent;
+            overflow-y: auto;
+        }
+
+        .content-box::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        .content-box::-webkit-scrollbar-track {
+            background: #fff0d8;
+            border-radius: 20px;
+        }
+
+        .content-box::-webkit-scrollbar-thumb {
+            background: #f58b15;
+            border-radius: 20px;
+        }
+
+        .intro {
+            width: 100%;
+            margin-bottom: 14px;
+            color: #244965;
+            font-size: 16px;
+            font-weight: 800;
+            line-height: 1.5;
+            text-align: left;
+        }
+
+        .list {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 13px;
+            padding-bottom: 8px;
+        }
+
+        .item {
+            display: grid;
+            grid-template-columns: 48px 1fr;
+            gap: 13px;
+            align-items: flex-start;
+            min-height: 118px;
+            padding: 14px 15px;
+            border-radius: 18px;
+            background: rgba(255, 250, 241, 0.94);
+            border: 3px solid #ffd69b;
+            box-shadow: 0 6px 14px rgba(199, 117, 23, 0.10);
+        }
+
+        .item:last-child {
+            grid-column: 1 / 3;
+            min-height: 100px;
+        }
+
+        .number {
+            width: 46px;
+            height: 46px;
+            border-radius: 14px;
+            background: linear-gradient(#ffcf58, #ff981b);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: white;
+            font-size: 23px;
+            font-weight: 900;
+            box-shadow: 0 4px 0 #c66a0a;
+        }
+
+        .text h3 {
+            color: #e57a00;
+            font-size: 18px;
+            margin-bottom: 6px;
+            line-height: 1.25;
+        }
+
+        .text p {
+            color: #28445b;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.45;
+            text-align: left;
+            letter-spacing: 0;
+            word-spacing: normal;
+        }
+
+        .nav-area {
+            width: 100%;
+            height: 78px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: flex-end;
+            padding-right: 10px;
+        }
+
+        .nav-btn {
+            min-width: 260px;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 20px;
+            background: linear-gradient(#37b2ef, #0a83d2);
+            color: white;
+            font-size: 18px;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 0 7px 0 #0769ac, 0 12px 18px rgba(0, 0, 0, 0.15);
+            transition: 0.2s ease;
+        }
+
+        .nav-btn:hover {
+            transform: translateY(3px);
+            box-shadow: 0 4px 0 #0769ac, 0 8px 14px rgba(0, 0, 0, 0.15);
+        }
+
+        @media (max-width: 1200px) {
+            .guide-wrapper {
+                top: 165px;
+                right: 80px;
+                width: 700px;
+                height: 500px;
+            }
+
+            .content-box {
+                height: 415px;
+            }
+
+            .text h3 {
+                font-size: 17px;
+            }
+
+            .text p {
+                font-size: 13.5px;
+            }
+        }
+
+        @media (max-width: 992px) {
+            .guide-wrapper {
+                top: 170px;
+                left: 50%;
+                right: auto;
+                transform: translateX(-50%);
+                width: 86vw;
+                height: 505px;
+            }
+
+            .content-box {
+                height: 420px;
+            }
+
+            .list {
+                grid-template-columns: 1fr;
+            }
+
+            .item:last-child {
+                grid-column: auto;
+            }
+
+            .nav-area {
+                justify-content: center;
+                padding-right: 0;
+            }
+
+            .nav-btn {
+                min-width: 230px;
+                font-size: 17px;
+            }
+
+            .close-btn {
+                top: 24px;
+                right: 24px;
+                width: 60px;
+                height: 60px;
+                font-size: 34px;
+            }
+
+            .music-btn {
+                width: 62px;
+                height: 62px;
+                left: 18px;
+                top: 16px;
+            }
+
+            .music-btn svg {
+                width: 30px;
+                height: 30px;
+            }
+        }
+
+        /* KHUSUS HP LANDSCAPE: supaya tidak turun dan tidak terpotong */
+        @media (max-height: 500px) and (orientation: landscape) {
+            .bg {
+                background-size: 100% 100%;
+                background-position: center center;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .close-btn {
+                width: 44px;
+                height: 44px;
+                top: 25px;
+                right: 28px;
+                font-size: 28px;
+                box-shadow: 0 5px 0 #b41717, 0 8px 12px rgba(0, 0, 0, 0.20);
+            }
+
+            .guide-wrapper {
+                top: 58px;
+                right: 72px;
+                left: auto;
+                transform: none;
+                width: 500px;
+                height: 265px;
+            }
+
+            .content-box {
+                height: 214px;
+                padding-right: 7px;
+            }
+
+            .content-box::-webkit-scrollbar {
+                width: 5px;
+            }
+
+            .intro {
+                margin-bottom: 7px;
+                font-size: 10.8px;
+                line-height: 1.35;
+            }
+
+            .list {
+                grid-template-columns: 1fr 1fr;
+                gap: 6px;
+                padding-bottom: 4px;
+            }
+
+            .item {
+                grid-template-columns: 28px 1fr;
+                gap: 7px;
+                min-height: 65px;
+                padding: 7px 8px;
+                border-radius: 11px;
+                border-width: 2px;
+                box-shadow: 0 3px 8px rgba(199, 117, 23, 0.10);
+            }
+
+            .item:last-child {
+                grid-column: 1 / 3;
+                min-height: 54px;
+            }
+
+            .number {
+                width: 27px;
+                height: 27px;
+                border-radius: 8px;
+                font-size: 15px;
+                box-shadow: 0 2px 0 #c66a0a;
+            }
+
+            .text h3 {
+                font-size: 11.8px;
+                margin-bottom: 2px;
+                line-height: 1.13;
+            }
+
+            .text p {
+                font-size: 9.5px;
+                line-height: 1.25;
+                font-weight: 700;
+            }
+
+            .nav-area {
+                height: 48px;
+                justify-content: flex-end;
+                align-items: flex-end;
+                padding-right: 6px;
+            }
+
+            .nav-btn {
+                min-width: 150px;
+                padding: 8px 12px;
+                border-radius: 12px;
+                font-size: 11.5px;
+                box-shadow: 0 4px 0 #0769ac, 0 7px 10px rgba(0, 0, 0, 0.14);
+            }
+        }
+
+        @media (max-width: 600px) and (orientation: portrait) {
+            .bg {
+                background-size: cover;
+                background-position: center center;
+            }
+
+            .guide-wrapper {
+                top: 150px;
+                width: 88vw;
+                height: 470px;
+            }
+
+            .content-box {
+                height: 390px;
+            }
+
+            .intro {
+                font-size: 14px;
+            }
+
+            .item {
+                grid-template-columns: 42px 1fr;
+                padding: 12px;
+            }
+
+            .number {
+                width: 40px;
+                height: 40px;
+                font-size: 20px;
+            }
+
+            .text h3 {
+                font-size: 16px;
+            }
+
+            .text p {
+                font-size: 13px;
+            }
+
+            .music-btn {
+                width: 52px;
+                height: 52px;
+                left: 14px;
+                top: 14px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 25px;
+                height: 25px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="wrap">
+        <div class="stage">
+            <div class="bg"></div>
+
+            <button class="music-btn off" id="musicBtn" title="Music" type="button">
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+                </svg>
+            </button>
+
+            <button class="close-btn sound-click" data-href="menu.html" type="button">×</button>
+
+            <div class="guide-wrapper">
+                <div class="content-box">
+                    <p class="intro">
+                        Bacalah petunjuk praktikum berikut sebelum melakukan kegiatan laboratorium agar
+                        praktikum berjalan aman, tertib, dan sesuai dengan prosedur.
+                    </p>
+
+                    <div class="list">
+                        <div class="item">
+                            <div class="number">1</div>
+                            <div class="text">
+                                <h3>Pelajari Keselamatan Laboratorium</h3>
+                                <p>
+                                    Pelajari aturan keselamatan, simbol bahan kimia, tata tertib,
+                                    dan fungsi alat laboratorium sebelum memulai praktikum.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="number">2</div>
+                            <div class="text">
+                                <h3>Perhatikan Alat dan Bahan</h3>
+                                <p>
+                                    Kenali alat dan bahan praktikum larutan penyangga. Pastikan kamu
+                                    memahami fungsi setiap alat sebelum digunakan.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="number">3</div>
+                            <div class="text">
+                                <h3>Ikuti Langkah Praktikum</h3>
+                                <p>
+                                    Lakukan praktikum sesuai urutan langkah yang tersedia agar hasil
+                                    pengamatan sesuai dengan prosedur.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="number">4</div>
+                            <div class="text">
+                                <h3>Amati dan Catat Hasil</h3>
+                                <p>
+                                    Amati perubahan yang terjadi, seperti perubahan warna indikator
+                                    atau nilai pH, lalu catat hasilnya dengan teliti.
+                                </p>
+                            </div>
+                        </div>
+
+                        <div class="item">
+                            <div class="number">5</div>
+                            <div class="text">
+                                <h3>Kerjakan Analisis</h3>
+                                <p>
+                                    Gunakan hasil pengamatan untuk menjawab pertanyaan analisis.
+                                    Setelah itu, kerjakan soal evaluasi untuk mengukur pemahaman terhadap materi.
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="nav-area">
+                    <button class="nav-btn sound-click" data-href="petunjuk.html" type="button">
+                        Petunjuk Penggunaan
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+        const musicBtn = document.getElementById("musicBtn");
+
+        let musicOn = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        document.querySelectorAll(".sound-click").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                playClickSound();
+                const href = btn.getAttribute("data-href");
+
+                if (href) {
+                    setTimeout(() => {
+                        window.location.href = href;
+                    }, 250);
+                }
+            });
+        });
+    </script>
+</body>
+
+</html>

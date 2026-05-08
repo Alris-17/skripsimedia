@@ -1,0 +1,972 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Keselamatan Laboratorium</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        :root {
+            --safety-icon-size: 140px;
+            --safety-icon-gap: 0px;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            margin: 0;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #dff3ff;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+        }
+
+        .stage {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            overflow: hidden;
+            background-image: url("assets/BG Keselamatan LAB.png");
+            background-size: 100% 100%;
+            background-position: center;
+            background-repeat: no-repeat;
+        }
+
+        /* TOMBOL MUSIK DISAMAKAN DENGAN HALAMAN HOME */
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 80;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 34px;
+            right: 46px;
+            width: 72px;
+            height: 72px;
+            border: 0;
+            border-radius: 50%;
+            background: linear-gradient(#72c3ff, #4098ea);
+            color: #ffffff;
+            font-size: 46px;
+            font-weight: 900;
+            line-height: 72px;
+            text-align: center;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #2c67bd, 0 12px 20px rgba(0, 0, 0, .22);
+            z-index: 70;
+            transition: 0.2s ease;
+        }
+
+        .close-btn:hover {
+            transform: translateY(2px);
+            box-shadow: 0 6px 0 #2c67bd, 0 10px 18px rgba(0, 0, 0, .20);
+        }
+
+        .page-title {
+            position: absolute;
+            top: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            margin: 0;
+            padding: 10px 38px;
+            border: 5px solid #8ec8f7;
+            border-radius: 28px;
+            background: rgba(255, 255, 255, .92);
+            color: #1f5c9e;
+            font-size: 42px;
+            font-weight: 900;
+            line-height: 1.05;
+            text-align: center;
+            letter-spacing: .5px;
+            white-space: nowrap;
+            box-shadow: 0 8px 18px rgba(45, 108, 169, .18);
+            z-index: 20;
+        }
+
+        .content-area {
+            position: absolute;
+            left: 70px;
+            right: 80px;
+            top: 155px;
+            bottom: 34px;
+            display: grid;
+            grid-template-columns: 34% 64%;
+            gap: 22px;
+            z-index: 10;
+        }
+
+        .left-panel,
+        .right-panel {
+            height: 100%;
+            overflow: hidden;
+            background: rgba(255, 255, 255, .94);
+            border: 5px solid #8ec8f7;
+            border-radius: 30px;
+            box-shadow: 0 8px 20px rgba(45, 108, 169, .18);
+        }
+
+        .left-panel {
+            position: relative;
+            padding: 18px 18px 12px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: flex-end;
+        }
+
+        .info-box {
+            width: 100%;
+            padding: 14px 16px;
+            border: 4px solid #9acaf8;
+            border-radius: 22px;
+            background: #eaf6ff;
+            color: #14375d;
+            text-align: center;
+            margin-bottom: 8px;
+        }
+
+        .info-box h2 {
+            margin: 0 0 6px;
+            color: #1f5c9e;
+            font-size: 25px;
+            font-weight: 900;
+            line-height: 1.05;
+        }
+
+        .info-box p {
+            margin: 0;
+            font-size: 14px;
+            font-weight: 700;
+            line-height: 1.35;
+        }
+
+        .character-wrap {
+            position: relative;
+            flex: 1;
+            width: 100%;
+            min-height: 0;
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+        }
+
+        .character-img {
+            max-width: 88%;
+            max-height: 100%;
+            object-fit: contain;
+            user-select: none;
+            pointer-events: none;
+            filter: drop-shadow(0 10px 10px rgba(0, 0, 0, .16));
+        }
+
+        .right-panel {
+            padding: 20px 24px 18px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .right-head {
+            margin-bottom: 12px;
+            text-align: center;
+            flex: 0 0 auto;
+        }
+
+        .right-head h2 {
+            margin: 0;
+            color: #1f5c9e;
+            font-size: 34px;
+            font-weight: 900;
+            line-height: 1.05;
+        }
+
+        .right-head p {
+            margin: 6px 0 0;
+            color: #14375d;
+            font-size: 15px;
+            font-weight: 700;
+        }
+
+        .safety-grid {
+            flex: 1;
+            min-height: 0;
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: var(--safety-icon-gap);
+            align-items: center;
+            justify-items: center;
+        }
+
+        .safety-card {
+            position: relative;
+            width: var(--safety-icon-size);
+            height: var(--safety-icon-size);
+            border: 0;
+            border-radius: 22px;
+            background: transparent;
+            cursor: pointer;
+            padding: 0;
+            transition: transform .18s ease, filter .18s ease;
+        }
+
+        .safety-card:hover {
+            transform: translateY(-7px) scale(1.04);
+            filter: drop-shadow(0 12px 10px rgba(0, 0, 0, .20));
+        }
+
+        .safety-card:active {
+            transform: translateY(0) scale(.98);
+        }
+
+        .safety-card.active {
+            transform: translateY(-4px) scale(1.03);
+            filter: drop-shadow(0 0 10px rgba(64, 152, 234, .75));
+        }
+
+        .safety-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .preview-area {
+            margin-top: 14px;
+            height: 215px;
+            display: grid;
+            grid-template-columns: 210px 1fr;
+            gap: 18px;
+            align-items: center;
+            padding: 12px 16px;
+            border: 4px solid #9acaf8;
+            border-radius: 24px;
+            background: #eaf6ff;
+            flex: 0 0 auto;
+        }
+
+        .preview-card {
+            width: 185px;
+            height: 185px;
+            justify-self: center;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .preview-card img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            user-select: none;
+            pointer-events: none;
+        }
+
+        .preview-text h3 {
+            margin: 0 0 10px;
+            color: #1f5c9e;
+            font-size: 29px;
+            font-weight: 900;
+            line-height: 1.05;
+        }
+
+        .preview-text p {
+            margin: 0;
+            color: #14375d;
+            font-size: 16px;
+            font-weight: 700;
+            line-height: 1.4;
+        }
+
+        @media (max-width: 1366px) {
+            :root {
+                --safety-icon-size: 118px;
+                --safety-icon-gap: 0px;
+            }
+
+            .close-btn {
+                top: 28px;
+                right: 38px;
+                width: 64px;
+                height: 64px;
+                line-height: 64px;
+                font-size: 40px;
+            }
+
+            .page-title {
+                top: 24px;
+                padding: 9px 34px;
+                font-size: 34px;
+                border-radius: 24px;
+                white-space: nowrap;
+            }
+
+            .content-area {
+                left: 58px;
+                right: 62px;
+                top: 128px;
+                bottom: 28px;
+                grid-template-columns: 33% 65%;
+                gap: 18px;
+            }
+
+            .left-panel {
+                padding: 14px 14px 10px;
+            }
+
+            .info-box {
+                padding: 11px 12px;
+                margin-bottom: 6px;
+            }
+
+            .info-box h2 {
+                font-size: 21px;
+            }
+
+            .info-box p {
+                font-size: 12px;
+            }
+
+            .character-img {
+                max-width: 84%;
+                max-height: 100%;
+            }
+
+            .right-panel {
+                padding: 16px 18px 14px;
+            }
+
+            .right-head {
+                margin-bottom: 8px;
+            }
+
+            .right-head h2 {
+                font-size: 28px;
+            }
+
+            .right-head p {
+                font-size: 13px;
+            }
+
+            .preview-area {
+                height: 190px;
+                grid-template-columns: 190px 1fr;
+                gap: 12px;
+                margin-top: 10px;
+                padding: 10px 12px;
+            }
+
+            .preview-card {
+                width: 160px;
+                height: 160px;
+            }
+
+            .preview-text h3 {
+                font-size: 24px;
+                margin-bottom: 8px;
+            }
+
+            .preview-text p {
+                font-size: 14px;
+                line-height: 1.35;
+            }
+        }
+
+        /* MODE PORTRAIT / HP TEGAK */
+        @media (max-width: 1100px) and (orientation: portrait) {
+
+            html,
+            body {
+                overflow: auto;
+            }
+
+            .stage {
+                min-height: 100vh;
+                height: auto;
+                overflow: visible;
+                background-size: cover;
+                background-position: center center;
+            }
+
+            .music-btn {
+                width: 56px;
+                height: 56px;
+                left: 14px;
+                top: 14px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 27px;
+                height: 27px;
+            }
+
+            .close-btn {
+                top: 24px;
+                right: 24px;
+                width: 56px;
+                height: 56px;
+                line-height: 56px;
+                font-size: 36px;
+            }
+
+            .content-area {
+                position: relative;
+                left: auto;
+                right: auto;
+                top: auto;
+                bottom: auto;
+                width: calc(100% - 70px);
+                margin: 120px auto 24px;
+                grid-template-columns: 1fr;
+                gap: 14px;
+                overflow: visible;
+            }
+
+            .left-panel {
+                min-height: 360px;
+            }
+
+            .right-panel {
+                min-height: 500px;
+            }
+
+            .safety-grid {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 8px;
+            }
+
+            .page-title {
+                font-size: 28px;
+                max-width: calc(100vw - 150px);
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+
+        /* MODE LANDSCAPE HP */
+        @media (max-height: 500px) and (orientation: landscape) {
+            :root {
+                --safety-icon-size: 58px;
+                --safety-icon-gap: 4px;
+            }
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            .stage {
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                overflow: hidden;
+                background-size: 100% 100%;
+                background-position: center center;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+                box-shadow: 0 10px 18px rgba(0, 0, 0, .32);
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .close-btn {
+                top: 18px;
+                right: 44px;
+                width: 34px;
+                height: 34px;
+                line-height: 34px;
+                font-size: 24px;
+                box-shadow: 0 4px 0 #2c67bd, 0 7px 10px rgba(0, 0, 0, 0.20);
+            }
+
+            .page-title {
+                top: 16px;
+                padding: 5px 22px;
+                border-width: 3px;
+                border-radius: 16px;
+                font-size: 20px;
+                max-width: 420px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+
+            .content-area {
+                left: 36px;
+                right: 38px;
+                top: 70px;
+                bottom: 16px;
+                grid-template-columns: 31% 67%;
+                gap: 10px;
+            }
+
+            .left-panel,
+            .right-panel {
+                border-width: 3px;
+                border-radius: 16px;
+            }
+
+            .left-panel {
+                padding: 7px 7px 5px;
+            }
+
+            .info-box {
+                padding: 5px 6px;
+                border-width: 2px;
+                border-radius: 12px;
+                margin-bottom: 4px;
+            }
+
+            .info-box h2 {
+                font-size: 10.5px;
+                margin-bottom: 3px;
+                line-height: 1.12;
+            }
+
+            .info-box p {
+                font-size: 7.4px;
+                line-height: 1.22;
+            }
+
+            .character-img {
+                max-width: 88%;
+                max-height: 100%;
+            }
+
+            .right-panel {
+                padding: 7px 8px 7px;
+            }
+
+            .right-head {
+                margin-bottom: 2px;
+            }
+
+            .right-head h2 {
+                font-size: 15px;
+                line-height: 1.05;
+            }
+
+            .right-head p {
+                margin-top: 2px;
+                font-size: 8px;
+                line-height: 1.15;
+            }
+
+            .safety-grid {
+                flex: 0 0 65px;
+                grid-template-columns: repeat(5, 1fr);
+                gap: var(--safety-icon-gap);
+                align-items: center;
+                justify-items: center;
+            }
+
+            .safety-card {
+                width: var(--safety-icon-size);
+                height: var(--safety-icon-size);
+                border-radius: 12px;
+            }
+
+            .preview-area {
+                height: 98px;
+                margin-top: 4px;
+                grid-template-columns: 78px 1fr;
+                gap: 7px;
+                padding: 5px 7px;
+                border-width: 2px;
+                border-radius: 13px;
+            }
+
+            .preview-card {
+                width: 68px;
+                height: 68px;
+            }
+
+            .preview-text h3 {
+                font-size: 11.5px;
+                margin-bottom: 4px;
+                line-height: 1.05;
+            }
+
+            .preview-text p {
+                font-size: 8px;
+                line-height: 1.25;
+            }
+        }
+
+        @media (max-height: 390px) and (orientation: landscape) {
+            :root {
+                --safety-icon-size: 75px;
+            }
+
+            .music-btn {
+                width: 44px;
+                height: 44px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 21px;
+                height: 21px;
+            }
+
+            .close-btn {
+                top: 20px;
+                right: 42px;
+                width: 36px;
+                height: 36px;
+                font-size: 25px;
+                line-height: 36px;
+            }
+
+            .page-title {
+                top: 14px;
+                font-size: 21px;
+                /* besar judul */
+                padding: 5px 28px;
+                border-width: 3px;
+                border-radius: 18px;
+            }
+
+            .content-area {
+                top: 60px;
+                /* naik/turun isi */
+                left: 8px;
+                /* jarak kiri */
+                right: 2px;
+                /* jarak kanan */
+                bottom: 10px;
+                grid-template-columns: 29% 69%;
+                gap: 10px;
+            }
+
+            .left-panel,
+            .right-panel {
+                border-width: 3px;
+                border-radius: 18px;
+            }
+
+            .left-panel {
+                padding: 1px;
+            }
+
+            .info-box {
+                padding: 1px 5px;
+                border-width: 2px;
+                border-radius: 13px;
+                margin-bottom: 4px;
+            }
+
+            .info-box h2 {
+                font-size: 12.5px;
+                margin-bottom: 3px;
+            }
+
+            .info-box p {
+                font-size: 7.5px;
+                line-height: 1.25;
+            }
+
+            .character-img {
+                max-width: 92%;
+                max-height: 180px;
+            }
+
+            .right-panel {
+                padding: 7px 8px 7px;
+            }
+
+            .right-head {
+                margin-bottom: 4px;
+            }
+
+            .right-head h2 {
+                font-size: 16px;
+                /* judul kanan */
+            }
+
+            .right-head p {
+                font-size: 7.8px;
+                margin-top: 2px;
+            }
+
+            .safety-grid {
+                flex-basis: 120px;
+                grid-template-columns: repeat(5, 1fr);
+                gap: 6px;
+                align-items: center;
+                justify-items: center;
+            }
+
+            .safety-card {
+                width: var(--safety-icon-size);
+                height: var(--safety-icon-size);
+                border-radius: 12px;
+            }
+
+            .preview-area {
+                height: 100px;
+                /* tinggi kotak penjelasan */
+                margin-top: -25px;
+                grid-template-columns: 82px 1fr;
+                gap: 10px;
+                padding: 7px 10px;
+                border-width: 3px;
+                border-radius: 16px;
+            }
+
+            .preview-card {
+                width: 102px;
+                height: 92px;
+            }
+
+            .preview-text h3 {
+                font-size: 13px;
+                margin-bottom: 4px;
+            }
+
+            .preview-text p {
+                font-size: 8.4px;
+                line-height: 1.35;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="stage">
+        <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+            </svg>
+        </button>
+
+        <button class="close-btn" id="closeBtn" type="button" aria-label="Kembali ke pra-lab">×</button>
+
+        <h1 class="page-title">Keselamatan Laboratorium</h1>
+
+        <main class="content-area">
+            <section class="left-panel">
+                <div class="info-box">
+                    <h2 id="infoTitle">Gunakan Pakaian Laboratorium</h2>
+                    <p id="infoDesc">
+                        Klik salah satu gambar keselamatan untuk melihat contoh penggunaan alat pelindung diri.
+                    </p>
+                </div>
+
+                <div class="character-wrap">
+                    <img id="characterImg" class="character-img" src="keselamatan/pakai jas (1).png"
+                        alt="Contoh penggunaan keselamatan laboratorium">
+                </div>
+            </section>
+
+            <section class="right-panel">
+                <div class="right-head">
+                    <h2>Perlengkapan Keselamatan Lab</h2>
+                    <p>Pilih salah satu perlengkapan keselamatan laboratorium berikut.</p>
+                </div>
+
+                <div class="safety-grid">
+                    <button class="safety-card active" onclick="showSafety('jas', this)"
+                        aria-label="Gunakan pakaian laboratorium" type="button">
+                        <img src="keselamatan/penj. jaslab (1).png" alt="Gunakan Pakaian Laboratorium">
+                    </button>
+
+                    <button class="safety-card" onclick="showSafety('masker', this)" aria-label="Gunakan masker"
+                        type="button">
+                        <img src="keselamatan/penj. masker (1).png" alt="Gunakan Masker">
+                    </button>
+
+                    <button class="safety-card" onclick="showSafety('kacamata', this)"
+                        aria-label="Gunakan kacamata laboratorium" type="button">
+                        <img src="keselamatan/penejelasan kacamata (1).png" alt="Gunakan Kacamata Laboratorium">
+                    </button>
+
+                    <button class="safety-card" onclick="showSafety('sarung', this)"
+                        aria-label="Gunakan pelindung tangan" type="button">
+                        <img src="keselamatan/penj. pelindung tangan (1).png" alt="Gunakan Pelindung Tangan">
+                    </button>
+
+                    <button class="safety-card" onclick="showSafety('sepatu', this)"
+                        aria-label="Gunakan sepatu laboratorium" type="button">
+                        <img src="keselamatan/penj. sepatu (1).png" alt="Gunakan Sepatu Laboratorium">
+                    </button>
+                </div>
+
+                <div class="preview-area">
+                    <div class="preview-card">
+                        <img id="previewImg" src="keselamatan/penj. jaslab (1).png"
+                            alt="Penjelasan keselamatan laboratorium">
+                    </div>
+
+                    <div class="preview-text">
+                        <h3 id="previewTitle">Gunakan Pakaian Laboratorium</h3>
+                        <p id="previewDesc">
+                            Pakaian laboratorium digunakan untuk melindungi tubuh dan pakaian dari percikan bahan kimia
+                            selama praktikum.
+                        </p>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <script>
+        const musicBtn = document.getElementById("musicBtn");
+        const closeBtn = document.getElementById("closeBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        closeBtn.addEventListener("click", () => {
+            playClickSound();
+            setTimeout(() => {
+                window.location.href = "pralab.html";
+            }, 350);
+        });
+
+        const safetyData = {
+            jas: {
+                title: "Gunakan Pakaian Laboratorium",
+                desc: "Pakaian laboratorium digunakan untuk melindungi tubuh dan pakaian dari percikan bahan kimia selama praktikum.",
+                preview: "keselamatan/penj. jaslab (1).png",
+                character: "keselamatan/pakai jas (1).png"
+            },
+            masker: {
+                title: "Gunakan Masker",
+                desc: "Masker digunakan untuk membantu melindungi hidung dan mulut dari uap, bau menyengat, debu, atau partikel berbahaya.",
+                preview: "keselamatan/penj. masker (1).png",
+                character: "keselamatan/pakai masker (1).png"
+            },
+            kacamata: {
+                title: "Gunakan Kacamata Laboratorium",
+                desc: "Kacamata laboratorium digunakan untuk melindungi mata dari percikan bahan kimia atau benda kecil saat praktikum.",
+                preview: "keselamatan/penejelasan kacamata (1).png",
+                character: "keselamatan/pakai kacamata (1).png"
+            },
+            sarung: {
+                title: "Gunakan Pelindung Tangan",
+                desc: "Pelindung tangan digunakan untuk mengurangi kontak langsung dengan bahan kimia, benda panas, atau alat laboratorium tertentu.",
+                preview: "keselamatan/penj. pelindung tangan (1).png",
+                character: "keselamatan/pakai sarung tangan (1).png"
+            },
+            sepatu: {
+                title: "Gunakan Sepatu Laboratorium",
+                desc: "Sepatu laboratorium digunakan untuk melindungi kaki dari tumpahan bahan kimia, pecahan kaca, atau benda tajam.",
+                preview: "keselamatan/penj. sepatu (1).png",
+                character: "keselamatan/pakai sepatu (1).png"
+            }
+        };
+
+        function showSafety(type, button) {
+            const data = safetyData[type];
+
+            playClickSound();
+
+            document.getElementById("infoTitle").textContent = data.title;
+            document.getElementById("infoDesc").textContent = "Contoh penggunaan alat pelindung diri saat berada di laboratorium.";
+            document.getElementById("previewTitle").textContent = data.title;
+            document.getElementById("previewDesc").textContent = data.desc;
+            document.getElementById("previewImg").src = data.preview;
+            document.getElementById("characterImg").src = data.character;
+
+            document.querySelectorAll(".safety-card").forEach(card => {
+                card.classList.remove("active");
+            });
+
+            button.classList.add("active");
+        }
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,1008 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Materi 2</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            width: 100%;
+            min-height: 100%;
+            scroll-behavior: smooth;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            font-family: Arial, Helvetica, sans-serif;
+            background-image: url("assets/BG MATERI.png");
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            color: #123b63;
+            overflow-x: hidden;
+            overflow-y: auto;
+        }
+
+        .page {
+            width: 100%;
+            min-height: 100vh;
+            padding: 35px 25px 95px;
+            display: flex;
+            justify-content: center;
+        }
+
+        .content-box {
+            width: 88%;
+            max-width: 1100px;
+            background: rgba(255, 255, 255, 0.90);
+            border: 3px solid #77bff0;
+            border-radius: 28px;
+            box-shadow: 0 10px 30px rgba(43, 120, 190, 0.25);
+            padding: 35px;
+            backdrop-filter: blur(4px);
+        }
+
+        .title-box {
+            text-align: center;
+            margin-bottom: 30px;
+            padding: 22px 20px;
+            border-radius: 24px;
+            background: linear-gradient(135deg, #e9f7ff, #ffffff);
+            border: 3px solid #8cccf3;
+            box-shadow: 0 5px 16px rgba(41, 120, 190, 0.18);
+        }
+
+        .title-box h1 {
+            font-size: 42px;
+            color: #174f91;
+            letter-spacing: 2px;
+            margin-bottom: 8px;
+        }
+
+        .title-box h2 {
+            font-size: 22px;
+            color: #2b6fa8;
+            font-weight: 900;
+        }
+
+        .section {
+            margin-bottom: 28px;
+            padding: 24px;
+            border-radius: 22px;
+            background: rgba(239, 249, 255, 0.88);
+            border: 2px solid #b9e2ff;
+        }
+
+        .section h3 {
+            font-size: 26px;
+            color: #15528e;
+            margin-bottom: 14px;
+            padding-bottom: 8px;
+            border-bottom: 3px solid #8cccf3;
+        }
+
+        .section p {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 12px;
+            text-align: justify;
+        }
+
+        .info-box {
+            margin-top: 15px;
+            padding: 18px;
+            border-left: 6px solid #3d93d6;
+            background: #ffffff;
+            border-radius: 14px;
+            box-shadow: 0 4px 12px rgba(50, 120, 180, 0.12);
+        }
+
+        .info-box p {
+            margin-bottom: 8px;
+        }
+
+        .activity-list,
+        .quiz-list {
+            padding-left: 24px;
+            margin-top: 12px;
+        }
+
+        .activity-list li,
+        .quiz-list li {
+            font-size: 18px;
+            line-height: 1.7;
+            margin-bottom: 12px;
+        }
+
+        .quiz-list ol {
+            padding-left: 25px;
+            margin-top: 8px;
+        }
+
+        .formula-wrapper {
+            display: grid;
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+            gap: 18px;
+            margin-top: 18px;
+        }
+
+        .formula-card {
+            background: #ffffff;
+            border: 2px solid #9bd3f5;
+            border-radius: 18px;
+            padding: 20px;
+            box-shadow: 0 4px 12px rgba(50, 120, 180, 0.14);
+        }
+
+        .formula-card h4 {
+            color: #174f91;
+            font-size: 21px;
+            margin-bottom: 12px;
+        }
+
+        .formula {
+            background: #eaf7ff;
+            border: 2px dashed #5aaee6;
+            border-radius: 14px;
+            padding: 15px;
+            text-align: center;
+            color: #123b63;
+            font-size: 22px;
+            font-weight: 900;
+            margin-bottom: 14px;
+            line-height: 1.65;
+        }
+
+        .fraction {
+            display: inline-block;
+            vertical-align: middle;
+            text-align: center;
+            line-height: 1.15;
+            margin-left: 4px;
+        }
+
+        .fraction span {
+            display: block;
+            padding: 0 8px;
+        }
+
+        .fraction .top {
+            border-bottom: 2px solid #123b63;
+        }
+
+        .formula-card p {
+            font-size: 17px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        .table-wrapper {
+            width: 100%;
+            overflow-x: auto;
+            margin-top: 16px;
+            border-radius: 14px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 650px;
+            border-collapse: collapse;
+            background: #ffffff;
+            border-radius: 14px;
+            overflow: hidden;
+        }
+
+        th,
+        td {
+            border: 2px solid #9bd3f5;
+            padding: 14px;
+            font-size: 17px;
+            text-align: left;
+            vertical-align: top;
+        }
+
+        th {
+            background: #dff3ff;
+            color: #174f91;
+            text-align: center;
+        }
+
+        td:first-child {
+            text-align: center;
+            font-weight: bold;
+            width: 70px;
+        }
+
+        .video-box {
+            margin-top: 18px;
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 18px;
+            border: 2px solid #b9e2ff;
+            box-shadow: 0 4px 14px rgba(50, 120, 180, 0.14);
+        }
+
+        .video-box h4 {
+            font-size: 20px;
+            color: #174f91;
+            margin-bottom: 12px;
+        }
+
+        video {
+            width: 100%;
+            max-height: 560px;
+            border-radius: 16px;
+            border: 3px solid #8cccf3;
+            background: #000;
+            display: block;
+        }
+
+        .example-box {
+            background: #ffffff;
+            border-radius: 18px;
+            padding: 20px;
+            border: 2px solid #b9e2ff;
+            box-shadow: 0 4px 14px rgba(50, 120, 180, 0.14);
+            margin-top: 15px;
+        }
+
+        .example-box h4 {
+            font-size: 20px;
+            color: #174f91;
+            margin-bottom: 12px;
+        }
+
+        .example-box p {
+            font-size: 17px;
+            line-height: 1.7;
+            margin-bottom: 10px;
+        }
+
+        details {
+            margin-top: 14px;
+            background: #eaf7ff;
+            border: 2px solid #9bd3f5;
+            border-radius: 14px;
+            padding: 14px 18px;
+        }
+
+        summary {
+            cursor: pointer;
+            font-size: 18px;
+            color: #174f91;
+            font-weight: 900;
+        }
+
+        details p {
+            margin-top: 10px;
+            font-size: 17px;
+        }
+
+        .conclusion-box {
+            min-height: 120px;
+            background: #ffffff;
+            border: 2px dashed #5aaee6;
+            border-radius: 18px;
+            padding: 18px;
+            font-size: 18px;
+            color: #5a7894;
+            line-height: 1.6;
+        }
+
+        .music-btn {
+            position: fixed;
+            left: 22px;
+            top: 18px;
+            width: 62px;
+            height: 62px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 16px 26px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 9999;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 30px;
+            height: 30px;
+            fill: #fff;
+        }
+
+        .back-btn {
+            position: fixed;
+            left: 25px;
+            bottom: 25px;
+            z-index: 9999;
+            text-decoration: none;
+            padding: 12px 28px;
+            border-radius: 30px;
+            background: linear-gradient(135deg, #ffffff, #dff3ff);
+            color: #1b5f9e;
+            font-size: 18px;
+            font-weight: 900;
+            border: 3px solid #5aaee6;
+            box-shadow: 0 5px 14px rgba(30, 100, 170, 0.35);
+            transition: 0.25s ease;
+            cursor: pointer;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.07);
+            background: #cfeeff;
+        }
+
+        .back-btn:active {
+            transform: scale(.96);
+        }
+
+        @media (max-width: 900px) {
+            .page {
+                padding: 28px 18px 92px;
+            }
+
+            .content-box {
+                width: 95%;
+                padding: 25px;
+            }
+
+            .title-box h1 {
+                font-size: 34px;
+            }
+
+            .title-box h2 {
+                font-size: 19px;
+            }
+
+            .section h3 {
+                font-size: 23px;
+            }
+
+            .section p,
+            .activity-list li,
+            .quiz-list li,
+            th,
+            td {
+                font-size: 16px;
+            }
+
+            .formula-wrapper {
+                grid-template-columns: 1fr;
+            }
+
+            .formula {
+                font-size: 20px;
+            }
+
+            .music-btn {
+                width: 54px;
+                height: 54px;
+                left: 14px;
+                top: 14px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 26px;
+                height: 26px;
+            }
+
+            .back-btn {
+                font-size: 15px;
+                padding: 9px 20px;
+                left: 15px;
+                bottom: 15px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            body {
+                background-attachment: scroll;
+            }
+
+            .page {
+                padding: 20px 12px 85px;
+            }
+
+            .content-box {
+                width: 100%;
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .title-box {
+                padding: 18px 12px;
+                margin-bottom: 20px;
+            }
+
+            .title-box h1 {
+                font-size: 28px;
+            }
+
+            .title-box h2 {
+                font-size: 16px;
+            }
+
+            .section {
+                padding: 18px;
+                border-radius: 18px;
+                margin-bottom: 22px;
+            }
+
+            .section h3 {
+                font-size: 20px;
+            }
+
+            .section p,
+            .activity-list li,
+            .quiz-list li,
+            th,
+            td,
+            .formula-card p,
+            .example-box p,
+            details p {
+                font-size: 15px;
+                line-height: 1.55;
+            }
+
+            .formula {
+                font-size: 17px;
+                padding: 12px;
+            }
+
+            .formula-card,
+            .example-box,
+            .video-box {
+                padding: 14px;
+                border-radius: 16px;
+            }
+
+            summary {
+                font-size: 15px;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 10px;
+                top: 10px;
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .back-btn {
+                font-size: 13px;
+                padding: 8px 16px;
+                border-width: 2px;
+                left: 12px;
+                bottom: 12px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 500px) {
+            body {
+                background-attachment: scroll;
+                overflow-y: auto;
+            }
+
+            .page {
+                min-height: 100vh;
+                padding: 18px 18px 76px;
+            }
+
+            .content-box {
+                width: 94%;
+                max-width: 980px;
+                padding: 18px;
+                border-radius: 20px;
+            }
+
+            .title-box {
+                padding: 14px 16px;
+                border-radius: 18px;
+                margin-bottom: 18px;
+            }
+
+            .title-box h1 {
+                font-size: 26px;
+                margin-bottom: 4px;
+            }
+
+            .title-box h2 {
+                font-size: 15px;
+            }
+
+            .section {
+                padding: 14px;
+                margin-bottom: 16px;
+                border-radius: 16px;
+            }
+
+            .section h3 {
+                font-size: 18px;
+                margin-bottom: 10px;
+                padding-bottom: 5px;
+            }
+
+            .section p,
+            .activity-list li,
+            .quiz-list li,
+            .formula-card p,
+            .example-box p,
+            details p {
+                font-size: 13px;
+                line-height: 1.45;
+                margin-bottom: 8px;
+            }
+
+            .activity-list,
+            .quiz-list {
+                padding-left: 20px;
+            }
+
+            .formula-wrapper {
+                grid-template-columns: repeat(2, minmax(0, 1fr));
+                gap: 12px;
+            }
+
+            .formula-card,
+            .example-box,
+            .video-box,
+            .info-box {
+                padding: 12px;
+                border-radius: 14px;
+            }
+
+            .formula-card h4,
+            .example-box h4,
+            .video-box h4 {
+                font-size: 15px;
+                margin-bottom: 8px;
+            }
+
+            .formula {
+                font-size: 14px;
+                padding: 10px;
+                margin-bottom: 8px;
+            }
+
+            table {
+                min-width: 600px;
+            }
+
+            th,
+            td {
+                font-size: 12px;
+                padding: 8px;
+            }
+
+            details {
+                padding: 10px 12px;
+            }
+
+            summary {
+                font-size: 13px;
+            }
+
+            video {
+                max-height: 240px;
+            }
+
+            .conclusion-box {
+                min-height: 70px;
+                padding: 12px;
+                font-size: 13px;
+            }
+
+            .music-btn {
+                width: 44px;
+                height: 44px;
+                left: 10px;
+                top: 10px;
+                border-width: 3px;
+            }
+
+            .music-btn svg {
+                width: 21px;
+                height: 21px;
+            }
+
+            .back-btn {
+                left: 10px;
+                bottom: 9px;
+                font-size: 12px;
+                padding: 7px 14px;
+                border-width: 2px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 360px) {
+            .page {
+                padding: 14px 14px 68px;
+            }
+
+            .content-box {
+                width: 95%;
+                padding: 14px;
+            }
+
+            .title-box h1 {
+                font-size: 23px;
+            }
+
+            .title-box h2 {
+                font-size: 13px;
+            }
+
+            .section {
+                padding: 12px;
+            }
+
+            .section h3 {
+                font-size: 16px;
+            }
+
+            .section p,
+            .activity-list li,
+            .quiz-list li,
+            .formula-card p,
+            .example-box p,
+            details p {
+                font-size: 12.5px;
+            }
+
+            .formula {
+                font-size: 13px;
+            }
+
+            video {
+                max-height: 205px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+        </svg>
+    </button>
+
+    <div class="page" id="stage">
+        <main class="content-box">
+
+            <div class="title-box">
+                <h1>PERTEMUAN 2</h1>
+                <h2>Menghitung pH Larutan Penyangga</h2>
+            </div>
+
+            <section class="section">
+                <h3>A. Pendahuluan</h3>
+                <p>Pada pertemuan sebelumnya, kamu telah mempelajari bahwa larutan penyangga merupakan larutan yang
+                    dapat mempertahankan pH ketika ditambahkan sedikit asam, sedikit basa, atau diencerkan.</p>
+                <p>Pada pertemuan ini, kamu akan mempelajari cara menentukan pH larutan penyangga. Perhitungan pH
+                    larutan penyangga dapat dilakukan berdasarkan jenis larutannya, yaitu larutan penyangga asam dan
+                    larutan penyangga basa.</p>
+                <div class="info-box">
+                    <p><b>Pertanyaan awal:</b></p>
+                    <p>Bagaimana cara menentukan pH larutan penyangga asam?</p>
+                    <p>Bagaimana cara menentukan pH larutan penyangga basa?</p>
+                    <p>Mengapa perbandingan mol komponen penyangga dapat memengaruhi nilai pH?</p>
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>B. Jenis Larutan Penyangga</h3>
+                <p>Larutan penyangga tersusun dari pasangan asam lemah dengan basa konjugasinya atau basa lemah dengan
+                    asam konjugasinya. Berdasarkan komponennya, larutan penyangga dibedakan menjadi dua jenis.</p>
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>No</th>
+                                <th>Jenis Larutan Penyangga</th>
+                                <th>Komponen Penyusun</th>
+                                <th>Contoh</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>1</td>
+                                <td>Penyangga Asam</td>
+                                <td>Asam lemah dan basa konjugasinya</td>
+                                <td>CH<sub>3</sub>COOH dan CH<sub>3</sub>COONa</td>
+                            </tr>
+                            <tr>
+                                <td>2</td>
+                                <td>Penyangga Basa</td>
+                                <td>Basa lemah dan asam konjugasinya</td>
+                                <td>NH<sub>3</sub> dan NH<sub>4</sub>Cl</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>C. Rumus pH Larutan Penyangga</h3>
+                <p>Untuk menghitung pH larutan penyangga, tentukan terlebih dahulu apakah larutan tersebut termasuk
+                    penyangga asam atau penyangga basa. Setelah itu, gunakan rumus yang sesuai dengan jenis larutannya.
+                </p>
+                <div class="formula-wrapper">
+                    <div class="formula-card">
+                        <h4>1. Larutan Penyangga Asam</h4>
+                        <div class="formula">
+                            pH = pKa + log
+                            <span class="fraction">
+                                <span class="top">n basa konjugasi</span>
+                                <span>n asam lemah</span>
+                            </span>
+                        </div>
+                        <p>Larutan penyangga asam terbentuk dari asam lemah dan garam yang mengandung basa konjugasinya.
+                        </p>
+                        <p>Contoh: CH<sub>3</sub>COOH dan CH<sub>3</sub>COONa.</p>
+                    </div>
+                    <div class="formula-card">
+                        <h4>2. Larutan Penyangga Basa</h4>
+                        <div class="formula">
+                            pOH = pKb + log
+                            <span class="fraction">
+                                <span class="top">n asam konjugasi</span>
+                                <span>n basa lemah</span>
+                            </span>
+                            <br>
+                            pH = 14 - pOH
+                        </div>
+                        <p>Larutan penyangga basa terbentuk dari basa lemah dan garam yang mengandung asam konjugasinya.
+                        </p>
+                        <p>Contoh: NH<sub>3</sub> dan NH<sub>4</sub>Cl.</p>
+                    </div>
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>D. Video Pembelajaran</h3>
+                <p>Simak video berikut untuk memahami peran larutan penyangga dalam kehidupan dan penerapannya dalam
+                    menjaga kestabilan pH.</p>
+                <div class="video-box">
+                    <h4>Video: Peran Larutan Penyangga</h4>
+                    <video controls>
+                        <source src="materi/materi2/perann.mp4" type="video/mp4">
+                        Browser kamu tidak mendukung pemutar video.
+                    </video>
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>E. Langkah Menghitung pH Larutan Penyangga</h3>
+                <ol class="activity-list">
+                    <li>Tentukan jenis larutan penyangga, apakah penyangga asam atau penyangga basa.</li>
+                    <li>Tentukan mol masing-masing komponen penyusun larutan.</li>
+                    <li>Tentukan nilai Ka atau Kb, kemudian ubah menjadi pKa atau pKb.</li>
+                    <li>Masukkan data ke dalam rumus yang sesuai.</li>
+                    <li>Hitung nilai pH larutan penyangga.</li>
+                </ol>
+            </section>
+
+            <section class="section">
+                <h3>F. Contoh Soal</h3>
+                <div class="example-box">
+                    <h4>Contoh 1: Larutan Penyangga Asam</h4>
+                    <p>Sebanyak 100 mL larutan CH<sub>3</sub>COOH 0,1 M dicampurkan dengan 100 mL larutan
+                        CH<sub>3</sub>COONa 0,1 M. Jika Ka CH<sub>3</sub>COOH = 1 × 10<sup>-5</sup>, tentukan pH larutan
+                        tersebut!</p>
+                    <details>
+                        <summary>Lihat Pembahasan</summary>
+                        <p>Mol CH<sub>3</sub>COOH = 0,1 M × 0,1 L = 0,01 mol</p>
+                        <p>Mol CH<sub>3</sub>COONa = 0,1 M × 0,1 L = 0,01 mol</p>
+                        <p>pKa = -log Ka = -log 10<sup>-5</sup> = 5</p>
+                        <p>pH = 5 + log 0,01 / 0,01</p>
+                        <p>pH = 5 + log 1</p>
+                        <p><b>pH = 5</b></p>
+                    </details>
+                </div>
+                <div class="example-box">
+                    <h4>Contoh 2: Larutan Penyangga Basa</h4>
+                    <p>Sebanyak 200 mL larutan NH<sub>3</sub> 0,1 M dicampurkan dengan 100 mL larutan NH<sub>4</sub>Cl
+                        0,1 M. Jika Kb NH<sub>3</sub> = 1 × 10<sup>-5</sup>, tentukan pH larutan tersebut!</p>
+                    <details>
+                        <summary>Lihat Pembahasan</summary>
+                        <p>Mol NH<sub>3</sub> = 0,1 M × 0,2 L = 0,02 mol</p>
+                        <p>Mol NH<sub>4</sub>Cl = 0,1 M × 0,1 L = 0,01 mol</p>
+                        <p>pKb = -log Kb = -log 10<sup>-5</sup> = 5</p>
+                        <p>pOH = 5 + log 0,01 / 0,02</p>
+                        <p>pOH = 5 + log 0,5</p>
+                        <p>pOH = 5 - 0,3 = 4,7</p>
+                        <p>pH = 14 - 4,7</p>
+                        <p><b>pH = 9,3</b></p>
+                    </details>
+                </div>
+            </section>
+
+            <section class="section">
+                <h3>G. Aktivitas Diskusi</h3>
+                <p>Diskusikan bersama teman sebangkumu, kemudian kerjakan kegiatan berikut di buku catatan atau lembar
+                    kerja masing-masing.</p>
+                <ol class="activity-list">
+                    <li>Jelaskan perbedaan larutan penyangga asam dan larutan penyangga basa.</li>
+                    <li>Mengapa jumlah mol asam lemah dan basa konjugasi memengaruhi pH larutan penyangga?</li>
+                    <li>Bagaimana pH larutan penyangga jika jumlah mol asam lemah lebih besar daripada basa
+                        konjugasinya?</li>
+                    <li>Bagaimana pH larutan penyangga jika jumlah mol basa lemah lebih besar daripada asam
+                        konjugasinya?</li>
+                </ol>
+            </section>
+
+            <section class="section">
+                <h3>H. Latihan Soal</h3>
+                <ol class="activity-list">
+                    <li>Sebanyak 100 mL CH<sub>3</sub>COOH 0,2 M dicampurkan dengan 100 mL CH<sub>3</sub>COONa 0,1 M.
+                        Jika Ka = 1 × 10<sup>-5</sup>, tentukan pH larutan!</li>
+                    <li>Sebanyak 200 mL NH<sub>3</sub> 0,1 M dicampurkan dengan 100 mL NH<sub>4</sub>Cl 0,2 M. Jika Kb =
+                        1 × 10<sup>-5</sup>, tentukan pH larutan!</li>
+                    <li>Larutan penyangga dibuat dari HCOOH dan HCOONa. Jelaskan komponen yang berperan sebagai asam
+                        lemah dan basa konjugasi.</li>
+                </ol>
+            </section>
+
+            <section class="section">
+                <h3>I. Evaluasi</h3>
+                <ol class="quiz-list">
+                    <li>Larutan penyangga asam tersusun dari ....
+                        <ol type="A">
+                            <li>Asam kuat dan basa kuat</li>
+                            <li>Asam lemah dan basa konjugasinya</li>
+                            <li>Basa lemah dan asam konjugasinya</li>
+                            <li>Asam kuat dan garam netral</li>
+                            <li>Basa kuat dan garam netral</li>
+                        </ol>
+                    </li>
+                    <li>Contoh larutan penyangga basa adalah ....
+                        <ol type="A">
+                            <li>HCl dan NaCl</li>
+                            <li>NaOH dan NaCl</li>
+                            <li>CH<sub>3</sub>COOH dan CH<sub>3</sub>COONa</li>
+                            <li>NH<sub>3</sub> dan NH<sub>4</sub>Cl</li>
+                            <li>HNO<sub>3</sub> dan KNO<sub>3</sub></li>
+                        </ol>
+                    </li>
+                    <li>Rumus yang digunakan untuk menghitung pH larutan penyangga asam adalah ....
+                        <ol type="A">
+                            <li>pH = 14 - pOH</li>
+                            <li>pH = pKa + log n basa konjugasi / n asam lemah</li>
+                            <li>pOH = pKb + log n asam konjugasi / n basa lemah</li>
+                            <li>pH = -log [OH<sup>-</sup>]</li>
+                            <li>pOH = -log [H<sup>+</sup>]</li>
+                        </ol>
+                    </li>
+                    <li>Jika nilai pOH suatu larutan penyangga basa adalah 5, maka nilai pH larutan tersebut adalah ....
+                        <ol type="A">
+                            <li>5</li>
+                            <li>7</li>
+                            <li>8</li>
+                            <li>9</li>
+                            <li>14</li>
+                        </ol>
+                    </li>
+                    <li>Dalam perhitungan larutan penyangga, data yang perlu diketahui adalah ....
+                        <ol type="A">
+                            <li>Warna larutan dan massa jenis</li>
+                            <li>Suhu ruangan dan tekanan udara</li>
+                            <li>Mol komponen larutan dan nilai Ka atau Kb</li>
+                            <li>Bentuk wadah dan volume udara</li>
+                            <li>Jumlah endapan dan warna indikator</li>
+                        </ol>
+                    </li>
+                </ol>
+            </section>
+
+            <section class="section">
+                <h3>J. Kesimpulan</h3>
+                <p>Berdasarkan pembelajaran pada pertemuan ini, buatlah kesimpulan mengenai cara menghitung pH larutan
+                    penyangga asam dan larutan penyangga basa.</p>
+                <div class="conclusion-box">Tuliskan kesimpulanmu di buku catatan atau lembar kerja masing-masing.</div>
+            </section>
+
+        </main>
+    </div>
+
+    <button class="back-btn" type="button" id="backBtn">← Kembali</button>
+
+    <script>
+        const stage = document.getElementById("stage");
+        const musicBtn = document.getElementById("musicBtn");
+        const backBtn = document.getElementById("backBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        let musicOn = false;
+        let isNavigating = false;
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+
+            setTimeout(() => {
+                sound.pause();
+                sound.currentTime = 0;
+            }, 150);
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        backBtn.addEventListener("click", () => {
+            if (isNavigating) return;
+            isNavigating = true;
+            playClickSound();
+            setTimeout(() => {
+                stage.style.transition = "opacity 0.2s ease";
+                stage.style.opacity = "0";
+                setTimeout(() => {
+                    window.location.href = "materi.html";
+                }, 220);
+            }, 180);
+        });
+
+        document.querySelectorAll("summary, video").forEach(el => {
+            el.addEventListener("click", playClickSound);
+        });
+    </script>
+</body>
+
+</html>

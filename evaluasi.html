@@ -1,0 +1,1305 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Menu Evaluasi</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html,
+        body {
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            font-family: Arial, Helvetica, sans-serif;
+            background: #eaf6ff;
+        }
+
+        body {
+            background-image: url("assets/BG EVAL SOAL.png");
+            background-size: 100% 100%;
+            background-position: center center;
+            background-repeat: no-repeat;
+        }
+
+        .halaman {
+            width: 100vw;
+            height: 100vh;
+            height: 100dvh;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .music-btn {
+            position: absolute;
+            left: 22px;
+            top: 18px;
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            border: 4px solid rgba(255, 255, 255, .95);
+            background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+            box-shadow: 0 18px 28px rgba(0, 0, 0, .35);
+            cursor: pointer;
+            display: grid;
+            place-items: center;
+            z-index: 80;
+        }
+
+        .music-btn:active {
+            transform: scale(.98);
+        }
+
+        .music-btn.off {
+            opacity: 0.55;
+        }
+
+        .music-btn svg {
+            width: 34px;
+            height: 34px;
+            fill: #fff;
+        }
+
+        .papan {
+            position: absolute;
+            left: 13%;
+            top: 15%;
+            width: 74%;
+            height: 73%;
+            background: rgba(255, 255, 255, 0.965);
+            border: 6px solid #555;
+            border-radius: 8px;
+            box-shadow:
+                inset 0 0 0 3px #bdbdbd,
+                0 0 0 4px #d8d8d8,
+                0 10px 22px rgba(0, 0, 0, 0.22);
+            z-index: 2;
+        }
+
+        .papan::before {
+            content: "";
+            position: absolute;
+            inset: 10px;
+            border: 2px solid rgba(120, 120, 120, 0.35);
+            border-radius: 4px;
+            pointer-events: none;
+        }
+
+        .papan::after {
+            content: "";
+            position: absolute;
+            right: 7%;
+            bottom: -6%;
+            width: 27%;
+            height: 5.3%;
+            background: linear-gradient(#f8f8f8, #a5a5a5, #eeeeee);
+            border: 3px solid #5e5e5e;
+            border-radius: 2px;
+            z-index: 1;
+        }
+
+        .judul {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            background-image: url("evaluasi/TULISAN SOAL EVALUASI.png");
+            background-repeat: no-repeat;
+            background-size: contain;
+            background-position: center;
+            z-index: 8;
+            pointer-events: none;
+            transition: all 0.25s ease;
+        }
+
+        .judul.mode-intro {
+            top: 7%;
+            width: 50%;
+            height: 50%;
+        }
+
+        .judul.mode-soal {
+            top: 3%;
+            width: 50%;
+            height: 20%;
+        }
+
+        .judul.mode-hasil {
+            top: 3.6%;
+            width: 43%;
+            height: 17%;
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 11.5%;
+            right: 9.5%;
+            width: 74px;
+            height: 74px;
+            border-radius: 50%;
+            border: 4px solid #d71f1f;
+            background: radial-gradient(circle at 30% 25%, #ff9d9d, #f71919 60%, #b60000);
+            color: white;
+            font-size: 50px;
+            font-weight: bold;
+            line-height: 60px;
+            text-align: center;
+            cursor: pointer;
+            z-index: 20;
+            box-shadow: 0 8px 14px rgba(0, 0, 0, 0.28);
+        }
+
+        .close-btn:hover {
+            transform: scale(1.05);
+        }
+
+        .isi {
+            position: absolute;
+            left: 13%;
+            top: 15%;
+            width: 74%;
+            height: 73%;
+            z-index: 6;
+            overflow: hidden;
+        }
+
+        .intro {
+            position: absolute;
+            left: 8%;
+            right: 8%;
+            top: 40%;
+            text-align: center;
+        }
+
+        .intro-text {
+            max-width: 900px;
+            margin: 0 auto;
+            font-size: clamp(22px, 2.05vw, 32px);
+            line-height: 1.45;
+            color: #1f1f1f;
+        }
+
+        .intro-text b {
+            font-weight: 800;
+        }
+
+        .btn-mulai {
+            margin-top: 28px;
+            padding: 16px 58px;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(#39cd56, #0c942b);
+            color: white;
+            font-size: clamp(26px, 2.2vw, 36px);
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #087020, 0 12px 18px rgba(0, 0, 0, 0.22);
+        }
+
+        .btn-mulai:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-mulai:active {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #087020;
+        }
+
+        .konten-soal {
+            position: absolute;
+            left: 5%;
+            right: 7%;
+            top: 7%;
+            bottom: 5%;
+            display: grid;
+            grid-template-columns: minmax(0, 1.45fr) minmax(220px, 1fr);
+            gap: 28px;
+            align-items: start;
+            overflow: hidden;
+        }
+
+        .konten-soal.no-image {
+            grid-template-columns: 1fr;
+            right: 8%;
+        }
+
+        .teks-soal {
+            width: 100%;
+            height: 100%;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-right: 8px;
+        }
+
+        .teks-soal::-webkit-scrollbar,
+        .hasil::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .teks-soal::-webkit-scrollbar-track,
+        .hasil::-webkit-scrollbar-track {
+            background: transparent;
+        }
+
+        .teks-soal::-webkit-scrollbar-thumb,
+        .hasil::-webkit-scrollbar-thumb {
+            background: #9ccff0;
+            border-radius: 10px;
+        }
+
+        .gambar-wrap {
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            overflow: hidden;
+        }
+
+        .gambar-soal {
+            width: 100%;
+            max-width: 390px;
+            max-height: 260px;
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        .teks-soal h2 {
+            font-size: clamp(19px, 1.65vw, 26px);
+            line-height: 1.18;
+            margin-bottom: 10px;
+            color: #050505;
+        }
+
+        .teks-soal p {
+            font-size: clamp(16px, 1.28vw, 21px);
+            line-height: 1.24;
+            margin-bottom: 5px;
+            color: #050505;
+        }
+
+        .pertanyaan {
+            margin-top: 10px;
+            margin-bottom: 8px;
+            font-weight: normal;
+        }
+
+        .opsi {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+            margin-top: 6px;
+        }
+
+        .opsi label {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            font-size: clamp(16px, 1.28vw, 21px);
+            line-height: 1.16;
+            color: #050505;
+            cursor: pointer;
+            width: fit-content;
+        }
+
+        .opsi input {
+            display: none;
+        }
+
+        .kotak {
+            width: clamp(17px, 1.35vw, 24px);
+            height: clamp(17px, 1.35vw, 24px);
+            border: 3px solid #000;
+            background: white;
+            flex-shrink: 0;
+            margin-top: 1px;
+        }
+
+        .opsi input:checked+.kotak {
+            background: #000;
+            box-shadow: inset 0 0 0 2px #fff;
+        }
+
+        .navigasi {
+            position: absolute;
+            right: 9.8%;
+            bottom: 8%;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            z-index: 18;
+        }
+
+        .btn-panah {
+            width: 76px;
+            height: 76px;
+            border: none;
+            background: transparent;
+            padding: 0;
+            cursor: pointer;
+            box-shadow: none;
+        }
+
+        .btn-panah img {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            display: block;
+            filter: drop-shadow(0 7px 4px rgba(0, 0, 0, 0.25));
+            pointer-events: none;
+        }
+
+        .btn-panah:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-panah:active {
+            transform: translateY(4px);
+        }
+
+        .btn-panah.kiri img {
+            transform: scaleX(-1);
+        }
+
+        .btn-submit {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            border: 6px solid #086719;
+            background: radial-gradient(circle at top, #56dd65, #078d25 68%, #005113);
+            color: white;
+            font-size: 20px;
+            font-weight: 800;
+            cursor: pointer;
+            box-shadow: 0 8px 0 #00420e, 0 10px 14px rgba(0, 0, 0, 0.25);
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-submit:active {
+            transform: translateY(5px);
+            box-shadow: 0 3px 0 #00420e;
+        }
+
+        .hasil {
+            position: absolute;
+            left: 7%;
+            right: 7%;
+            top: 5.8%;
+            bottom: 2%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+            overflow-y: auto;
+            overflow-x: hidden;
+            padding-bottom: 8px;
+        }
+
+        .hasil h2 {
+            font-size: clamp(22px, 1.75vw, 30px);
+            color: #0a6a9b;
+            text-align: center;
+            line-height: 1;
+            margin: 0 0 4px 0;
+        }
+
+        .skor {
+            width: 360px;
+            max-width: 90%;
+            font-size: clamp(15px, 1.12vw, 20px);
+            font-weight: bold;
+            text-align: center;
+            line-height: 1.15;
+            padding: 7px 14px;
+            border: 2px solid #9dd4f3;
+            background: #eef9ff;
+            border-radius: 14px;
+            margin-bottom: 4px;
+        }
+
+        .kunci {
+            width: 72%;
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 4px 14px;
+            font-size: clamp(11px, 0.78vw, 13px);
+        }
+
+        .item-hasil {
+            border: 2px solid #d7e7f2;
+            border-radius: 9px;
+            background: white;
+            padding: 4px 12px;
+            line-height: 1.08;
+            min-height: 43px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        .nomor-hasil {
+            font-weight: 800;
+            margin-bottom: 1px;
+        }
+
+        .benar {
+            color: #078d25;
+            font-weight: bold;
+        }
+
+        .salah {
+            color: #c70000;
+            font-weight: bold;
+        }
+
+        .btn-ulang {
+            margin-top: 5px;
+            padding: 7px 26px;
+            border: none;
+            border-radius: 999px;
+            background: linear-gradient(#69c9ff, #1e7bc5);
+            color: white;
+            font-size: clamp(13px, 1vw, 16px);
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #15588f;
+        }
+
+        .btn-ulang:hover {
+            transform: translateY(-2px);
+        }
+
+        .btn-ulang:active {
+            transform: translateY(3px);
+            box-shadow: 0 2px 0 #15588f;
+        }
+
+        @media (max-width: 1000px) and (orientation: portrait) {
+            body {
+                overflow: auto;
+            }
+
+            .halaman {
+                min-height: 100vh;
+                height: auto;
+                overflow: visible;
+            }
+
+            .papan,
+            .isi {
+                position: relative;
+                left: auto;
+                top: auto;
+                width: 94%;
+                height: auto;
+                min-height: 760px;
+                margin: 90px auto 30px;
+            }
+
+            .judul.mode-intro {
+                width: 80%;
+                height: 18%;
+                top: 25px;
+            }
+
+            .judul.mode-soal {
+                width: 72%;
+                height: 14%;
+                top: 12px;
+            }
+
+            .judul.mode-hasil {
+                top: 25px;
+                width: 76%;
+                height: 15%;
+            }
+
+            .music-btn {
+                width: 52px;
+                height: 52px;
+                left: 12px;
+                top: 12px;
+                border-width: 3px;
+                position: fixed;
+            }
+
+            .music-btn svg {
+                width: 25px;
+                height: 25px;
+            }
+
+            .close-btn {
+                top: 40px;
+                right: 18px;
+                width: 56px;
+                height: 56px;
+                font-size: 38px;
+                line-height: 45px;
+            }
+
+            .intro {
+                top: 190px;
+                left: 8%;
+                right: 8%;
+            }
+
+            .intro-text {
+                font-size: 19px;
+            }
+
+            .btn-mulai {
+                font-size: 24px;
+                padding: 14px 42px;
+            }
+
+            .konten-soal,
+            .konten-soal.no-image {
+                top: 120px;
+                left: 7%;
+                right: 7%;
+                bottom: 120px;
+                grid-template-columns: 1fr;
+            }
+
+            .gambar-wrap {
+                display: none;
+            }
+
+            .hasil {
+                top: 120px;
+                bottom: 45px;
+            }
+
+            .skor {
+                width: 300px;
+                font-size: 15px;
+            }
+
+            .kunci {
+                width: 86%;
+                grid-template-columns: 1fr;
+                font-size: 12.5px;
+                gap: 6px;
+            }
+
+            .item-hasil {
+                padding: 6px 10px;
+                min-height: 50px;
+            }
+
+            .navigasi {
+                right: 50%;
+                transform: translateX(50%);
+                bottom: 55px;
+            }
+
+            .btn-panah {
+                width: 58px;
+                height: 58px;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 500px) {
+
+            html,
+            body {
+                width: 100%;
+                height: 100%;
+                overflow: hidden;
+            }
+
+            body {
+                background-size: 100% 100%;
+                background-position: center center;
+            }
+
+            .halaman {
+                width: 100vw;
+                height: 100vh;
+                height: 100dvh;
+                overflow: hidden;
+            }
+
+            .music-btn {
+                width: 46px;
+                height: 46px;
+                left: 12px;
+                top: 10px;
+                border-width: 3px;
+                box-shadow: 0 10px 18px rgba(0, 0, 0, .32);
+            }
+
+            .music-btn svg {
+                width: 22px;
+                height: 22px;
+            }
+
+            .papan,
+            .isi {
+                position: absolute;
+                left: 6%;
+                top: 16%;
+                width: 88%;
+                height: 74%;
+                margin: 0;
+                min-height: 0;
+            }
+
+            .papan {
+                border-width: 4px;
+                box-shadow: inset 0 0 0 2px #bdbdbd, 0 0 0 3px #d8d8d8, 0 7px 14px rgba(0, 0, 0, .22);
+            }
+
+            .papan::before {
+                inset: 7px;
+            }
+
+            .judul.mode-intro {
+                top: 4%;
+                width: 44%;
+                height: 17%;
+            }
+
+            .judul.mode-soal {
+                top: 2%;
+                width: 34%;
+                height: 12%;
+            }
+
+            .judul.mode-hasil {
+                top: 2.5%;
+                width: 38%;
+                height: 13%;
+            }
+
+            .close-btn {
+                top: 8%;
+                right: 5.4%;
+                width: 38px;
+                height: 38px;
+                font-size: 27px;
+                line-height: 30px;
+                border-width: 3px;
+                box-shadow: 0 5px 8px rgba(0, 0, 0, .25);
+            }
+
+            .intro {
+                top: 34%;
+                left: 8%;
+                right: 8%;
+            }
+
+            .intro-text {
+                font-size: 15px;
+                line-height: 1.35;
+            }
+
+            .btn-mulai {
+                margin-top: 12px;
+                padding: 8px 34px;
+                font-size: 20px;
+                box-shadow: 0 5px 0 #087020, 0 8px 12px rgba(0, 0, 0, .20);
+            }
+
+            .konten-soal,
+            .konten-soal.no-image {
+                top: 8%;
+                left: 5%;
+                right: 5%;
+                bottom: 20%;
+                gap: 10px;
+                grid-template-columns: minmax(0, 1.35fr) minmax(130px, .8fr);
+            }
+
+            .konten-soal.no-image {
+                grid-template-columns: 1fr;
+                right: 7%;
+            }
+
+            .gambar-wrap {
+                display: flex;
+            }
+
+            .gambar-soal {
+                max-width: 170px;
+                max-height: 118px;
+            }
+
+            .teks-soal {
+                padding-right: 5px;
+            }
+
+            .teks-soal h2 {
+                font-size: 14px;
+                line-height: 1.13;
+                margin-bottom: 5px;
+            }
+
+            .teks-soal p,
+            .opsi label {
+                font-size: 10.5px;
+                line-height: 1.16;
+            }
+
+            .pertanyaan {
+                margin-top: 5px;
+                margin-bottom: 4px;
+            }
+
+            .opsi {
+                gap: 3px;
+                margin-top: 4px;
+            }
+
+            .kotak {
+                width: 13px;
+                height: 13px;
+                border-width: 2px;
+                margin-top: 0;
+            }
+
+            .opsi input:checked+.kotak {
+                box-shadow: inset 0 0 0 2px #fff;
+            }
+
+            .navigasi {
+                right: 7%;
+                bottom: 6%;
+                gap: 9px;
+            }
+
+            .btn-panah {
+                width: 44px;
+                height: 44px;
+            }
+
+            .btn-submit {
+                width: 64px;
+                height: 64px;
+                border-width: 4px;
+                font-size: 11px;
+                box-shadow: 0 5px 0 #00420e, 0 7px 10px rgba(0, 0, 0, .22);
+            }
+
+            .hasil {
+                left: 6%;
+                right: 6%;
+                top: 5%;
+                bottom: 3%;
+                gap: 3px;
+                padding-bottom: 4px;
+            }
+
+            .hasil h2 {
+                font-size: 15px;
+                margin-bottom: 2px;
+            }
+
+            .skor {
+                width: 250px;
+                font-size: 10.5px;
+                padding: 4px 8px;
+                border-radius: 10px;
+                margin-bottom: 2px;
+            }
+
+            .kunci {
+                width: 82%;
+                grid-template-columns: repeat(2, 1fr);
+                gap: 3px 8px;
+                font-size: 8px;
+            }
+
+            .item-hasil {
+                padding: 3px 6px;
+                min-height: 28px;
+                border-radius: 7px;
+                border-width: 1px;
+            }
+
+            .btn-ulang {
+                margin-top: 3px;
+                padding: 5px 16px;
+                font-size: 10px;
+                box-shadow: 0 3px 0 #15588f;
+            }
+        }
+
+        @media (orientation: landscape) and (max-height: 370px) {
+
+            .papan,
+            .isi {
+                left: 6%;
+                top: 15%;
+                width: 88%;
+                height: 76%;
+            }
+
+            .judul.mode-intro {
+                top: 4%;
+                width: 52%;
+                height: 50%;
+            }
+
+            .judul.mode-soal {
+                top: 2%;
+                width: 30%;
+                height: 20%;
+            }
+
+            .intro-text {
+                font-size: 13px;
+            }
+
+            .btn-mulai {
+                font-size: 18px;
+                padding: 7px 30px;
+            }
+
+            .konten-soal,
+            .konten-soal.no-image {
+                top: 7%;
+                bottom: 21%;
+            }
+
+            .teks-soal h2 {
+                font-size: 12.5px;
+            }
+
+            .teks-soal p,
+            .opsi label {
+                font-size: 9.5px;
+            }
+
+            .gambar-soal {
+                max-width: 145px;
+                max-height: 100px;
+            }
+
+            .btn-panah {
+                width: 40px;
+                height: 40px;
+            }
+
+            .btn-submit {
+                width: 58px;
+                height: 58px;
+                font-size: 10px;
+            }
+
+            .kunci {
+                width: 84%;
+                font-size: 7.7px;
+            }
+
+            .item-hasil {
+                min-height: 26px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <!-- SOUND -->
+    <audio id="bgMusic" src="sound/BACKSOUND VIRTUAL LAB.mp3" loop preload="auto"></audio>
+    <audio id="clickSound" src="sound/SUARA KLIK.mp3" preload="auto"></audio>
+
+    <div class="halaman">
+        <button class="music-btn off" id="musicBtn" title="Music" type="button" aria-label="Music">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 3v10.55A4 4 0 1 0 14 17V7h6V3h-8z" />
+            </svg>
+        </button>
+
+        <div class="papan"></div>
+        <div class="judul mode-intro" id="judul"></div>
+        <button class="close-btn" id="closeBtn" onclick="keluar()">×</button>
+        <div class="isi" id="isi"></div>
+        <div class="navigasi" id="navigasi"></div>
+    </div>
+
+    <script>
+        const dataSoal = [
+            {
+                judul: "Soal 1 (HCOOH + HCOONa)",
+                isi: `<p>Diketahui data praktikum:</p><p>• pH = 2,87 (HCOOH 0,75 M + HCOONa 0,1 M)</p><p>Kesetimbangan:</p><p>HCOOH ⇌ H<sup>+</sup> + HCOO<sup>−</sup></p>`,
+                tanya: "Pernyataan yang benar adalah...",
+                opsi: [
+                    "HCOO<sup>−</sup> berperan sebagai asam",
+                    "HCOOH menangkap H<sup>+</sup>",
+                    "HCOO<sup>−</sup> dapat mengikat H<sup>+</sup>",
+                    "Tidak terjadi reaksi",
+                    "HCOOH adalah basa"
+                ],
+                kunci: "C"
+            },
+            {
+                judul: "Soal 2 (Virtual Lab – CH3COOH + CH3COONa)",
+                isi: `<p>Seorang siswa pada virtual lab melakukan percobaan dengan memilih:</p><p><b>CH<sub>3</sub>COOH 0,1 M</b> dan <b>CH<sub>3</sub>COONa 0,5 M</b></p><p>Hasil yang ditampilkan: <b>pH = 5,44</b></p><p>Model molekul menunjukkan adanya gugus –COOH pada CH<sub>3</sub>COOH dan gugus –COO<sup>−</sup> pada CH<sub>3</sub>COONa.</p>`,
+                tanya: "Berdasarkan data pH dan model tersebut, jenis larutan yang terbentuk adalah...",
+                gambar: "evaluasi/gambar soal 2.png",
+                opsi: ["Asam kuat", "Basa kuat", "Buffer asam", "Buffer basa", "Netral"],
+                kunci: "C"
+            },
+            {
+                judul: "Soal 3 (H2CO3 + NaHCO3)",
+                isi: `<p>Data praktikum menunjukkan:</p><p><b>pH ≈ 6–7</b> (mendekati netral)</p><p>Model molekul menunjukkan H<sub>2</sub>CO<sub>3</sub> sebagai asam lemah dan NaHCO<sub>3</sub> sebagai sumber basa konjugasi (HCO<sub>3</sub><sup>−</sup>).</p>`,
+                tanya: "Berdasarkan data pH dan model molekul tersebut, peran pasangan H₂CO₃ dan NaHCO₃ dalam larutan adalah...",
+                gambar: "evaluasi/gambar soal 3.png",
+                opsi: [
+                    "Menambah keasaman secara drastis",
+                    "Menahan perubahan pH dengan bereaksi terhadap penambahan H<sup>+</sup> atau OH<sup>−</sup>",
+                    "Menghasilkan basa kuat",
+                    "Tidak bereaksi",
+                    "Menghilangkan air"
+                ],
+                kunci: "B"
+            },
+            {
+                judul: "Soal 4 (Virtual Lab – NH4OH + NH4Cl)",
+                isi: `<p>Pada virtual lab, seorang siswa memilih:</p><p><b>NH<sub>4</sub>OH 0,25 M</b> dan <b>NH<sub>4</sub>Cl 0,25 M</b></p><p>Kemudian menambahkan <b>5 tetes NaOH</b></p><p>Hasil yang ditampilkan: <b>pH meningkat sedikit</b></p><p>Model molekul menunjukkan adanya pasangan basa lemah dan asam konjugasinya dalam larutan.</p>`,
+                tanya: "Berdasarkan data pH dan model molekul tersebut, peristiwa yang terjadi dalam sistem penyangga adalah...",
+                gambar: "evaluasi/gambar soal 4.png",
+                opsi: [
+                    "NH<sub>4</sub>OH bereaksi dengan NaOH sehingga pH berubah drastis",
+                    "Sistem penyangga menahan perubahan pH dengan bereaksi terhadap basa yang ditambahkan",
+                    "Tidak terjadi reaksi dalam larutan",
+                    "Larutan berubah menjadi basa kuat",
+                    "Semua zat bereaksi habis"
+                ],
+                kunci: "B"
+            },
+            {
+                judul: "Soal 5 (Virtual Lab – H3PO4 + NaH2PO4)",
+                isi: `<p>Pada virtual lab, seorang siswa melakukan percobaan dengan memilih:</p><p><b>H<sub>3</sub>PO<sub>4</sub> 0,1 M</b> dan <b>NaH<sub>2</sub>PO<sub>4</sub> 0,5 M</b></p><p>Hasil pengukuran: <b>pH = 2,85</b></p><p>Model molekul menunjukkan H<sub>3</sub>PO<sub>4</sub> sebagai asam lemah dan NaH<sub>2</sub>PO<sub>4</sub> sebagai sumber basa konjugasi.</p>`,
+                tanya: "Berdasarkan data pH dan model molekul tersebut, jenis larutan yang terbentuk adalah...",
+                gambar: "evaluasi/gambar soal 5.png",
+                opsi: ["Basa kuat", "Asam kuat", "Buffer asam", "Buffer basa", "Netral"],
+                kunci: "C"
+            },
+            {
+                judul: "Soal 6 (HNO2 + NaNO2)",
+                isi: `<p>Pada virtual lab, seorang siswa memilih larutan HNO<sub>2</sub> dan NaNO<sub>2</sub>.</p><p>Kesetimbangan:</p><p>HNO<sub>2</sub> ⇌ H<sup>+</sup> + NO<sub>2</sub><sup>−</sup></p><p>Model molekul menunjukkan HNO<sub>2</sub> sebagai asam lemah dan NaNO<sub>2</sub> sebagai sumber basa konjugasi.</p>`,
+                tanya: "Jika ke dalam larutan ditambahkan H⁺, maka berdasarkan kesetimbangan yang terjadi...",
+                gambar: "evaluasi/gambar soal 6.png",
+                opsi: [
+                    "Jumlah HNO<sub>2</sub> bertambah",
+                    "Jumlah HNO<sub>2</sub> berkurang",
+                    "Tidak terjadi perubahan",
+                    "pH larutan meningkat",
+                    "Konsentrasi H<sup>+</sup> berkurang drastis"
+                ],
+                kunci: "A"
+            },
+            {
+                judul: "Soal 7 (HF + NaF)",
+                isi: `<p>Pada virtual lab, seorang siswa memilih larutan HF dan NaF.</p><p>Model molekul menunjukkan HF sebagai asam lemah dan NaF sebagai sumber basa konjugasi.</p>`,
+                tanya: "Jika jumlah NaF lebih banyak dibanding HF, maka berdasarkan data dan model molekul tersebut, pH larutan akan...",
+                gambar: "evaluasi/gambar soal 7.png",
+                opsi: ["Turun", "Tetap", "Naik", "Menjadi netral", "Tidak dapat ditentukan"],
+                kunci: "C"
+            },
+            {
+                judul: "Soal 8 (Virtual Lab – Penambahan Asam)",
+                isi: `<p>Seorang siswa memilih:</p><p><b>HCOOH 0,1 M</b> dan <b>HCOONa 0,1 M</b></p><p>Kemudian menambahkan <b>5 tetes HCl</b></p><p>Hasil:</p><p>pH berubah dari <b>3,74</b> menjadi <b>3,52</b></p><p>Model molekul menunjukkan adanya pasangan HCOOH dan HCOO<sup>−</sup> dalam larutan.</p>`,
+                tanya: "Peristiwa ini terjadi karena...",
+                opsi: [
+                    "HCOOH melepaskan H<sup>+</sup>",
+                    "Ion HCOO<sup>−</sup> mengikat H<sup>+</sup> sehingga menahan perubahan pH larutan",
+                    "HCl tidak bereaksi",
+                    "Air mengikat H<sup>+</sup>",
+                    "Larutan menjadi basa"
+                ],
+                kunci: "B"
+            },
+            {
+                judul: "Soal 9 (Virtual Lab – Penambahan Basa)",
+                isi: `<p>Seorang siswa memilih:</p><p><b>CH<sub>3</sub>COOH 0,5 M</b> dan <b>CH<sub>3</sub>COONa 0,5 M</b></p><p>Kemudian menambahkan <b>5 tetes NaOH</b></p><p>Hasil:</p><p><b>pH meningkat sedikit</b></p><p>Dalam larutan terdapat pasangan CH<sub>3</sub>COOH dan CH<sub>3</sub>COO<sup>−</sup>.</p>`,
+                tanya: "Berdasarkan data pH tersebut, peristiwa ini terjadi karena...",
+                opsi: [
+                    "CH<sub>3</sub>COOH bereaksi dengan basa yang ditambahkan sehingga perubahan pH tidak besar",
+                    "CH<sub>3</sub>COONa bereaksi dengan NaOH",
+                    "Tidak terjadi reaksi",
+                    "Air terurai",
+                    "Larutan menjadi asam kuat"
+                ],
+                kunci: "A"
+            },
+            {
+                judul: "Soal 10 (Virtual Lab – Pengenceran)",
+                isi: `<p>Seorang siswa memilih:</p><p><b>HCOOH 0,5 M</b> dan <b>HCOONa 0,5 M</b></p><p>Kemudian menambahkan <b>10 mL aquades</b></p><p>Hasil:</p><p><b>pH tetap = 3,74</b></p><p>Dalam larutan terdapat pasangan HCOOH dan HCOO<sup>−</sup>.</p>`,
+                tanya: "Hal ini terjadi karena...",
+                opsi: [
+                    "Konsentrasi tidak berubah",
+                    "Perbandingan HCOOH dan HCOO<sup>−</sup> tetap",
+                    "Air bersifat basa",
+                    "Air menambah H<sup>+</sup>",
+                    "Semua zat habis"
+                ],
+                kunci: "B"
+            }
+        ];
+
+        let halaman = 0;
+        let jawabanUser = {};
+        let sudahSubmit = false;
+        let musicOn = false;
+
+        const isi = document.getElementById("isi");
+        const navigasi = document.getElementById("navigasi");
+        const closeBtn = document.getElementById("closeBtn");
+        const judul = document.getElementById("judul");
+        const musicBtn = document.getElementById("musicBtn");
+        const bgMusic = document.getElementById("bgMusic");
+        const clickSound = document.getElementById("clickSound");
+
+        bgMusic.volume = 0.45;
+        clickSound.volume = 1;
+
+        function playClickSound() {
+            const sound = clickSound.cloneNode();
+            sound.volume = 1;
+            sound.currentTime = 0;
+            sound.play().catch(() => { });
+
+            setTimeout(() => {
+                sound.pause();
+                sound.currentTime = 0;
+            }, 140);
+        }
+
+        function playBgMusic() {
+            bgMusic.play().then(() => {
+                musicOn = true;
+                musicBtn.classList.remove("off");
+            }).catch(() => {
+                musicOn = false;
+                musicBtn.classList.add("off");
+            });
+        }
+
+        function pauseBgMusic() {
+            bgMusic.pause();
+            musicOn = false;
+            musicBtn.classList.add("off");
+        }
+
+        musicBtn.addEventListener("click", () => {
+            playClickSound();
+            if (musicOn) {
+                pauseBgMusic();
+            } else {
+                playBgMusic();
+            }
+        });
+
+        function setJudulMode(mode) {
+            judul.className = "judul " + mode;
+        }
+
+        function keluar() {
+            playClickSound();
+            setTimeout(() => {
+                window.location.href = "menu.html";
+            }, 240);
+        }
+
+        function tampilkan() {
+            if (sudahSubmit) {
+                tampilHasil();
+                return;
+            }
+
+            if (halaman === 0) {
+                setJudulMode("mode-intro");
+                closeBtn.style.display = "block";
+
+                isi.innerHTML = `
+                    <div class="intro">
+                        <div class="intro-text">
+                            Jawablah <b>10 soal pilihan ganda</b> berikut dengan memilih salah satu jawaban yang paling benar.
+                            Setelah sampai pada soal terakhir, tekan tombol <b>SUBMIT</b> untuk melihat hasil dan kunci jawaban.
+                        </div>
+                        <button class="btn-mulai" onclick="mulai()">MULAI</button>
+                    </div>
+                `;
+
+                navigasi.innerHTML = `
+                    <button class="btn-panah" onclick="mulai()">
+                        <img src="assets/tombol_panah_kanan-removebg-preview.png" alt="Lanjut">
+                    </button>
+                `;
+                return;
+            }
+
+            setJudulMode("mode-soal");
+            closeBtn.style.display = "none";
+
+            const nomor = halaman - 1;
+            const s = dataSoal[nomor];
+            const huruf = ["A", "B", "C", "D", "E"];
+            const noImageClass = s.gambar ? "" : "no-image";
+
+            let opsiHTML = "";
+
+            s.opsi.forEach((opsi, index) => {
+                const kode = huruf[index];
+                const checked = jawabanUser[nomor] === kode ? "checked" : "";
+
+                opsiHTML += `
+                    <label>
+                        <input type="radio" name="jawaban" value="${kode}" ${checked}
+                            onchange="pilihJawaban(${nomor}, '${kode}')">
+                        <span class="kotak"></span>
+                        <span>${kode}. ${opsi}</span>
+                    </label>
+                `;
+            });
+
+            isi.innerHTML = `
+                <div class="konten-soal ${noImageClass}">
+                    <div class="teks-soal">
+                        <h2>${s.judul}</h2>
+                        ${s.isi}
+                        <p class="pertanyaan">${s.tanya}</p>
+                        <div class="opsi">${opsiHTML}</div>
+                    </div>
+                    ${s.gambar ? `
+                        <div class="gambar-wrap">
+                            <img src="${s.gambar}" class="gambar-soal" alt="Gambar Soal ${halaman}">
+                        </div>
+                    ` : ""}
+                </div>
+            `;
+
+            if (halaman === dataSoal.length) {
+                navigasi.innerHTML = `
+                    <button class="btn-panah kiri" onclick="sebelum()">
+                        <img src="assets/tombol_panah_kanan-removebg-preview.png" alt="Sebelumnya">
+                    </button>
+                    <button class="btn-submit" onclick="submitJawaban()">SUBMIT</button>
+                `;
+            } else {
+                navigasi.innerHTML = `
+                    <button class="btn-panah kiri" onclick="sebelum()">
+                        <img src="assets/tombol_panah_kanan-removebg-preview.png" alt="Sebelumnya">
+                    </button>
+                    <button class="btn-panah" onclick="lanjut()">
+                        <img src="assets/tombol_panah_kanan-removebg-preview.png" alt="Lanjut">
+                    </button>
+                `;
+            }
+        }
+
+        function mulai() {
+            playClickSound();
+            halaman = 1;
+            tampilkan();
+        }
+
+        function lanjut() {
+            playClickSound();
+            if (halaman < dataSoal.length) {
+                halaman++;
+                tampilkan();
+            }
+        }
+
+        function sebelum() {
+            playClickSound();
+            if (halaman > 1) {
+                halaman--;
+            } else {
+                halaman = 0;
+            }
+            tampilkan();
+        }
+
+        function pilihJawaban(nomor, kode) {
+            playClickSound();
+            jawabanUser[nomor] = kode;
+        }
+
+        function submitJawaban() {
+            playClickSound();
+            const belumDijawab = [];
+
+            for (let i = 0; i < dataSoal.length; i++) {
+                if (!jawabanUser[i]) {
+                    belumDijawab.push(i + 1);
+                }
+            }
+
+            if (belumDijawab.length > 0) {
+                alert("Masih ada soal yang belum dijawab: " + belumDijawab.join(", "));
+                return;
+            }
+
+            sudahSubmit = true;
+            tampilkan();
+        }
+
+        function tampilHasil() {
+            setJudulMode("mode-hasil");
+            closeBtn.style.display = "block";
+
+            let benar = 0;
+            let daftar = "";
+
+            dataSoal.forEach((s, index) => {
+                const jawaban = jawabanUser[index];
+                const status = jawaban === s.kunci ? "benar" : "salah";
+
+                if (status === "benar") {
+                    benar++;
+                }
+
+                daftar += `
+                    <div class="item-hasil">
+                        <div class="nomor-hasil">Soal ${index + 1}</div>
+                        <div>Jawaban kamu: <span class="${status}">${jawaban}</span></div>
+                        <div>Kunci jawaban: <b>${s.kunci}</b></div>
+                    </div>
+                `;
+            });
+
+            const nilai = benar * 10;
+
+            isi.innerHTML = `
+                <div class="hasil">
+                    <h2>Hasil Evaluasi</h2>
+                    <div class="skor">
+                        Benar: ${benar} dari ${dataSoal.length} soal<br>
+                        Nilai: ${nilai}
+                    </div>
+                    <div class="kunci">${daftar}</div>
+                    <button class="btn-ulang" onclick="ulang()">Kerjakan Ulang</button>
+                </div>
+            `;
+
+            navigasi.innerHTML = "";
+        }
+
+        function ulang() {
+            playClickSound();
+            halaman = 0;
+            jawabanUser = {};
+            sudahSubmit = false;
+            setJudulMode("mode-intro");
+            tampilkan();
+        }
+
+        tampilkan();
+    </script>
+</body>
+
+</html>
