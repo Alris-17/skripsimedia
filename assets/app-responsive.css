@@ -1,0 +1,389 @@
+/* =====================================================
+   RESPONSIVE + SOUND UI GLOBAL
+   Fokus: desktop tetap, HP landscape mengikuti proporsi desktop
+   ===================================================== */
+
+:root {
+    --app-stage-scale: 1;
+}
+
+html,
+body {
+    -webkit-text-size-adjust: 100%;
+    text-size-adjust: 100%;
+}
+
+button,
+a,
+[role="button"],
+.tool-card,
+.symbol-card,
+.rule-card,
+.safety-card,
+.menu-card,
+.nav-btn,
+.btn,
+.float-btn,
+.lab-btn,
+.back-btn,
+.close-btn {
+    -webkit-tap-highlight-color: transparent;
+    touch-action: manipulation;
+}
+
+img,
+video {
+    max-width: 100%;
+}
+
+.app-music-btn {
+    position: fixed;
+    left: 18px;
+    top: 16px;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    border: 4px solid rgba(255, 255, 255, .95);
+    background: radial-gradient(circle at 30% 30%, #7fe3ff, #1b84c7 70%, #0b5e95);
+    box-shadow: 0 14px 24px rgba(0, 0, 0, .30);
+    cursor: pointer;
+    display: grid;
+    place-items: center;
+    z-index: 99999;
+    color: #fff;
+    font-size: 25px;
+    line-height: 1;
+}
+
+.app-music-btn::before {
+    content: "♫";
+    color: #fff;
+    font-weight: 900;
+}
+
+.app-music-btn.off,
+.music-btn.off {
+    opacity: .55;
+}
+
+.app-music-btn:active,
+.music-btn:active {
+    transform: scale(.96);
+}
+
+/* ===================== HP LANDSCAPE =====================
+   Digunakan untuk layar HP landscape supaya tampilannya tetap
+   seperti desktop dan tidak turun menjadi layout portrait.
+   ========================================================= */
+@media (orientation: landscape) and (max-height: 560px) {
+
+    html,
+    body {
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+        overscroll-behavior: none;
+        background: #000;
+    }
+
+    .app-music-btn,
+    .music-btn {
+        position: fixed !important;
+        left: max(8px, env(safe-area-inset-left)) !important;
+        top: max(8px, env(safe-area-inset-top)) !important;
+        width: 40px !important;
+        height: 40px !important;
+        border-width: 3px !important;
+        z-index: 99999 !important;
+    }
+
+    .music-btn svg {
+        width: 19px !important;
+        height: 19px !important;
+    }
+
+    .app-music-btn {
+        font-size: 20px !important;
+    }
+
+    body.app-stage-fit .wrap {
+        position: fixed !important;
+        inset: 0 !important;
+        width: 100vw !important;
+        height: 100vh !important;
+        height: 100dvh !important;
+        overflow: hidden !important;
+        background: #000 !important;
+    }
+
+    body.app-stage-fit .stage {
+        position: fixed !important;
+        inset: auto !important;
+        left: 50% !important;
+        top: 50% !important;
+        width: 1366px !important;
+        height: 768px !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+        transform: translate(-50%, -50%) scale(var(--app-stage-scale)) !important;
+        transform-origin: center center !important;
+    }
+
+    body.app-stage-fit .stage>.bg,
+    body.app-stage-fit .stage .bg {
+        width: 100% !important;
+        height: 100% !important;
+        background-size: 100% 100% !important;
+        background-position: center center !important;
+    }
+
+    body.app-stage-fit .close-btn {
+        z-index: 9999 !important;
+    }
+
+    /* Halaman materi tetap scroll, hanya dibuat lebih padat untuk landscape HP */
+    body[data-page="materi"] {
+        overflow: hidden !important;
+    }
+
+    body[data-page="materi"] .container {
+        min-height: 100dvh !important;
+        padding: 16px 28px !important;
+        align-items: center !important;
+    }
+
+    body[data-page="materi"] .papan {
+        max-width: 78vw !important;
+        padding: 24px 28px !important;
+        transform: scale(.92);
+        transform-origin: center center;
+    }
+
+    body[data-page="materi"] .menu-button {
+        max-width: 320px !important;
+    }
+
+    body[data-page="materi1"],
+    body[data-page="materi2"],
+    body[data-page="pembahasan"] {
+        height: 100dvh !important;
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+    }
+
+    body[data-page="materi1"] .page,
+    body[data-page="materi2"] .page {
+        padding: 18px 18px 70px !important;
+        min-height: 100dvh !important;
+    }
+
+    body[data-page="materi1"] .content-box,
+    body[data-page="materi2"] .content-box {
+        width: min(94vw, 1050px) !important;
+        padding: 22px !important;
+        border-radius: 22px !important;
+    }
+
+    body[data-page="materi1"] .title-box,
+    body[data-page="materi2"] .title-box {
+        margin-bottom: 18px !important;
+        padding: 16px !important;
+    }
+
+    body[data-page="materi1"] .title-box h1,
+    body[data-page="materi2"] .title-box h1 {
+        font-size: 30px !important;
+    }
+
+    body[data-page="materi1"] .section,
+    body[data-page="materi2"] .section {
+        padding: 18px !important;
+        margin-bottom: 18px !important;
+    }
+
+    body[data-page="materi1"] .section p,
+    body[data-page="materi2"] .section p,
+    body[data-page="materi1"] li,
+    body[data-page="materi2"] li {
+        font-size: 15px !important;
+        line-height: 1.55 !important;
+    }
+
+    body[data-page="materi1"] .back-btn,
+    body[data-page="materi2"] .back-btn,
+    body[data-page="pembahasan"] .back-btn {
+        width: 48px !important;
+        height: 48px !important;
+        left: 12px !important;
+        top: 10px !important;
+    }
+
+    body[data-page="pembahasan"] .page {
+        min-height: 100dvh !important;
+        padding: 90px 18px 45px !important;
+    }
+
+    body[data-page="pembahasan"] .content-box {
+        width: min(94vw, 1080px) !important;
+        padding: 20px !important;
+    }
+
+    body[data-page="pembahasan"] .top-panel {
+        transform: scale(.78) !important;
+        transform-origin: top center !important;
+        top: 0 !important;
+    }
+}
+
+@media (orientation: landscape) and (max-height: 430px) {
+    .app-music-btn,
+    .music-btn {
+        width: 36px !important;
+        height: 36px !important;
+        top: max(6px, env(safe-area-inset-top)) !important;
+        left: max(6px, env(safe-area-inset-left)) !important;
+    }
+
+    .app-music-btn {
+        font-size: 18px !important;
+    }
+}
+
+/* Fallback saat landscape diuji dari layar kecil/devtools: paksa layout tetap seperti desktop. */
+@media (orientation: landscape) and (max-height: 560px) {
+    body.app-stage-fit[data-page="alatlab"] .content-area,
+    body.app-stage-fit[data-page="simbolkimia"] .content-area,
+    body.app-stage-fit[data-page="tatatertib"] .content-area,
+    body.app-stage-fit[data-page="keselamatanlab"] .content-area {
+        position: absolute !important;
+        left: 58px !important;
+        right: 62px !important;
+        top: 128px !important;
+        bottom: 28px !important;
+        width: auto !important;
+        margin: 0 !important;
+        overflow: hidden !important;
+        display: grid !important;
+        gap: 18px !important;
+    }
+
+    body.app-stage-fit[data-page="keselamatanlab"] .content-area {
+        grid-template-columns: 33% 65% !important;
+    }
+
+    body.app-stage-fit[data-page="alatlab"] .main-panel,
+    body.app-stage-fit[data-page="simbolkimia"] .main-panel,
+    body.app-stage-fit[data-page="tatatertib"] .main-panel {
+        height: 100% !important;
+        min-height: 0 !important;
+        padding: 16px 22px 18px !important;
+        overflow: hidden !important;
+        display: flex !important;
+        flex-direction: column !important;
+    }
+
+    body.app-stage-fit[data-page="alatlab"] .tool-grid {
+        flex: 1 !important;
+        height: auto !important;
+        min-height: 0 !important;
+        display: grid !important;
+        grid-template-columns: repeat(5, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
+        gap: 2px !important;
+        margin-bottom: 10px !important;
+        padding: 0 !important;
+    }
+
+    body.app-stage-fit[data-page="alatlab"] .preview-area {
+        height: 170px !important;
+        flex: 0 0 auto !important;
+        display: grid !important;
+        grid-template-columns: 120px 135px 1fr !important;
+        justify-items: stretch !important;
+        text-align: left !important;
+        gap: 14px !important;
+        padding: 10px 18px !important;
+    }
+
+    body.app-stage-fit[data-page="simbolkimia"] .symbol-grid {
+        display: grid !important;
+        grid-template-columns: repeat(5, 1fr) !important;
+        grid-template-rows: repeat(2, 1fr) !important;
+        gap: var(--symbol-card-gap, 2px) !important;
+    }
+
+    body.app-stage-fit[data-page="simbolkimia"] .preview-area {
+        height: 180px !important;
+        display: grid !important;
+        grid-template-columns: 125px 150px 1fr !important;
+        justify-items: stretch !important;
+        text-align: left !important;
+        gap: 16px !important;
+        padding: 12px 18px !important;
+    }
+
+    body.app-stage-fit[data-page="tatatertib"] .rules-grid {
+        display: grid !important;
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: var(--rule-card-gap, 2px) !important;
+    }
+
+    body.app-stage-fit[data-page="tatatertib"] .preview-area {
+        height: 210px !important;
+        display: grid !important;
+        grid-template-columns: 320px 1fr !important;
+        text-align: left !important;
+        gap: 16px !important;
+        padding: 12px 16px !important;
+    }
+
+    body.app-stage-fit[data-page="keselamatanlab"] .left-panel,
+    body.app-stage-fit[data-page="keselamatanlab"] .right-panel {
+        height: 100% !important;
+        min-height: 0 !important;
+        overflow: hidden !important;
+    }
+
+    body.app-stage-fit[data-page="keselamatanlab"] .safety-grid {
+        grid-template-columns: repeat(5, 1fr) !important;
+        gap: var(--safety-icon-gap, -150px) !important;
+    }
+
+    body.app-stage-fit[data-page="keselamatanlab"] .preview-area {
+        height: 190px !important;
+        display: grid !important;
+        grid-template-columns: 190px 1fr !important;
+        gap: 12px !important;
+        text-align: left !important;
+    }
+
+    body.app-stage-fit[data-page="pralab"] .menu-area {
+        position: absolute !important;
+        left: 110px !important;
+        right: 110px !important;
+        top: 250px !important;
+        bottom: 55px !important;
+        display: grid !important;
+        grid-template-columns: repeat(4, 1fr) !important;
+        gap: 32px !important;
+        align-items: center !important;
+        justify-items: center !important;
+        transform: none !important;
+    }
+
+    body.app-stage-fit[data-page="pralab"] .title-wrap {
+        top: 38px !important;
+        left: 50% !important;
+        width: 560px !important;
+        height: 250px !important;
+        transform: translateX(-50%) !important;
+    }
+
+    body.app-stage-fit[data-page="kompetensi"] .kompetensi-wrapper,
+    body.app-stage-fit[data-page="petunjuk"] .guide-wrapper,
+    body.app-stage-fit[data-page="petunjukprak"] .guide-wrapper {
+        transform: none !important;
+    }
+}
